@@ -27,7 +27,6 @@ public class Monster : BaseObject
 
     private void Update()
     {
-        Debug.Log(Target.transform.position);
     }
 
     private void FixedUpdate()
@@ -44,6 +43,19 @@ public class Monster : BaseObject
 
     public override void OnDamaged(BaseObject attacker, int damage)
     {
+        bool isCritical = false;
+        Player player = attacker as Player;
+        if (player != null)
+        {
+            //크리티컬
+            if (UnityEngine.Random.Range(0, 100) <= player.CriRate)
+            {
+                damage *= 2;
+                isCritical = true;
+            }
+        }
+        Hp -= damage;
+        Managers.Instance.Object.ShowDamageFont(CenterPosition, damage, 0, transform, isCritical);
         if (Hp - damage <= 0)
         {
             OnDead();
@@ -61,7 +73,8 @@ public class Monster : BaseObject
         base.OnDead();
         //OnDeadEvent?.Invoke();
         Managers.Instance.Game.MonsterList.Remove(this);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

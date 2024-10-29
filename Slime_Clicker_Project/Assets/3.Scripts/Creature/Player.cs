@@ -9,6 +9,8 @@ public class Player : BaseObject
     public Projectile projectile;
     private Monster target;
     private Coroutine shootingCoroutine;
+    [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
+    private float _nextFireTime;  // 다음 발사 가능 시간
     protected override void Awake()
     {
         base.Awake();
@@ -20,11 +22,11 @@ public class Player : BaseObject
         CriRate = 20f;
         CriDamage = 100f;
         MoveSpeed = 5f;
+        _nextFireTime = 0f;
     }
 
     private void Start()
     {
-        StartCoroutine(ShootProjectile());
     }
 
     private void Update()
@@ -70,15 +72,14 @@ public class Player : BaseObject
 
     IEnumerator ShootProjectile()
     {
-        while(true)
+        while (true)
         {
-            yield return new WaitForSeconds(0.5f);
-            if(Managers.Instance.Game.MonsterList.Count > 0)
+            yield return new WaitForSeconds(_fireRate);  // 1초 대기
+            if (Managers.Instance.Game.MonsterList.Count > 0 && target != null)
             {
                 Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity);
                 proj.SetInfo(fireDir);
             }
-            //proj.SetInfo(Atk);
         }
     }
 

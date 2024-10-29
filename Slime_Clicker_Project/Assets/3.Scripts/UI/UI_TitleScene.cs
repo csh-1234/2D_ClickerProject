@@ -12,7 +12,7 @@ public class UI_TitleScene : RootUI
 {
     public Image TitleTextBox;
     public TextMeshProUGUI TitleText;
-    private List<UI_EventHandler> _boundHandlers = new List<UI_EventHandler>();
+    
     private DG.Tweening.Sequence _titleAnimation;
     protected override void Awake()
     {
@@ -30,7 +30,9 @@ public class UI_TitleScene : RootUI
         
     }
 
+
     #region ObjectEvent
+    private List<UI_EventHandler> _boundHandlers = new List<UI_EventHandler>();
     private void BindEvent(string objectName, Action action)
     {
         Transform objectTransform = transform.Find(objectName);
@@ -56,19 +58,6 @@ public class UI_TitleScene : RootUI
         Debug.Log("Ddd");
         SceneManager.LoadScene("InGameScene");
     }
-    #endregion
-
-    #region Animation
-    void StartButtonAnimation()
-    {
-        DOTween.Init();
-        _titleAnimation = DOTween.Sequence();
-
-        _titleAnimation.Join(TitleText.DOFade(0, 2f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic));
-        _titleAnimation.Join(TitleTextBox.DOFade(0, 2f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic));
-    }
-
-    #endregion
 
     //이벤트 정리
     private void OnDisable()
@@ -90,4 +79,19 @@ public class UI_TitleScene : RootUI
 
         _titleAnimation?.Kill();
     }
+    #endregion
+
+    #region Animation
+    void StartButtonAnimation()
+    {
+        DOTween.Init();
+        _titleAnimation = DOTween.Sequence();
+
+        _titleAnimation.Join(TitleText.DOFade(0, 2f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic));
+        _titleAnimation.Join(TitleTextBox.DOFade(0, 2f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic));
+    }
+
+    #endregion
+
+   
 }
