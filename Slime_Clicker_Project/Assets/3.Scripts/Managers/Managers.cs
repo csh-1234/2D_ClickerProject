@@ -32,9 +32,16 @@ public class Managers : MonoBehaviour
     UI_Manager ui = new UI_Manager();
     ResourceManager resource = new ResourceManager();
     PoolManager pool = new PoolManager();
+    ObjectManager _object = new ObjectManager();
+    GameManager game = new GameManager();
+
     public UI_Manager UI { get { return Instance != null ? Instance.ui : null; } }
     public ResourceManager Resource { get { return Instance != null ? Instance.resource : null; } }
     public PoolManager Pool { get { return Instance != null ? Instance.pool : null; } }
+    public ObjectManager Object { get { return Instance != null ? Instance._object : null; } }
+    public GameManager Game { get { return Instance != null ? instance.game : null; } }
+    
+    
 
 
     private void Awake()

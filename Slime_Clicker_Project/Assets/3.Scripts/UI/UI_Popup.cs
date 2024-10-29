@@ -11,12 +11,12 @@ public class UI_Popup : RootUI
             return true;
         }
 
-        //Managers.Instance.UI.CanvasInitialize(gameObject, true);
+        Managers.Instance.UI.CanvasInitialize(gameObject, true);
         return true;
     }
 
     public virtual void ClosePopupUI()
     {
-        //Managers.Instance.UI.ClosePopupUI(this);
+        Managers.Instance.UI.ClosePopupUI(this);
     }
 }
