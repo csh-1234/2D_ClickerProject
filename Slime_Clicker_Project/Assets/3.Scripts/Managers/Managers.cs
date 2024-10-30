@@ -34,14 +34,16 @@ public class Managers : MonoBehaviour
     PoolManager pool = new PoolManager();
     ObjectManager _object = new ObjectManager();
     GameManager game = new GameManager();
+    CurrencyManager currency = new CurrencyManager();
+    StatUpgradeManager statUpgrade = new StatUpgradeManager();
 
     public UI_Manager UI { get { return Instance != null ? Instance.ui : null; } }
     public ResourceManager Resource { get { return Instance != null ? Instance.resource : null; } }
     public PoolManager Pool { get { return Instance != null ? Instance.pool : null; } }
     public ObjectManager Object { get { return Instance != null ? Instance._object : null; } }
     public GameManager Game { get { return Instance != null ? instance.game : null; } }
-    
-    
+    public CurrencyManager Currency { get { return Instance != null ? instance.currency : null; } }
+    public StatUpgradeManager StatUpgrade { get { return Instance != null ? instance.statUpgrade : null; } }
 
 
     private void Awake()

@@ -8,17 +8,6 @@ using UnityEngine.UI;
 
 public class UI_InGameScene : RootUI
 {
-    public GameObject StatUpgrade;
-    public GameObject SkillUpgrade;
-    public GameObject WeaponUpgrade;
-    public GameObject ArmorUpgrade;
-
-    public Toggle TStatUpgrade;
-    public Toggle TSkillUpgrade;
-    public Toggle TWeaponUpgrade;
-    public Toggle TArmorUpgrade;
-
-
     protected override void Awake()
     {
         base.Awake();
@@ -29,8 +18,6 @@ public class UI_InGameScene : RootUI
         LoadResource();
         BindEventToObjects();
         //기본 상태 = 스텟 업그레이드
-        TStatUpgrade.isOn = true;
-        OnStatUpgradeClick();
     }
 
     // Update is called once per frame
@@ -69,76 +56,9 @@ public class UI_InGameScene : RootUI
     private void BindEventToObjects()
     {
         // 이벤트를 추가할 (오브젝트 이름, 메서드)
-        BindEvent("MenuToggle/StatUpgrade", OnStatUpgradeClick);
-        BindEvent("MenuToggle/SkillUpgrade", OnSkillUpgradeClick);
-        BindEvent("MenuToggle/WeaponUpgrade", OnWeaponUpgradeClick);
-        BindEvent("MenuToggle/ArmorUpgrade", OnArmorUpgradeClick);
+        //BindEvent("MenuToggle/StatUpgrade", OnStatUpgradeClick);
+       
     }
-    //StatUpgrade
-    //SkillUpgrade
-    //WeaponUpgrade
-    //ArmorUpgrade
-
-    private void OnStatUpgradeClick()
-    {
-        TStatUpgrade.isOn = true;
-        if (TStatUpgrade != null)
-        {
-            if(TStatUpgrade.isOn)
-            {
-                StatUpgrade.gameObject.SetActive(true);
-                SkillUpgrade.gameObject.SetActive(false);
-                WeaponUpgrade.gameObject.SetActive(false);
-                ArmorUpgrade.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    private void OnSkillUpgradeClick()
-    {
-        TSkillUpgrade.isOn = true;
-        if (TSkillUpgrade != null)
-        {
-            if (TSkillUpgrade.isOn)
-            {
-                StatUpgrade.gameObject.SetActive(false);
-                SkillUpgrade.gameObject.SetActive(true);
-                WeaponUpgrade.gameObject.SetActive(false);
-                ArmorUpgrade.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    private void OnWeaponUpgradeClick()
-    {
-        TWeaponUpgrade.isOn = true;
-        if (TWeaponUpgrade != null)
-        {
-            if (TWeaponUpgrade.isOn)
-            {
-                StatUpgrade.gameObject.SetActive(false);
-                SkillUpgrade.gameObject.SetActive(false);
-                WeaponUpgrade.gameObject.SetActive(true);
-                ArmorUpgrade.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    private void OnArmorUpgradeClick()
-    {
-        TArmorUpgrade.isOn = true;
-        if (TArmorUpgrade != null)
-        {
-            if (TArmorUpgrade.isOn)
-            {
-                StatUpgrade.gameObject.SetActive(false);
-                SkillUpgrade.gameObject.SetActive(false);
-                WeaponUpgrade.gameObject.SetActive(false);
-                ArmorUpgrade.gameObject.SetActive(true);
-            }
-        }
-    }
-
 
     //이벤트 정리
     private void OnDisable()

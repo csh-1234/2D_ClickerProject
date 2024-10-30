@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.Pool;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 class Pool
 {
     private GameObject _prefab;  // 풀링할 원본 프리팹
@@ -60,7 +61,7 @@ class Pool
 
     #region 풀 콜백 함수들
     // 새 오브젝트 생성 시 호출
-    GameObject OnCreate()
+    private GameObject OnCreate()
     {
         GameObject go = GameObject.Instantiate(_prefab);
         go.transform.SetParent(Root, false);
@@ -73,13 +74,13 @@ class Pool
     {
         go.SetActive(true);
     }
-
+    
     // 풀에 오브젝트를 반환할 때 호출
     void OnRelease(GameObject go)
     {
         go.SetActive(false);
     }
-
+    
     // 풀에서 오브젝트를 완전히 제거할 때 호출
     void OnDestroy(GameObject go)
     {
@@ -94,34 +95,31 @@ public class PoolManager
     // 프리팹 이름을 키로 사용하는 풀 딕셔너리
     private Dictionary<string, Pool> _pools = new Dictionary<string, Pool>();
 
-    // 오브젝트 가져오기
     public GameObject Pop(GameObject prefab)
     {
-        // 해당 프리팹의 풀이 없으면 새로 생성
+        //해당 프리팹의 풀이 없으면 생성
         if (_pools.ContainsKey(prefab.name) == false)
         {
-            CreatePool(prefab);
+            createPool(prefab);
         }
-
         return _pools[prefab.name].Pop();
     }
 
-    // 오브젝트 반환
     public bool Push(GameObject go)
     {
-        // 해당 오브젝트의 풀이 없으면 false 반환
+        //해당 프리펩 이름을 가진 풀이 없으면 false
         if (_pools.ContainsKey(go.name) == false)
         {
             return false;
         }
-
         _pools[go.name].Push(go);
+
         return true;
     }
 
-    // 새로운 풀 생성
-    void CreatePool(GameObject prefab)
+    void createPool(GameObject prefab)
     {
+        //새로운 풀 생성
         Pool pool = new Pool(prefab);
         _pools.Add(prefab.name, pool);
     }

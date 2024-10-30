@@ -22,6 +22,7 @@ public class Player : BaseObject
         CriRate = 20f;
         CriDamage = 100f;
         MoveSpeed = 5f;
+        AttackSpeed = 1f;
         _nextFireTime = 0f;
     }
 

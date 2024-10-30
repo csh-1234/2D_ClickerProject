@@ -22,7 +22,7 @@ public class ResourceManager
         {
             key = key + ".sprite";
             if (resources.TryGetValue(key, out UnityEngine.Object temp))
-            {
+            {   
                 return temp as T;
             }
         }
@@ -138,5 +138,3 @@ public class ResourceManager
     }
     #endregion
 }
-
-

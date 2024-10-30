@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -30,12 +31,26 @@ public class Projectile : BaseObject
         fireDirection = firedir;
     }
 
+    public float arcHeight = 5f;   // 포물선 높이
+    public float arcSpeed = 10f;    // 포물선 주기
+
+    private float distance = 0f;
+    private Vector3 startPos;
+    public void Initialize(Vector2 direction)
+    {
+        fireDirection = direction.normalized;
+        startPos = transform.position;
+    }
 
     void ProjectileMove()
     {
-        Vector2 movment = fireDirection * Time.deltaTime * MoveSpeed;
-        transform.Translate(movment);
-        //RigidBody.MovePosition(RigidBody.position + movment);
+        // 기본 이동
+        Vector2 movement = fireDirection * Time.deltaTime * MoveSpeed;
+        transform.Translate(movement);
+        RigidBody.AddForce(transform.up * -1 * RigidBody.gravityScale);
+
+
+        //RigidBody.MovePosition(RigidBody.position + movement);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
