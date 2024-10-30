@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : BaseObject
+public class Monster : Creature
 {
-
     private Player Target;
 
     protected override void Awake()
@@ -37,33 +36,9 @@ public class Monster : BaseObject
 
     void MoveMonster()
     {
+        if (Target == null) return;
         Vector2 movment = (Target.transform.position - transform.position).normalized * Time.deltaTime * MoveSpeed;
         RigidBody.MovePosition(RigidBody.position + movment);
-    }
-
-    public override void OnDamaged(BaseObject attacker, int damage)
-    {
-        bool isCritical = false;
-        Player player = attacker as Player;
-        if (player != null)
-        {
-            //크리티컬
-            if (UnityEngine.Random.Range(0, 100) <= player.CriRate)
-            {
-                damage *= 2;
-                isCritical = true;
-            }
-        }
-        Hp -= damage;
-        Managers.Instance.Object.ShowDamageFont(CenterPosition, damage, 0, transform, isCritical);
-        if (Hp - damage <= 0)
-        {
-            OnDead();
-        }
-        else
-        {
-            Hp -= damage;
-        }
     }
 
     public event Action OnDeadEvent;

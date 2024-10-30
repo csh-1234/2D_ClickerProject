@@ -8,13 +8,12 @@ public class Projectile : BaseObject
 {
     private Monster target;
     private Vector2 fireDirection;
-    //protected override void Awake()
-    //{
-    //    base.Awake();
-    //    Atk = 10;
-    //}
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
-    
+
     void Update()
     {
         //SetTarget();
@@ -45,30 +44,20 @@ public class Projectile : BaseObject
     void ProjectileMove()
     {
         // 기본 이동
-        Vector2 movement = fireDirection * Time.deltaTime * MoveSpeed;
+        Vector2 movement = fireDirection * Time.deltaTime * 10f;
         transform.Translate(movement);
-        RigidBody.AddForce(transform.up * -1 * RigidBody.gravityScale);
+        //RigidBody.AddForce(transform.up * -1 * RigidBody.gravityScale);
 
 
         //RigidBody.MovePosition(RigidBody.position + movement);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Monster")       
+        if (collision.gameObject.tag == "Monster")
         {
             print("투사체가 몬스터 때림");
             collision.gameObject.GetComponent<Monster>().OnDamaged(this, 100);
-            Destroy(this.gameObject);
-        }
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Wall")
-        {
-            print("투사체가 벽 때림");
             Destroy(this.gameObject);
         }
     }

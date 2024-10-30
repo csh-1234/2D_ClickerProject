@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RootUI : RootInit
+public class RootUI : MonoBehaviour
 {
-    public override bool Initialize()
+    private bool isInnitialized = false;
+    protected virtual void Awake()
     {
-        if(!base.Initialize())
-        {
-            return true;
-        }
+        Initialize();
+    }
 
-        //EventSystem »ý¼º
+    public virtual bool Initialize()
+    {
+        if (isInnitialized) { return false; }
+        isInnitialized = true;
+
         Object obj = FindObjectOfType(typeof(EventSystem));
         if (obj == null)
         {
@@ -20,8 +23,6 @@ public class RootUI : RootInit
             go.AddComponent<EventSystem>();
             go.AddComponent<StandaloneInputModule>();
         }
-
         return true;
     }
-    
 }

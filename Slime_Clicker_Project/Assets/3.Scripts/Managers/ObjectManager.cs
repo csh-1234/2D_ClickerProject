@@ -22,8 +22,6 @@ public class ObjectManager
         {
             prefabName = "DamageText";
         }
-        pos.x += Random.Range(0, 1.1f);
-        pos.y += Random.Range(0, 1.1f);
         GameObject go = Managers.Instance.Resource.Instantiate(prefabName, pooling: true);
         ShowDamage damageText = go.GetOrAddComponent<ShowDamage>();
         damageText.SetInfo(pos, damage, healAmount, parent, isCritical);

@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf26d9e1b4d453c499167ca75c7ac4ee
+    m_Address: UIParticle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 9569e50c1e0abd043b65ee6e475d01e1, type: 2}
   m_SchemaSet:

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class Player : BaseObject
+public class Player : Creature
 {
     private Vector2 _input;
     public Projectile projectile;
     private Monster target;
     private Coroutine shootingCoroutine;
+    public List<Skill> skillList = new List<Skill>();
+
     [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
     private float _nextFireTime;  // 다음 발사 가능 시간
     protected override void Awake()
