@@ -36,6 +36,8 @@ public class Managers : MonoBehaviour
     GameManager game = new GameManager();
     CurrencyManager currency = new CurrencyManager();
     StatUpgradeManager statUpgrade = new StatUpgradeManager();
+    SkillUpgradeManager skillUpgrade = new SkillUpgradeManager();
+    EquipmentUpgradeManager equipmentUpgrade = new EquipmentUpgradeManager();
 
     public UI_Manager UI { get { return Instance != null ? Instance.ui : null; } }
     public ResourceManager Resource { get { return Instance != null ? Instance.resource : null; } }
@@ -44,6 +46,8 @@ public class Managers : MonoBehaviour
     public GameManager Game { get { return Instance != null ? instance.game : null; } }
     public CurrencyManager Currency { get { return Instance != null ? instance.currency : null; } }
     public StatUpgradeManager StatUpgrade { get { return Instance != null ? instance.statUpgrade : null; } }
+    public SkillUpgradeManager SkillUpgrade { get { return Instance != null ? instance.skillUpgrade : null; } }
+    public EquipmentUpgradeManager EquipmentUpgrade { get { return Instance != null ? instance.equipmentUpgrade : null; } }
 
 
     private void Awake()
