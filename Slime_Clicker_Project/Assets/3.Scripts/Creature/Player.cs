@@ -190,7 +190,7 @@ public class Player : Creature
             if (Managers.Instance.Game.MonsterList.Count > 0 && target != null)
             {
                 Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity);
-                proj.SetInfo(fireDir);
+                proj.SetInfo(this, fireDir);
             }
         }
     }
@@ -200,7 +200,7 @@ public class Player : Creature
         if (Managers.Instance.Game.MonsterList.Count > 0 && target != null)
         {
             Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity);
-            proj.SetInfo(fireDir);
+            proj.SetInfo(this, fireDir);
         }
     }
 

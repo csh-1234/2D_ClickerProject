@@ -79,7 +79,7 @@ public class Creature : BaseObject
             }
         }
         Hp -= damage;
-        Managers.Instance.Object.ShowDamageFont(CenterPosition, damage, 0, transform, isCritical);
+        Managers.Instance.Object.ShowDamageFont(Collider.bounds.center, damage, 0, transform, isCritical);
         if (Hp <= 0)
         {
             Hp = 0;

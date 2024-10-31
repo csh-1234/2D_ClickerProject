@@ -227,7 +227,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.802621, g: 1, b: 0, a: 1}
-      maxColor: {r: 1, g: 0.9858491, b: 0.6745283, a: 1}
+      maxColor: {r: 1, g: 0.9633468, b: 0.6745098, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0, g: 1, b: 0.12644672, a: 1}
@@ -4844,7 +4844,7 @@ ParticleSystemRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5461214217267466113}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -4857,7 +4857,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 975951b3917e24454ad641312792c3d7, type: 2}
+  - {fileID: 2100000, guid: d19c35e3f128eb14785ea7a1393ae54b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5137,7 +5137,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 2
       minColor: {r: 1, g: 1, b: 1, a: 0.8784314}
-      maxColor: {r: 1, g: 0.8581352, b: 0, a: 0.7294118}
+      maxColor: {r: 0.99241215, g: 1, b: 0.25098038, a: 0.7294118}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14675,7 +14675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7871070177929636823
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14885,7 +14885,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.802621, g: 1, b: 0, a: 1}
-      maxColor: {r: 0.99728084, g: 1, b: 0.3066038, a: 1}
+      maxColor: {r: 1, g: 0.9298049, b: 0.20392156, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0, g: 1, b: 0.12644672, a: 1}
@@ -19502,7 +19502,7 @@ ParticleSystemRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7871070177929636822}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -19794,8 +19794,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.67303777, g: 1, b: 0.35294116, a: 0.8784314}
-      maxColor: {r: 0.91803664, g: 1, b: 0.2235294, a: 0.7294118}
+      minColor: {r: 1, g: 0.9348355, b: 0, a: 0.8784314}
+      maxColor: {r: 0.86871445, g: 1, b: 0.2235294, a: 0.7294118}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

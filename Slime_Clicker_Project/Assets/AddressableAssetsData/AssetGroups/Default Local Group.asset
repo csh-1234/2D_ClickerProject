@@ -23,14 +23,56 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32e3f2d315c8b2149b1422e35580e141
+    m_Address: BeastEyes_Icon.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 530039eca54429640848c1cce6b34c44
     m_Address: CriticalDamageText
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 700ff9ba9804b54419dc84c4066aaf0a
+    m_Address: Zoomies.Icon.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93ba42274351d7048b1209c604b562ff
+    m_Address: CatCatPunch_Icon.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9aef3321b5a16704dbfa6e85a6846605
+    m_Address: BakeBread_Icon.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bf26d9e1b4d453c499167ca75c7ac4ee
     m_Address: UIParticle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d900909936ee03f40896ff3ad1adcd0b
+    m_Address: EatChur_Icon.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edb0de595335fb5478b1589d35af8ecb
+    m_Address: SkillButtonTemplate
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa6b2cc7a22780b4baf25a22869d7e6f
+    m_Address: FatalStrike_Icon.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

@@ -54,7 +54,7 @@ public class Skill : MonoBehaviour
         {
             if (!_isOnCooldown) return 0f;
             float remainTime = _cooldownEndTime - Time.time;
-            return Mathf.Clamp01(remainTime / Cooldonwn);
+            return 1 -Mathf.Clamp01(remainTime / Cooldonwn);
         }
     }
     protected void UpdateCooldown()

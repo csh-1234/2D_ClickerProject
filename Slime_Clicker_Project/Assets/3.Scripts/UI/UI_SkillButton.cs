@@ -18,24 +18,8 @@ public class UI_SkillButton : RootUI
         }
     }
 
-    int SkillCount;
     private void Start()
     {
-        SkillCount = 0;
-        foreach (Skill choice in Managers.Instance.Game.player.SkillList)
-        {
-            if (choice.name != name)
-            {
-                SkillCount++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        skill = Managers.Instance.Game.player.SkillList[SkillCount];
-        
         if (skill != null)
         {
             skill.OnCooldownUpdate += UpdateCooldownUI;

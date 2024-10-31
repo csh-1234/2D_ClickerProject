@@ -6,6 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Projectile : BaseObject
 {
+    private Creature _owner;
     private Monster target;
     private Vector2 fireDirection;
     protected override void Awake()
@@ -25,8 +26,9 @@ public class Projectile : BaseObject
         ProjectileMove();
     }
 
-    public void SetInfo(Vector2 firedir)
+    public void SetInfo(Creature Owner, Vector2 firedir)
     {
+        _owner = Owner;
         fireDirection = firedir;
     }
 
@@ -57,7 +59,7 @@ public class Projectile : BaseObject
         if (collision.gameObject.tag == "Monster")
         {
             //print("투사체가 몬스터 때림");
-            collision.gameObject.GetComponent<Monster>().OnDamaged(this, 100);
+            collision.gameObject.GetComponent<Monster>().OnDamaged(_owner, Managers.Instance.Game.player.Atk);
             Destroy(this.gameObject);
         }
     }
