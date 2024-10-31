@@ -44,7 +44,7 @@ public class Monster : Creature
     public event Action OnDeadEvent;
     public override void OnDead()
     {
-        print("∏ÛΩ∫≈Õ ªÁ∏¡");
+        //print("∏ÛΩ∫≈Õ ªÁ∏¡");
         base.OnDead();
         //OnDeadEvent?.Invoke();
         Managers.Instance.Game.MonsterList.Remove(this);

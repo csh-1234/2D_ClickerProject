@@ -5,7 +5,7 @@ using static Enums;
 
 public class BaseObject : MonoBehaviour
 {
-    public EObjectType ObjectType { get; protected set; }
+    public ObjectType ObjectType { get; protected set; }
 
     private bool isInnitialized = false;
 

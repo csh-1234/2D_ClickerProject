@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enums
 {
-	public enum EObjectType
+	public enum ObjectType
 	{
         Player,
         Monster,
@@ -20,4 +20,12 @@ public class Enums
         OnDamaged,
         Dead
     }
+
+    public enum SkillType
+    {
+        Active,
+        Buff,
+        Passive,
+    }
+
 }
