@@ -23,6 +23,7 @@ public class UI_TitleScene : RootUI
     {
         StartButtonAnimation();
         BindEventToObjects();
+        LoadResource();
     }
 
     void Update()
@@ -57,6 +58,19 @@ public class UI_TitleScene : RootUI
     {
         Debug.Log("Ddd");
         SceneManager.LoadScene("InGameScene");
+    }
+
+    private void LoadResource()
+    {
+        Managers.Instance.Resource.LoadAllResourceAsync<UnityEngine.Object>("Prefab", (key, count, totalCount) =>
+        {
+            Debug.Log($"리소스 받아오는중 ... [이름 : {key}, {count} / {totalCount}]");
+            if (count == totalCount)
+            {
+                Managers.Instance.Data.Initialize();
+            }
+        });
+
     }
 
     //이벤트 정리

@@ -70,6 +70,7 @@ public class DataManager
                 ItemRarity = ConvertValue<string>(row[i++]),
                 BaseLevel = ConvertValue<int>(row[i++]),
                 MaxLevel = ConvertValue<int>(row[i++]),
+                BaseAtk = ConvertValue<int>(row[i++]),
                 BonusAtk = ConvertValue<int>(row[i++]),
                 BaseDef = ConvertValue<int>(row[i++]),
                 BonusDef = ConvertValue<int>(row[i++]),
@@ -121,6 +122,7 @@ public class DataManager
      public string  ItemRarity;
      public int     BaseLevel;
      public int     MaxLevel;
+     public int     BaseAtk;
      public int     BonusAtk;
      public int     BaseDef;
      public int     BonusDef;

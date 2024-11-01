@@ -30,7 +30,7 @@ public class Enums
 
     public enum ItemRarity
     {
-        Noraml,         //¿œπ›(»Ú)
+        Normal,         //¿œπ›(»Ú)
         Advanced,       //∞Ì±ﬁ(∆ƒ)
         Rare,           //»Ò±Õ(∫∏)
         Legend,         //¿¸º≥(≥Î)
@@ -43,4 +43,20 @@ public class Enums
         Armor,
     }
 
+    #region ¿”Ω√ √≥∏Æ
+    public static Color HexToColor(string color)
+    {
+        Color parsedColor;
+        ColorUtility.TryParseHtmlString("#" + color, out parsedColor);
+
+        return parsedColor;
+    }
+
+    public static readonly Color Noraml =   HexToColor("FFFFFF");
+    public static readonly Color Advanced = HexToColor("6e6eff");
+    public static readonly Color Rare =     HexToColor("ae00ff");
+    public static readonly Color Legend =   HexToColor("ffff00");
+    public static readonly Color Myth =     HexToColor("ff4d4d");
+
+    #endregion
 }

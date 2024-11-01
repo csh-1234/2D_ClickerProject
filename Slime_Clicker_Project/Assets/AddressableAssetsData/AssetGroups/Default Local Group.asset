@@ -23,8 +23,20 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 411cf3a8e47a81d43904267b269e9942
+    m_Address: Shield.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 530039eca54429640848c1cce6b34c44
     m_Address: CriticalDamageText
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bac333f89f982694d9cf7c92c523cd79
+    m_Address: Sword.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

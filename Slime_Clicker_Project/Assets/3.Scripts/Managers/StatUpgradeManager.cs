@@ -77,12 +77,15 @@ public class StatUpgradeManager
         AtkSpeedLevel = 1;
 
         //로드한 스텟레벨 적용
-        Managers.Instance.Game.player.Hp += HpLevel * HpBonus;
-        Managers.Instance.Game.player.Atk += AtkLevel * AtkBonus;
-        Managers.Instance.Game.player.Def += DefLevel * DefBonus;
-        Managers.Instance.Game.player.AttackSpeed += AtkSpeedLevel * AtkSpeedBonus;
-        Managers.Instance.Game.player.CriDamage += CriRateLevel * CriRateBonus;
-        Managers.Instance.Game.player.CriRate += criDamageLevel * criDamageBonus;
+        if(Managers.Instance.Game.player != null)
+        {
+            Managers.Instance.Game.player.Hp += HpLevel * HpBonus;
+            Managers.Instance.Game.player.Atk += AtkLevel * AtkBonus;
+            Managers.Instance.Game.player.Def += DefLevel * DefBonus;
+            Managers.Instance.Game.player.AttackSpeed += AtkSpeedLevel * AtkSpeedBonus;
+            Managers.Instance.Game.player.CriDamage += CriRateLevel * CriRateBonus;
+            Managers.Instance.Game.player.CriRate += criDamageLevel * criDamageBonus;
+        }
     }
 
     public event Action<string, int, int, int> OnStatChanged;
