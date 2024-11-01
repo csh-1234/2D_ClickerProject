@@ -38,6 +38,7 @@ public class Managers : MonoBehaviour
     StatUpgradeManager statUpgrade = new StatUpgradeManager();
     SkillUpgradeManager skillUpgrade = new SkillUpgradeManager();
     EquipmentUpgradeManager equipmentUpgrade = new EquipmentUpgradeManager();
+    DataManager data = new DataManager();
 
     public UI_Manager UI { get { return Instance != null ? Instance.ui : null; } }
     public ResourceManager Resource { get { return Instance != null ? Instance.resource : null; } }
@@ -48,6 +49,7 @@ public class Managers : MonoBehaviour
     public StatUpgradeManager StatUpgrade { get { return Instance != null ? instance.statUpgrade : null; } }
     public SkillUpgradeManager SkillUpgrade { get { return Instance != null ? instance.skillUpgrade : null; } }
     public EquipmentUpgradeManager EquipmentUpgrade { get { return Instance != null ? instance.equipmentUpgrade : null; } }
+    public DataManager Data { get { return Instance != null ? instance.data : null; } }
 
 
     private void Awake()
@@ -58,9 +60,13 @@ public class Managers : MonoBehaviour
     private void Init()
     {
         if (IsInit) return;
-
+        
         // 하위 매니저 초기화
         IsInit = true;
+    }
+    private void Start()
+    {
+        statUpgrade.Initialize();
     }
 
     private void OnDestroy()

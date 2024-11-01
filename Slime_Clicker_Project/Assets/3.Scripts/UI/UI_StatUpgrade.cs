@@ -100,7 +100,6 @@ public class UI_StatUpgrade : RootUI
             UpdateStat(level, bonus, cost);
         }
     }
-
     private void UpdateStat(int level, int bonus, int cost)
     {
         StatLevel.text = $"LV.{level}";

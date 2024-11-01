@@ -28,4 +28,19 @@ public class Enums
         Passive,
     }
 
+    public enum ItemRarity
+    {
+        Noraml,         //ÀÏ¹Ý(Èò)
+        Advanced,       //°í±Þ(ÆÄ)
+        Rare,           //Èñ±Í(º¸)
+        Legend,         //Àü¼³(³ë)
+        Myth,           //½ÅÈ­(»¡)
+    }
+
+    public enum ItemType
+    {
+        Weapon,
+        Armor,
+    }
+
 }

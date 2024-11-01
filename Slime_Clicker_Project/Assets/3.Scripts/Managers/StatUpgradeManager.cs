@@ -2,6 +2,42 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public class StatData
+{
+    public string Name { get; private set; }
+    public int Level { get; private set; }
+    public float Bonus { get; private set; }
+    public float BonusPerLevel { get; private set; }
+    public int Cost { get; private set; }
+    public int CostPerLevel { get; private set; }
+
+    public StatData(string name, float bonusPerLevel, int costPerLevel)
+    {
+        Name = name;
+        Level = 1;
+        BonusPerLevel = bonusPerLevel;
+        CostPerLevel = costPerLevel;
+        UpdateValues();
+    }
+
+    public void LevelUp()
+    {
+        Level++;
+        UpdateValues();
+    }
+
+    private void UpdateValues()
+    {
+        Bonus = Level * BonusPerLevel;
+        Cost = Level * CostPerLevel;
+    }
+
+    public (int level, float bonus, int cost) GetInfo()
+    {
+        return (Level, Bonus, Cost);
+    }
+}
+
 
 public class StatUpgradeManager
 {
@@ -104,30 +140,37 @@ public class StatUpgradeManager
     {
         AtkLevel++;
         OnStatChanged?.Invoke("AtkUpgrade", AtkLevel, AtkLevel * AtkBonus, AtkLevel * AtkCost);
+        Managers.Instance.Game.player.Atk += 1;
     }
     public void UpgradeHpLevel()
     {
         HpLevel++;
         OnStatChanged?.Invoke("HpUgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
+        Managers.Instance.Game.player.Hp += 1;
+        Managers.Instance.Game.player.MaxHp += 1;
     }
     public void UpgradeDefLevel()
     {
         DefLevel++;
         OnStatChanged?.Invoke("DefUpgrade", DefLevel, DefLevel * DefBonus, DefLevel * DefCost);
+        Managers.Instance.Game.player.Def += 1;
     }
     public void UpgradeAtkSpeedLevel()
     {
         AtkSpeedLevel++;
         OnStatChanged?.Invoke("AtkSpeedUpgrade", AtkSpeedLevel, (int)(AtkSpeedLevel * AtkSpeedBonus), AtkSpeedLevel * AtkSpeedCost);
+        Managers.Instance.Game.player.AttackSpeed += 0.1f;
     }
     public void UpgradeCriRateLevel()
     {
         CriRateLevel++;
         OnStatChanged?.Invoke("CriRateUpgrade", CriRateLevel, (int)(CriRateLevel * CriRateBonus), CriRateLevel * CriRateCost);
+        Managers.Instance.Game.player.CriRate += 0.1f;
     }
     public void UpgradeCriDamageLevel()
     {
         criDamageLevel++;
         OnStatChanged?.Invoke("CriDamageUpgrade", criDamageLevel, (int)(criDamageLevel * criDamageBonus), criDamageLevel * criDamageCost);
+        Managers.Instance.Game.player.CriDamage += 1;
     }
 }

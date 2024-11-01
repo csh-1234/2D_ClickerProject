@@ -52,16 +52,21 @@ public class Skill : MonoBehaviour
     {
         get
         {
-            if (!_isOnCooldown) return 0f;
+            if (!_isOnCooldown) return 1f;
             float remainTime = _cooldownEndTime - Time.time;
-            return 1 -Mathf.Clamp01(remainTime / Cooldonwn);
+            
+            return 1 - Mathf.Clamp01(remainTime / Cooldonwn);
         }
     }
     protected void UpdateCooldown()
     {
         OnCooldownUpdate?.Invoke(CooldownRatio);
     }
-
+    public void InitCooldown()
+    {
+        _isOnCooldown = false;
+        _cooldownEndTime = 0;
+    }
     protected virtual void Awake()
     {
         Initialize();

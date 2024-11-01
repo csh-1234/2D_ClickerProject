@@ -32,6 +32,7 @@ public class UI_InGameScene : RootUI
             Debug.Log($"리소스 받아오는중 ... [이름 : {key}, {count} / {totalCount}]");
             if (count == totalCount)
             {
+                Managers.Instance.Data.Initialize();
             }
         });
 

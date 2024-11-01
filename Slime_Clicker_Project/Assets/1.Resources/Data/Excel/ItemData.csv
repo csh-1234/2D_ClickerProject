@@ -1,0 +1,18 @@
+ DataID,ItemName,ItemType,ItemRarity,BaseLevel,MaxLevel,BaseAtk,BonusAtk,BaseDef,BonusDef,ItemPrice,UpgradeCost,CostRatio,ItemInfo,SpriteName
+300000,일반 검,Weapon,Normal,1,100,10,1,0,0,100,10,0.1,냥팡에서 구할 수 있는 일반 등급의 검이다.,Sword.sprite
+300001,고급 검,Weapon,Advanced,1,500,20,2,0,0,1000,100,0.1,냥팡에서 구할 수 있는 고급 등급의 검이다.,Sword.sprite
+300002,희귀 검,Weapon,Rare,1,1000,40,4,0,0,10000,1000,0.1,냥팡에서 구할 수 있는 희귀 등급의 검이다.,Sword.sprite
+300003,전설 검,Weapon,Legend,1,2000,100,8,0,0,100000,10000,0.1,냥팡에서 구할 수 있는 레전드 등급의 검이다.,Sword.sprite
+300004,신화 검,Weapon,Myth,1,5000,300,100,0,0,1000000,100000,0.1,냥팡에서 구할 수 있는 신화 등급의 검이다.,Sword.sprite
+300005,일반 방어구,Armor,Normal,1,100,0,0,10,1,100,10,0.1,냥팡에서 구할 수 있는 일반 등급의 방어구다.,Shield.sprite
+300006,고급 방어구,Armor,Advanced,1,500,0,0,20,2,1000,100,0.1,냥팡에서 구할 수 있는 고급 등급의 방어구다.,Shield.sprite
+300007,희귀 방어구,Armor,Rare,1,1000,0,0,40,4,10000,1000,0.1,냥팡에서 구할 수 있는 희귀 등급의 방어구다.,Shield.sprite
+300008,전설 방어구,Armor,Legend,1,2000,0,0,100,8,100000,10000,0.1,냥팡에서 구할 수 있는 레전드 등급의 방어구다.,Shield.sprite
+300009,신화 방어구,Armor,Myth,1,5000,0,0,300,100,1000000,100000,0.1,냥팡에서 구할 수 있는 신화 등급의 방어구다.,Shield.sprite
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,, ,,,

@@ -41,7 +41,7 @@ public class Skill_EatChur : Skill
     private Coroutine startSkill;
     public override IEnumerator StartSkill()
     {
-        print("식빵굽기");
+        print("츄르먹기");
         //중첩 방지 및 재사용 금지
         if (startSkill != null)
         {
@@ -60,14 +60,14 @@ public class Skill_EatChur : Skill
         _cooldownEndTime = Time.time + Cooldonwn;
         BuffActivate();
         print("버프켜짐");
-        float buffEndTime = Time.time + Duration;
-        while (Time.time < buffEndTime)
-        {
-            UpdateCooldown();  // 쿨타임 UI 업데이트
-            yield return null;
-        }
+        //float buffEndTime = Time.time + Duration;
+        //while (Time.time < buffEndTime)
+        //{
+        //    UpdateCooldown();  // 쿨타임 UI 업데이트
+        //    yield return null;
+        //}
 
-        BuffDeActivate();
+        //BuffDeActivate();
         print("버프끝남");
         while (Time.time < _cooldownEndTime)
         {
@@ -90,14 +90,15 @@ public class Skill_EatChur : Skill
     {
         if (Managers.Instance.Game.player != null)
         {
-            var _player = Managers.Instance.Game.player;
-            _player.Hp += HpBonus;
-            _player.Atk += AtkBonus;
-            _player.Def += DefBonus;
-            _player.AttackSpeed += AtkSpeedBonus;
-            _player.CriRate += CriRateBonus;
-            _player.CriDamage += CriDamageBonus;
-            _player.MoveSpeed += MoveSpeedBonus;
+            
+            List<Skill> _skillList = Managers.Instance.Game.player.SkillList;
+            foreach (Skill skill in _skillList)
+            {
+                if(skill.name != "Skill_EatChur")
+                {
+                    skill.InitCooldown();
+                }
+            }
         }
         else
         {

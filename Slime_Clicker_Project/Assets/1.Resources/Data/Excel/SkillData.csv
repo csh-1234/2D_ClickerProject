@@ -1,0 +1,7 @@
+ DataID,SkillName,SkillType,BaseLevel,MaxLevel,,BaseAtk,BonusAtk,BaseDef,BonusDef,ItemInfo,ItemPrice,UpgradeCost,CostRatio,SpriteName
+200000,우다다다,Buff,1,1000,,10,1,0,0,냥팡에서 구할 수 있는 일반 등급의 검이다.,100,500,0.2,Skill_Zoomies_Icon
+200001,식빵굽기,Buff,1,1000,,20,2,0,0,냥팡에서 구할 수 있는 고급 등급의 검이다.,1000,500,0.2,Skill_BakeBread_Icon
+200002,츄르먹기,Buff,1,1000,,40,4,0,0,냥팡에서 구할 수 있는 희귀 등급의 검이다.,10000,500,0.2,Skill_EatChur_Icon
+200003,맹수의 눈빛,Buff,1,1000,,100,8,0,0,냥팡에서 구할 수 있는 레전드 등급의 검이다.,100000,500,0.2,Skill_BeastEyes_Icon
+200004,일격필살,Buff,1,1000,,300,100,0,0,냥팡에서 구할 수 있는 신화 등급의 검이다.,1000000,500,0.2,Skill_FatalStrike_Icon
+200005,냥냥펀치!,Active,1,1000,,0,0,10,1,냥팡에서 구할 수 있는 일반 등급의 방어구다.,100,500,0.2,Skill_CatCatPunch_Icon

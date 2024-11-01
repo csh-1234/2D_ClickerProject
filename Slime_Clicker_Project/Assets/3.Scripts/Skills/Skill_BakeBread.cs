@@ -50,7 +50,7 @@ public class Skill_BakeBread : Skill
     private Coroutine startSkill;
     public override IEnumerator StartSkill()
     {
-        print("우다다다!");
+        print("식빵굽기");
         //중첩 방지 및 재사용 금지
         if (startSkill != null)
         {

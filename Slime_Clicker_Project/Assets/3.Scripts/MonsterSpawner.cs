@@ -17,7 +17,7 @@ public class MonsterSpawner : MonoBehaviour
     {
         while (true)
         {
-            for (int i = 0; i < 5   ; i++)
+            for (int i = 0; i < 2   ; i++)
             {
                 Vector2 spawnPos = new Vector2(Random.Range(3f, 20f), Random.Range(0.7f, 1.5f));
                 Monster mo = Instantiate(monster, spawnPos, Quaternion.identity);
