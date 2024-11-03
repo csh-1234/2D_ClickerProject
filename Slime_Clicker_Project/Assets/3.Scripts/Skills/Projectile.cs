@@ -58,7 +58,7 @@ public class Projectile : BaseObject
     {
         if (collision.gameObject.tag == "Monster")
         {
-            //print("투사체가 몬스터 때림");
+            print("투사체가 몬스터 때림");
             collision.gameObject.GetComponent<Monster>().OnDamaged(_owner, Managers.Instance.Game.player.Atk);
             Destroy(this.gameObject);
         }

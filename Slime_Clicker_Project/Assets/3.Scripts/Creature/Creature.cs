@@ -127,7 +127,6 @@ public class Creature : BaseObject
                 isCritical = true;
             }
         }
-
         // 방어력 적용
         damage = Mathf.Max(1, damage - Def);
 

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1639543721201578539}
   - component: {fileID: 4572427415958752045}
   - component: {fileID: 7210913626514094854}
-  - component: {fileID: 7515284081467366704}
-  m_Layer: 0
+  - component: {fileID: 8183291516664702637}
+  m_Layer: 8
   m_Name: Monster
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -135,15 +135,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec91663de98bdfa43ae76c3876fd00ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 100
-  _maxHp: 100
-  _atk: 0
-  _def: 0
-  _atkSpeed: 0
-  _criRate: 0
-  _criDamage: 0
-  _moveSpeed: 0
---- !u!50 &7515284081467366704
+  _baseStats:
+    hp: 0
+    maxHp: 0
+    attack: 0
+    defense: 0
+    criticalRate: 0
+    criticalDamage: 0
+    moveSpeed: 0
+    attackSpeed: 0
+  _currentStats:
+    hp: 0
+    maxHp: 0
+    attack: 0
+    defense: 0
+    criticalRate: 0
+    criticalDamage: 0
+    moveSpeed: 0
+    attackSpeed: 0
+--- !u!50 &8183291516664702637
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -270,9 +280,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5794289019328390479, guid: ad1c5678f6472cd45835f3f8ff912a61, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5916342056891477958, guid: ad1c5678f6472cd45835f3f8ff912a61, type: 3}
       propertyPath: m_Name
       value: UI_HPBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916342056891477958, guid: ad1c5678f6472cd45835f3f8ff912a61, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338857725060939438, guid: ad1c5678f6472cd45835f3f8ff912a61, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8775146215273709299, guid: ad1c5678f6472cd45835f3f8ff912a61, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9162511734325928580, guid: ad1c5678f6472cd45835f3f8ff912a61, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9171063070899563252, guid: ad1c5678f6472cd45835f3f8ff912a61, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Coffee.UIExtensions.UIParticleAttractor;
 
 public class Monster : Creature
 {
@@ -30,19 +31,20 @@ public class Monster : Creature
 
     private void Update()
     {
-    }
-
-    private void FixedUpdate()
-    {
         MoveMonster();
     }
-
-
     void MoveMonster()
     {
         if (Target == null) return;
-        Vector3 movment = (Target.transform.position - transform.position).normalized * Time.deltaTime * MoveSpeed;
-        transform.Translate(movment, Space.World);
+
+        Vector2 direction = (Target.transform.position - transform.position).normalized;
+        float distance = Vector2.Distance(transform.position, Target.transform.position);
+        Vector3 movment = direction * Time.deltaTime * MoveSpeed;
+
+        if (distance > 1f)
+        {
+            transform.Translate(movment, Space.World);
+        }
         //RigidBody.MovePosition(RigidBody.position + movment);
     }
 

@@ -25,12 +25,11 @@ public class UI_Manager
         }
     }
 
-    public void CanvasInitialize(GameObject go, bool sort = true, int sortOrder = 0)
+   public void CanvasInitialize(GameObject go, bool sort = true, int sortOrder = 0)
     {
         // UI를 쓰기 위해선 바탕이 되는 canvas, canvasScaler, graphicRaycast 컴포넌트가 필요하다.
         // 따라서 UI오브젝트에 해당 컴포넌트들이 없으면 추가해주는 초기화 작업이 필요하다.
-        //Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
-        Canvas canvas = go.GetOrAddComponent<Canvas>();
+        Canvas canvas = go.GetComponent<Canvas>();
         if (canvas == null)
         {
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -40,7 +39,7 @@ public class UI_Manager
         if (canvasScaler != null)
         {
             canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            canvasScaler.referenceResolution = new Vector2(1920, 1080);
+            canvasScaler.referenceResolution = new Vector2(1080, 1920);
         }
         //UI 클릭/터치 이벤트를 감지하는 GraphicRaycater 컴포넌트 추가
         go.GetOrAddComponent<GraphicRaycaster>();

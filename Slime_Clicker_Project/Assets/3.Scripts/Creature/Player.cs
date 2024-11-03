@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.LowLevel;
 using static BuffManagement;
 using static DataManager;
 using static Enums;
@@ -10,6 +11,7 @@ using static Enums;
 [SerializeField]
 public class Player : Creature
 {
+    private Animator anim;
     [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
     private Vector2 _input;
     public Projectile projectile;
@@ -115,6 +117,7 @@ public class Player : Creature
         AddSkill(typeof(Skill_FatalStrike));
         //AddSkill(typeof(Skill_CatCatPunch));
         _currentStats.CopyStats(_baseStats);
+        anim = GetComponent<Animator>();
     }
 
     private void AddSkill(Type skillType)
@@ -173,6 +176,7 @@ public class Player : Creature
 
     private void Update()
     {
+        UpdateAni();
         AutoSkill();
         PlayerInput();
         SetTarget();
@@ -336,7 +340,36 @@ public class Player : Creature
     {
         base.OnDead();
     }
+    public enum EPlayerLook
+    {
+        Right,
+        Left,
+        Down,
+        Up
+    }
+    public EPlayerLook look { get; set; } = EPlayerLook.Right;
+    void UpdateLookDirection()
+    {
+        if (Mathf.Abs(_input.x) > Mathf.Abs(_input.y))
+        {
+            look = _input.x > 0 ? EPlayerLook.Right : EPlayerLook.Left;
+            SpriteRender.flipX = _input.x > 0;
+        }
+        else
+        {
+            look = _input.y > 0 ? EPlayerLook.Up : EPlayerLook.Down;
+        }
+    }
 
-    
+    void UpdateAni()
+    {
+        bool isMoving = _input.magnitude > 0.01f;
+        anim.SetBool("IsWalk", isMoving);
+
+        if (isMoving)
+        {
+            UpdateLookDirection();
+        }
+    }
 
 }

@@ -50,7 +50,6 @@ public class UI_SkillButton : RootUI, IPointerClickHandler
         }
     }
 
-    // 스킬 참조 설정을 위한 public 메서드
     public void SetSkill(Skill newSkill)
     {
         if (skill != null)

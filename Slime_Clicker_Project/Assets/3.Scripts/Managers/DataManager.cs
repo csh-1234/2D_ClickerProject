@@ -13,14 +13,84 @@ using static Enums;
 
 public class DataManager
 {
-    public Dictionary<int, ItemData> ItemDic { get; private set; } = new Dictionary<int, ItemData>();
+    public Dictionary<int, CreatureData> CreatureDic { get; private set; } = new Dictionary<int, CreatureData>();
     public Dictionary<int, SkillData> SkillDic { get; private set; } = new Dictionary<int, SkillData>();
+    public Dictionary<int, ItemData> ItemDic { get; private set; } = new Dictionary<int, ItemData>();
 
     public void Initialize()
     {
-        LoadItemData();
+        LoadCreatureData();
         LoadSklillData();
+        LoadItemData();
     }
+
+    #region Creature
+    private void LoadCreatureData()
+    {
+        string csvPath = $"{Application.dataPath}/1.Resources/Data/Excel/CreatureData.csv";
+        string jsonPath = $"{Application.dataPath}/1.Resources/Data/JsonData/CreatureData.json";
+
+        //csv파일이 존재하고, json파일이 최신화 되지 않으면 다시 읽어서 dic에 넣어줌
+        if (File.Exists(csvPath) && (!File.Exists(jsonPath) || File.GetLastWriteTime(csvPath) > File.GetLastWriteTime(jsonPath)))
+        {
+            ParseCreatureData("Creature");
+        }
+
+        if (File.Exists(jsonPath))
+        {
+            string jsonContent = File.ReadAllText(jsonPath);
+            CreatureDataWrapper wrapper = JsonConvert.DeserializeObject<CreatureDataWrapper>(jsonContent);
+            CreatureDic = wrapper.Creatures.ToDictionary(c => c.DataId);
+        }
+        else
+        {
+            Debug.LogError("CreatureData.json file not found. Please make sure to parse CSV first.");
+        }
+    }
+
+    public void ParseCreatureData(string filename)
+    {
+        List<CreatureData> creatureList = new List<CreatureData>();
+
+        string[] lines = File.ReadAllText($"{Application.dataPath}/1.Resources/Data/Excel/{filename}Data.csv").Split("\n");
+
+        //0번째 줄은 어떤 데이터인지 나타내기 때문에 1부터 시작
+        for (int y = 1; y < lines.Length; y++)
+        {
+            // csv 한 줄을 한 단어씩 잘라 row에 저장함
+            string[] row = lines[y].Replace("\r", "").Split(',');
+
+            if (row.Length == 0 || string.IsNullOrEmpty(row[0])) continue;
+
+            int i = 0;
+            CreatureData cd = new CreatureData
+            {
+                //순서대로 저장되었기 때문에 row에 저장된 단어를 하나씩 가져감
+                DataId = ConvertValue<int>(row[i++]),
+                CreatureName = ConvertValue<string>(row[i++]),  
+                CreatureType = ConvertValue<ObjectType>(row[i++]),
+                Hp = ConvertValue<int>(row[i++]),
+                MaxHp = ConvertValue<int>(row[i++]),
+                Atk = ConvertValue<int>(row[i++]),
+                Def = ConvertValue<int>(row[i++]),
+                CriRate = ConvertValue<float>(row[i++]),
+                CriDamage = ConvertValue<float>(row[i++]),
+                MoveSpeed = ConvertValue<float>(row[i++]),
+                AtkSpeed = ConvertValue<float>(row[i++]),
+                SpriteName = ConvertValue<string>(row[i++]),
+            };
+            creatureList.Add(cd);
+            CreatureDic = creatureList.ToDictionary(c => c.DataId);
+        }
+
+        CreatureDataWrapper wrapper = new CreatureDataWrapper { Creatures = creatureList };
+        string jsonStr = JsonConvert.SerializeObject(wrapper, Newtonsoft.Json.Formatting.Indented); // Formatting.Indented : 자동으로 라인 / 들여쓰기된 문자열을 리턴해
+        File.WriteAllText($"{Application.dataPath}/1.Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh(); // 새로 생성된 json파일을 인식하게 하기 위한 초기화
+
+        CreatureDic = creatureList.ToDictionary(c => c.DataId);
+    }
+    #endregion
 
     #region Item
     private void LoadItemData()
@@ -196,29 +266,26 @@ public class DataManager
 
     #region Data
     [Serializable]
-    public class ItemData
+    public class CreatureData
     {
-         public int     DataId;
-         public string  ItemName;
-         public ItemType  ItemType;
-         public ItemRarity  ItemRarity;
-         public int     BaseLevel;
-         public int     MaxLevel;
-         public int     BaseAtk;
-         public int     BonusAtk;
-         public int     BaseDef;
-         public int     BonusDef;
-         public int     ItemPrice;
-         public int     UpgradeCost;
-         public float   CostRatio;
-         public string  ItemInfo;
-         public string  SpriteName;
+        public int DataId;
+        public string CreatureName;
+        public ObjectType CreatureType;
+        public int Hp;
+        public int MaxHp;
+        public int Atk;
+        public int Def;
+        public float CriRate;
+        public float CriDamage;
+        public float MoveSpeed;
+        public float AtkSpeed;
+        public string SpriteName;
     }
 
     [Serializable]
-    private class ItemDataWrapper
+    private class CreatureDataWrapper
     {
-        public List<ItemData> Items;
+        public List<CreatureData> Creatures;
     }
 
     [Serializable]
@@ -250,6 +317,32 @@ public class DataManager
     private class SkillDataWrapper
     {
         public List<SkillData> Skills;
+    }
+
+    [Serializable]
+    public class ItemData
+    {
+         public int     DataId;
+         public string  ItemName;
+         public ItemType  ItemType;
+         public ItemRarity  ItemRarity;
+         public int     BaseLevel;
+         public int     MaxLevel;
+         public int     BaseAtk;
+         public int     BonusAtk;
+         public int     BaseDef;
+         public int     BonusDef;
+         public int     ItemPrice;
+         public int     UpgradeCost;
+         public float   CostRatio;
+         public string  ItemInfo;
+         public string  SpriteName;
+    }
+
+    [Serializable]
+    private class ItemDataWrapper
+    {
+        public List<ItemData> Items;
     }
     #endregion
 }
