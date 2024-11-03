@@ -17,6 +17,8 @@ public class UI_MenuToggle : RootUI
     public GameObject WeaponUpgrade;
     public GameObject ArmorUpgrade;
 
+    public ScrollRect Scroll;
+
     protected override void Awake()
     {
         base.Awake();
@@ -54,10 +56,6 @@ public class UI_MenuToggle : RootUI
         BindEvent("WeaponUpgrade", OnWeaponUpgradeClick);
         BindEvent("ArmorUpgrade", OnArmorUpgradeClick);
     }
-    //StatUpgrade
-    //SkillUpgrade
-    //WeaponUpgrade
-    //ArmorUpgrade
 
     private void OnStatUpgradeClick()
     {
@@ -66,10 +64,12 @@ public class UI_MenuToggle : RootUI
         {
             if (TStatUpgrade.isOn)
             {
+                OnToggleChanged();
                 StatUpgrade.gameObject.SetActive(true);
                 SkillUpgrade.gameObject.SetActive(false);
                 WeaponUpgrade.gameObject.SetActive(false);
                 ArmorUpgrade.gameObject.SetActive(false);
+                
             }
         }
     }
@@ -81,6 +81,7 @@ public class UI_MenuToggle : RootUI
         {
             if (TSkillUpgrade.isOn)
             {
+                OnToggleChanged();
                 StatUpgrade.gameObject.SetActive(false);
                 SkillUpgrade.gameObject.SetActive(true);
                 WeaponUpgrade.gameObject.SetActive(false);
@@ -96,6 +97,7 @@ public class UI_MenuToggle : RootUI
         {
             if (TWeaponUpgrade.isOn)
             {
+                OnToggleChanged();
                 StatUpgrade.gameObject.SetActive(false);
                 SkillUpgrade.gameObject.SetActive(false);
                 WeaponUpgrade.gameObject.SetActive(true);
@@ -111,6 +113,7 @@ public class UI_MenuToggle : RootUI
         {
             if (TArmorUpgrade.isOn)
             {
+                OnToggleChanged();
                 StatUpgrade.gameObject.SetActive(false);
                 SkillUpgrade.gameObject.SetActive(false);
                 WeaponUpgrade.gameObject.SetActive(false);
@@ -119,6 +122,18 @@ public class UI_MenuToggle : RootUI
         }
     }
 
+    private IEnumerator ScrollToTop()
+    {
+        yield return null;  // 다음 프레임까지 대기
+        Scroll.normalizedPosition = new Vector2(0, 1);
+    }
+
+    public void OnToggleChanged()
+    {
+        // 기존 아이템 목록 갱신 로직...
+
+        StartCoroutine(ScrollToTop());
+    }
 
     //이벤트 정리
     private void OnDisable()

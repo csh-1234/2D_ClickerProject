@@ -16,16 +16,6 @@ public class UI_StatUpgrade : RootUI
     {
         base.Awake();
     }
-
-    //private void OnEnable()
-    //{
-    //    Managers.Instance.StatUpgrade.OnStatChanged += OnStatChanged;
-    //    var initialStats = Managers.Instance.StatUpgrade.GetStatInfo(statType);
-
-    //    //UpdateStat(initialStats.level, initialStats.bonus, initialStats.cost);
-    //    BindEventToObjects();
-    //}
-
     private void Start()
     {
         StatLevel = gameObject.transform.Find("IconBoard/LevelText").GetComponent<TextMeshProUGUI>();
@@ -38,6 +28,31 @@ public class UI_StatUpgrade : RootUI
 
         UpdateStat(initialStats.level, initialStats.bonus, initialStats.cost);
         BindEventToObjects();
+    }
+
+
+    private void OnStatChanged(string type, int level, int bonus, int cost)
+    {
+        // 자신의 스탯 타입에 대한 변경사항만 처리
+        if (type == statType)
+        {
+            //비용체크
+            if(Managers.Instance.Currency.GetCurrentGold() >= cost)
+            {
+                UpdateStat(level, bonus, cost);
+                Managers.Instance.Currency.RemoveGold(cost-1);
+            }
+            else
+            {
+                Debug.Log("스텟 레벨업 자액부족");
+            }
+        }
+    }
+    private void UpdateStat(int level, int bonus, int cost)
+    {
+        StatLevel.text = $"LV.{level}";
+        StatBonus.text = $"{bonus}";
+        StatCost.text = $"{cost}";
     }
 
     #region ObjectEvent
@@ -92,18 +107,4 @@ public class UI_StatUpgrade : RootUI
     //}
     #endregion
 
-    private void OnStatChanged(string type, int level, int bonus, int cost)
-    {
-        // 자신의 스탯 타입에 대한 변경사항만 처리
-        if (type == statType)
-        {
-            UpdateStat(level, bonus, cost);
-        }
-    }
-    private void UpdateStat(int level, int bonus, int cost)
-    {
-        StatLevel.text = $"LV.{level}";
-        StatBonus.text = $"{bonus}";
-        StatCost.text = $"{cost}";
-    }
 }

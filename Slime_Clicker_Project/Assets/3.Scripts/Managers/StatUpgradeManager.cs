@@ -66,27 +66,27 @@ public class StatUpgradeManager
     private int AtkSpeedLevel = 1;
     //public float MoveSpeedLevel; 
 
-    public void Initialize()
-    {
-        //TODO : 저장된 스텟레벨 Load
-        AtkLevel = 1;
-        HpLevel = 1;
-        DefLevel = 1;
-        CriRateLevel = 1;
-        criDamageLevel = 1;
-        AtkSpeedLevel = 1;
+    //public void Initialize()
+    //{
+    //    //TODO : 저장된 스텟레벨 Load
+    //    AtkLevel = 1;
+    //    HpLevel = 1;
+    //    DefLevel = 1;
+    //    CriRateLevel = 1;
+    //    criDamageLevel = 1;
+    //    AtkSpeedLevel = 1;
 
-        //로드한 스텟레벨 적용
-        if(Managers.Instance.Game.player != null)
-        {
-            Managers.Instance.Game.player.Hp += HpLevel * HpBonus;
-            Managers.Instance.Game.player.Atk += AtkLevel * AtkBonus;
-            Managers.Instance.Game.player.Def += DefLevel * DefBonus;
-            Managers.Instance.Game.player.AttackSpeed += AtkSpeedLevel * AtkSpeedBonus;
-            Managers.Instance.Game.player.CriDamage += CriRateLevel * CriRateBonus;
-            Managers.Instance.Game.player.CriRate += criDamageLevel * criDamageBonus;
-        }
-    }
+    //    //TODO로드한 스텟레벨 적용
+    //    if(Managers.Instance.Game.player != null)
+    //    {
+    //        Managers.Instance.Game.player.Hp += HpLevel * HpBonus;
+    //        Managers.Instance.Game.player.Atk += AtkLevel * AtkBonus;
+    //        Managers.Instance.Game.player.Def += DefLevel * DefBonus;
+    //        Managers.Instance.Game.player.AttackSpeed += AtkSpeedLevel * AtkSpeedBonus;
+    //        Managers.Instance.Game.player.CriDamage += CriRateLevel * CriRateBonus;
+    //        Managers.Instance.Game.player.CriRate += criDamageLevel * criDamageBonus;
+    //    }
+    //}
 
     public event Action<string, int, int, int> OnStatChanged;
 
@@ -119,23 +119,23 @@ public class StatUpgradeManager
             case "AtkUpgrade":
                 UpgradeAtkLevel();
                 break;
-            case "HpUgrade":
-                UpgradeHpLevel();
-                break;
-            case "DefUpgrade":
-                UpgradeDefLevel();
-                break;
-            case "AtkSpeedUpgrade":
-                UpgradeAtkSpeedLevel();
-                break;
-            case "CriRateUpgrade":
-                UpgradeCriRateLevel();
-                break;
-            case "CriDamageUpgrade":
-                UpgradeCriDamageLevel();
-                break;
-            default:
-                break;
+            //case "HpUgrade":
+            //    UpgradeHpLevel();
+            //    break;
+            //case "DefUpgrade":
+            //    UpgradeDefLevel();
+            //    break;
+            //case "AtkSpeedUpgrade":
+            //    UpgradeAtkSpeedLevel();
+            //    break;
+            //case "CriRateUpgrade":
+            //    UpgradeCriRateLevel();
+            //    break;
+            //case "CriDamageUpgrade":
+            //    UpgradeCriDamageLevel();
+            //    break;
+            //default:
+            //    break;
         }
     }
 
@@ -143,37 +143,39 @@ public class StatUpgradeManager
     {
         AtkLevel++;
         OnStatChanged?.Invoke("AtkUpgrade", AtkLevel, AtkLevel * AtkBonus, AtkLevel * AtkCost);
-        Managers.Instance.Game.player.Atk += 1;
+        // 업그레이드 스탯 증가
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.Atk, 1);
+        Managers.Instance.Game.UpdatePlayerStats();
     }
-    public void UpgradeHpLevel()
-    {
-        HpLevel++;
-        OnStatChanged?.Invoke("HpUgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
-        Managers.Instance.Game.player.Hp += 1;
-        Managers.Instance.Game.player.MaxHp += 1;
-    }
-    public void UpgradeDefLevel()
-    {
-        DefLevel++;
-        OnStatChanged?.Invoke("DefUpgrade", DefLevel, DefLevel * DefBonus, DefLevel * DefCost);
-        Managers.Instance.Game.player.Def += 1;
-    }
-    public void UpgradeAtkSpeedLevel()
-    {
-        AtkSpeedLevel++;
-        OnStatChanged?.Invoke("AtkSpeedUpgrade", AtkSpeedLevel, (int)(AtkSpeedLevel * AtkSpeedBonus), AtkSpeedLevel * AtkSpeedCost);
-        Managers.Instance.Game.player.AttackSpeed += 0.1f;
-    }
-    public void UpgradeCriRateLevel()
-    {
-        CriRateLevel++;
-        OnStatChanged?.Invoke("CriRateUpgrade", CriRateLevel, (int)(CriRateLevel * CriRateBonus), CriRateLevel * CriRateCost);
-        Managers.Instance.Game.player.CriRate += 0.1f;
-    }
-    public void UpgradeCriDamageLevel()
-    {
-        criDamageLevel++;
-        OnStatChanged?.Invoke("CriDamageUpgrade", criDamageLevel, (int)(criDamageLevel * criDamageBonus), criDamageLevel * criDamageCost);
-        Managers.Instance.Game.player.CriDamage += 1;
-    }
+    //public void UpgradeHpLevel()
+    //{
+    //    HpLevel++;
+    //    OnStatChanged?.Invoke("HpUgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
+    //    Managers.Instance.Game.player.Hp += 1;
+    //    Managers.Instance.Game.player.MaxHp += 1;
+    //}
+    //public void UpgradeDefLevel()
+    //{
+    //    DefLevel++;
+    //    OnStatChanged?.Invoke("DefUpgrade", DefLevel, DefLevel * DefBonus, DefLevel * DefCost);
+    //    Managers.Instance.Game.player.Def += 1;
+    //}
+    //public void UpgradeAtkSpeedLevel()
+    //{
+    //    AtkSpeedLevel++;
+    //    OnStatChanged?.Invoke("AtkSpeedUpgrade", AtkSpeedLevel, (int)(AtkSpeedLevel * AtkSpeedBonus), AtkSpeedLevel * AtkSpeedCost);
+    //    Managers.Instance.Game.player.AttackSpeed += 0.1f;
+    //}
+    //public void UpgradeCriRateLevel()
+    //{
+    //    CriRateLevel++;
+    //    OnStatChanged?.Invoke("CriRateUpgrade", CriRateLevel, (int)(CriRateLevel * CriRateBonus), CriRateLevel * CriRateCost);
+    //    Managers.Instance.Game.player.CriRate += 0.1f;
+    //}
+    //public void UpgradeCriDamageLevel()
+    //{
+    //    criDamageLevel++;
+    //    OnStatChanged?.Invoke("CriDamageUpgrade", criDamageLevel, (int)(criDamageLevel * criDamageBonus), criDamageLevel * criDamageCost);
+    //    Managers.Instance.Game.player.CriDamage += 1;
+    //}
 }

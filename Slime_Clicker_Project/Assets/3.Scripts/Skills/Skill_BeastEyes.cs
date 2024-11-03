@@ -1,48 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static DataManager;
 
 public class Skill_BeastEyes : Skill
 {
+    //전체 스킬정보 관리
+    private SkillData _beastEyes;
+
+    //증가하는 스텟만 관리
+    private Stats _buffStat = new Stats();
+
+    private string BuffId { get { return $"BeastEyes_{CurrentLevel}"; } }
+
     protected override void Awake()
     {
         base.Awake();
-        skillType = Enums.SkillType.Buff;
-        SkillName = "맹수의 눈빛";
-        SkillInfo = $"{Duration}초 동안 치명타 확률(+{CriRateBonus})이 대폭 상승합니다.";
-        SkillLevel = 1;
-        MaxSkillLevel = 1000;
-        Cooldonwn = 20f;
-        Duration = 7f;
-        CriRateBonus = 10f;
 
-        CurrentSkillUpdate();
+        //SkillDic.TryGetValue(200000, out _zoomies);
+        SetInfo();
+        //CurrentSkillUpdate();
     }
 
-    //스킬 레벨업시 변경된 스탯 적용
-    private void SkillLevelUp()
+    void SetInfo()
     {
-        if (SkillLevel + 1 > MaxSkillLevel)
+        //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
+        if (SkillDic.TryGetValue(200003, out SkillData beastEyes))
         {
-            Debug.LogError("SkillUpdate - skillLevel의 maxLevel을 초과할 수 없습니다.");
-        }
-        else
-        {
-            SkillLevel++;
-            Cooldonwn = Mathf.Max(10f, Cooldonwn - 0.01f); // cooldown은 10초까지 줄어든다. 레벨 1당 쿨타임-0.01 
-            Duration = Mathf.Min(10f, Duration + 0.01f); // duration은 10초까지 늘어난다. 레벨 1당 쿨타임-0.01 
-            CriRateBonus = Mathf.Min(30f, CriRateBonus + 0.01f); // crirate는 30까지 늘어든다. 레벨 1당 +0.01 
+            _beastEyes = beastEyes;
+            SkillName = beastEyes.SkillName;
+            skillType = beastEyes.SkillType;
+            SkillInfo = beastEyes.SkillInfo;
+            CurrentLevel = beastEyes.BaseLevel;
+            MaxLevel = beastEyes.MaxLevel;
+            Cooldown = beastEyes.Cooldown;
+            Duration = beastEyes.Duration;
+            CriRateBonus = beastEyes.CriRateBonus;
+            BuffStatUpdate();
         }
     }
 
-    //current데이터 갱신, 스킬 발동전 동작하기
-    private void CurrentSkillUpdate()
+
+    private bool _isBuffActive = false;  // 버프 활성화 상태 추적
+    private Player _currentTarget = null; // 현재 버프가 적용된 대상
+    public void SkillLevelUp()
     {
-        CurrentSkillLevel = SkillLevel;
-        CurrentCoolDonwn = Cooldonwn;
-        CurrentDuration = Duration;
-        CurrentCriRateBonus = CriRateBonus;
+        if (CurrentLevel + 1 > MaxLevel)
+        {
+            Debug.LogError("SkillUpdate - skillLevel이 maxLevel을 초과할 수 없습니다.");
+            return;
+        }
+
+        // 현재 적용 중인 버프가 있다면 제거
+        if (_isBuffActive && _currentTarget != null)
+        {
+            _currentTarget.RemoveBuff(BuffId);
+        }
+
+        CurrentLevel++;
+        Cooldown = Mathf.Max(_beastEyes.MaxCooldown, Cooldown - 0.01f);
+        Duration = Mathf.Min(_beastEyes.MaxDuration, Duration + 0.01f);
+        CriRateBonus = Mathf.Max(50, CriRateBonus + 0.01f);
+        BuffStatUpdate();
+
+        // 버프가 활성화 상태였다면 새로운 스탯으로 다시 적용
+        if (_isBuffActive && _currentTarget != null)
+        {
+            _currentTarget.ApplyBuff(BuffId, _buffStat, Duration);
+        }
     }
+    private void BuffStatUpdate()
+    {
+        _buffStat.CriticalRate = CriRateBonus;
+    }
+
 
     private Coroutine startSkill;
     public override IEnumerator StartSkill()
@@ -54,79 +85,54 @@ public class Skill_BeastEyes : Skill
             Debug.LogError($"{SkillName} 중첩 및 재사용 시도...");
             yield break;
         }
-
-        CurrentSkillUpdate();
         startSkill = StartCoroutine(StartBuffSkill());
         yield return null;
     }
 
     protected override IEnumerator StartBuffSkill()
     {
-        _isOnCooldown = true;
-        _cooldownEndTime = Time.time + Cooldonwn;
-        BuffActivate();
-        print("버프켜짐");
-        float buffEndTime = Time.time + Duration;
-        while (Time.time < buffEndTime)
+        Player player = Managers.Instance.Game.player;
+        _currentTarget = player;
+        if (player != null)
         {
-            UpdateCooldown();  // 쿨타임 UI 업데이트
-            yield return null;
+            _isOnCooldown = true;
+            _cooldownEndTime = Time.time + Cooldown;
+            _isBuffActive = true;
+            // 버프 적용 및 시작 이벤트 발생
+            player.ApplyBuff(BuffId, _buffStat, Duration);
+            InvokeBuffStart();
+            // 버프 지속 시간 동안 대기
+            float buffEndTime = Time.time + Duration;
+            while (Time.time < buffEndTime)
+            {
+                UpdateCooldown();
+                yield return null;
+            }
+            print("버프시작");
+
+            // 버프 제거 및 종료 이벤트 발생
+            _isBuffActive = false;
+            player.RemoveBuff(BuffId);
+            _currentTarget = null;
+            InvokeBuffEnd();
+            print("버프종료");
+
+            // 쿨다운 시간 동안 대기
+            while (Time.time < _cooldownEndTime)
+            {
+                UpdateCooldown();
+                yield return null;
+            }
+
+            _isOnCooldown = false;
+            UpdateCooldown();
+
+            StopCoroutine(startSkill);
+            startSkill = null;
+            print("스킬종료");
         }
 
-        BuffDeActivate();
-        print("버프끝남");
-
-        while (Time.time < _cooldownEndTime)
-        {
-            UpdateCooldown();  // 쿨타임 UI 업데이트
-            yield return null;
-        }
-
-        _isOnCooldown = false;
-        UpdateCooldown();  // 쿨타임 완료 시 마지막 업데이트
-
-        //버프스킬 활성화 중에 중첩 및 재사용 방지
-        StopCoroutine(startSkill);
-        startSkill = null;
-        print("버프제거");
         yield return null;
     }
 
-    private void BuffActivate()
-    {
-        if (Managers.Instance.Game.player != null)
-        {
-            var _player = Managers.Instance.Game.player;
-            _player.Hp += HpBonus;
-            _player.Atk += AtkBonus;
-            _player.Def += DefBonus;
-            _player.AttackSpeed += AtkSpeedBonus;
-            _player.CriRate += CriRateBonus;
-            _player.CriDamage += CriDamageBonus;
-            _player.MoveSpeed += MoveSpeedBonus;
-        }
-        else
-        {
-            Debug.LogError("SkillActivate - Cant find GameManager Player");
-        }
-    }
-
-    private void BuffDeActivate()
-    {
-        if (Managers.Instance.Game.player != null)
-        {
-            var _player = Managers.Instance.Game.player;
-            _player.Hp -= HpBonus;
-            _player.Atk -= AtkBonus;
-            _player.Def -= DefBonus;
-            _player.AttackSpeed -= AtkSpeedBonus;
-            _player.CriRate -= CriRateBonus;
-            _player.CriDamage -= CriDamageBonus;
-            _player.MoveSpeed -= MoveSpeedBonus;
-        }
-        else
-        {
-            Debug.LogError("SkillActivate - Cant find GameManager Player");
-        }
-    }
 }

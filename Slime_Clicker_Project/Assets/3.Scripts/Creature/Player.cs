@@ -3,28 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static BuffManagement;
+using static DataManager;
 using static Enums;
-using static UnityEngine.GraphicsBuffer;
 
-/*
-스탯 합산 로직
-Total = 기본 스탯 + 스탯창 스탯 + 장비 스탯
-
-스킬 스탯 -> 스킬에서 자동으로 감산되기 때문에 상관없음
-
-스탯창 스탯 => 스텟 업그레이드시 초기화 필요
-=> ex) hp 스탯을 1레벨 올렸을때 모든 스탯을 다시 초기화 해서 정립할지. 아니면 hp만 정립할지
-만약 장비의 스탯중 % 데이터가 들어갔을 경우 (기본스탯 + 스탯창 스탯) * 장비 스탯을 다시 계산해야함
-
-장비 스탯 => 장비 강화 + 장비 교체시 초기화 필요
-
-결론
-(스탯 업그레이드, 장비 교체, 업그레이드) => 각 작업별로 플레이어 스탯 업데이트가 필요하다.
-스탯초기화를 관장하는 메서드를 하나 두고 관리한다 
-
-*/
-
-
+[SerializeField]
 public class Player : Creature
 {
     [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
@@ -34,6 +17,64 @@ public class Player : Creature
     private Coroutine shootingCoroutine;
     public List<Skill> SkillList = new List<Skill>();
     private Dictionary<Skill, Coroutine> autoSkillCoroutines = new Dictionary<Skill, Coroutine>();
+    private Dictionary<string, BuffInfo> _activeBuffs = new Dictionary<string, BuffInfo>();
+    public event Action OnStatsChanged;
+    public IEnumerable<BuffInfo> GetActiveBuffs()
+    {
+        return _activeBuffs.Values;
+    }
+
+    public override void ApplyStatModifier(Stats modifier, bool isOn)
+    {
+        if (modifier == null) return;
+
+        // 버프 적용/제거 시 UpdatePlayerStats를 호출하지 않음
+        if (isOn)
+        {
+            _currentStats.AddStats(modifier);
+        }
+        else
+        {
+            _currentStats.SubStats(modifier);
+        }
+    }
+
+    public void ApplyBuff(string buffId, Stats buffStats, float duration)
+    {
+        // 기존 버프가 있다면 제거
+        if (_activeBuffs.ContainsKey(buffId))
+        {
+            RemoveBuff(buffId);
+        }
+
+        // 새 버프 추가
+        _activeBuffs[buffId] = new BuffInfo
+        {
+            BuffId = buffId,
+            BuffStats = buffStats,
+            EndTime = Time.time + duration
+        };
+
+        // 스탯에 버프 적용
+        ApplyStatModifier(buffStats, true);
+
+        // 전체 스탯 업데이트
+        Managers.Instance.Game.UpdatePlayerStats();
+    }
+
+    public void RemoveBuff(string buffId)
+    {
+        if (_activeBuffs.TryGetValue(buffId, out BuffInfo buff))
+        {
+            ApplyStatModifier(buff.BuffStats, false);
+            _activeBuffs.Remove(buffId);
+
+            // 전체 스탯 업데이트
+            Managers.Instance.Game.UpdatePlayerStats();
+        }
+    }
+
+
     public bool IsAuto
     {
         get => _isAuto;
@@ -58,54 +99,72 @@ public class Player : Creature
     {
         base.Awake();
         Managers.Instance.Game.player = this;
-        MaxHp = 1000;
-        Hp = 1000;
-        Atk = 10;
-        Def = 3;
-        CriRate = 20f;
-        CriDamage = 100f;
-        MoveSpeed = 5f;
-        AttackSpeed = 1f;
-        _nextFireTime = 0f;
+        _baseStats.MaxHp = 100;
+        _baseStats.Hp = 100;
+        _baseStats.Attack = 100;
+        _baseStats.Defense = 1;
+        _baseStats.CriticalRate = 0f;
+        _baseStats.CriticalDamage = 0f;
+        _baseStats.MoveSpeed = 3f;
+        _baseStats.AttackSpeed = 1f;
 
         AddSkill(typeof(Skill_Zoomies));
         AddSkill(typeof(Skill_BakeBread));
         AddSkill(typeof(Skill_EatChur));
         AddSkill(typeof(Skill_BeastEyes));
         AddSkill(typeof(Skill_FatalStrike));
-        AddSkill(typeof(Skill_CatCatPunch));
+        //AddSkill(typeof(Skill_CatCatPunch));
+        _currentStats.CopyStats(_baseStats);
     }
-
-    private void Start()
-    {
-        //GameObject skillObj = new GameObject($"Skill_Zoomies");
-        //skillObj.transform.parent = transform;
-        //Skill addskill = skillObj.AddComponent<Skill_Zoomies>();
-
-        //if (!SkillList.Contains(addskill))
-        //{
-        //    SkillList.Add(addskill);
-        //}
-
-        //SkillList.AddRange(GetComponents<Skill>());
-        //foreach (var skill in SkillList)
-        //{
-        //    // 각 스킬의 게임오브젝트를 활성화
-        //    skill.gameObject.SetActive(true);
-        //    SkillList.Add(skill);
-        //}
-        //foreach (Skill skill in SkillList)
-        //{
-        //    StartCoroutine(skill.StartSkill());
-        //}
-    }
-
 
     private void AddSkill(Type skillType)
     {
         GameObject skillObj = new GameObject($"{skillType.Name}");
         skillObj.transform.parent = transform;
         Skill skill = (Skill)skillObj.AddComponent(skillType);
+
+        // 스킬 데이터 초기화
+        if (skill is Skill_Zoomies zoomiesSkill)
+        {
+            SkillData skillData;
+            if (Managers.Instance.Data.SkillDic.TryGetValue(200000, out skillData))
+            {
+                zoomiesSkill.InitializeWithData(skillData);
+            }
+        }
+        if (skill is Skill_BakeBread bakeBread)
+        {
+            SkillData skillData2;
+            if (Managers.Instance.Data.SkillDic.TryGetValue(200001, out skillData2))
+            {
+                bakeBread.InitializeWithData(skillData2);
+            }
+        }
+        if (skill is Skill_EatChur eatChur)
+        {
+            SkillData skillData5;
+            if (Managers.Instance.Data.SkillDic.TryGetValue(200002, out skillData5))
+            {
+                eatChur.InitializeWithData(skillData5);
+            }
+        }
+        if (skill is Skill_BeastEyes beastEyes)
+        {
+            SkillData skillData3;
+            if (Managers.Instance.Data.SkillDic.TryGetValue(200003, out skillData3))
+            {
+                beastEyes.InitializeWithData(skillData3);
+            }
+        }
+        if (skill is Skill_FatalStrike fatalStrike)
+        {
+            SkillData skillData4;
+            if (Managers.Instance.Data.SkillDic.TryGetValue(200004, out skillData4))
+            {
+                fatalStrike.InitializeWithData(skillData4);
+            }
+        }
+
         if (!SkillList.Contains(skill))
         {
             SkillList.Add(skill);
@@ -163,11 +222,13 @@ public class Player : Creature
 
     private IEnumerator AutoSkillActivate(Skill skill)
     {
-        while(true)
+        while (true)
         {
-            yield return StartCoroutine(skill.StartSkill());
-            yield return new WaitForSeconds(skill.Cooldonwn);
-
+            if (Time.time >= skill._cooldownEndTime)
+            {
+                yield return StartCoroutine(skill.StartSkill());
+            }
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

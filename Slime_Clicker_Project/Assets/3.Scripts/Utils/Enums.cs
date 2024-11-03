@@ -43,6 +43,20 @@ public class Enums
         Armor,
     }
 
+
+    public enum StatType
+    {
+        Hp,
+        MaxHp,
+        Atk,
+        Def,
+        AtkSpeed,
+        CriRate,
+        CriDamage,
+        MoveSpeed,
+    }
+
+
     #region 임시 처리
     public static Color HexToColor(string color)
     {
@@ -52,7 +66,7 @@ public class Enums
         return parsedColor;
     }
 
-    public static readonly Color Noraml =   HexToColor("FFFFFF");
+    public static readonly Color Normal =   HexToColor("FFFFFF");
     public static readonly Color Advanced = HexToColor("6e6eff");
     public static readonly Color Rare =     HexToColor("ae00ff");
     public static readonly Color Legend =   HexToColor("ffff00");

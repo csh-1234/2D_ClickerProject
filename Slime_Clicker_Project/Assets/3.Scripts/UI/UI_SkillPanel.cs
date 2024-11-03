@@ -8,12 +8,13 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
+using static Enums;
 public class UI_SkillPanel : RootUI
 {
     [SerializeField] private List<UI_SkillButton> skillButtons;  // Inspector에서 할당
     public GameObject template;
     public Image rotationIcon;
+    public Image IconBoard;
 
     protected override void Awake()
     {
@@ -84,6 +85,11 @@ public class UI_SkillPanel : RootUI
         if (player.IsAuto)
         {
             StartLoadingRotation();
+            StartRainbowEffect();
+        }
+        else
+        {
+            StopRainbowEffect();
         }
     }
 
@@ -112,13 +118,49 @@ public class UI_SkillPanel : RootUI
     //}
     #endregion
     private Tweener rotationTween;  // Sequence 대신 Tweener 사용
+    private Tweener rainbowTween;  // Sequence 대신 Tweener 사용
     void StartLoadingRotation()
     {
         // 새로운 회전 트윈 생성
         rotationTween = rotationIcon.transform
-            .DORotate(new Vector3(0, 0, -360), 2f, RotateMode.FastBeyond360)
+            .DORotate(new Vector3(0, 0, 360), 2f, RotateMode.FastBeyond360)
             .SetRelative(true)
             .SetEase(Ease.Linear)
             .SetLoops(-1);
+    }
+
+    private Coroutine rainbowEffect;
+
+    public void StartRainbowEffect()
+    {
+        if (rainbowEffect != null)
+            StopCoroutine(rainbowEffect);
+
+        rainbowEffect = StartCoroutine(SmoothRainbowColorChange());
+    }
+
+    public void StopRainbowEffect()
+    {
+        if (rainbowEffect != null)
+        {
+            StopCoroutine(rainbowEffect);
+            rainbowEffect = null;
+            IconBoard.color = HexToColor("FFEA7C");  // 원래 색상으로 복귀
+        }
+    }
+
+    private IEnumerator SmoothRainbowColorChange()
+    {
+        print("레인보우 발동");
+        float hue = 0f;
+        Color currentColor = IconBoard.color;
+
+        while (true)
+        {
+            Color targetColor = Color.HSVToRGB(hue, 0.7f, 1f); // 채도와 명도 값 조정
+            IconBoard.color = targetColor;
+            hue = (hue + Time.deltaTime * 0.5f) % 1f; // 속도 조정
+            yield return null;
+        }
     }
 }

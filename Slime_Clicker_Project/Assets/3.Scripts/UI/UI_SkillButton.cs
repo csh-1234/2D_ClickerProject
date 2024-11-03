@@ -3,22 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static Enums;
 
 public class UI_SkillButton : RootUI, IPointerClickHandler
 {
     public Image cooldownFill;
+    public Image IconBoard;
     public Skill skill;
 
     protected override void Awake()
     {
         base.Awake();
-        if (cooldownFill == null)
-        {
-            cooldownFill = GetComponent<Image>();
-        }
     }
 
     private void Start()
@@ -26,7 +25,10 @@ public class UI_SkillButton : RootUI, IPointerClickHandler
         if (skill != null)
         {
             skill.OnCooldownUpdate += UpdateCooldownUI;
+            skill.OnBuffStart += StartRainbowEffect;
+            skill.OnBuffEnd += StopRainbowEffect;
         }
+        
         //BindEventToObjects();
     }
 
@@ -35,6 +37,8 @@ public class UI_SkillButton : RootUI, IPointerClickHandler
         if (skill != null)
         {
             skill.OnCooldownUpdate -= UpdateCooldownUI;
+            skill.OnBuffStart -= StartRainbowEffect;
+            skill.OnBuffEnd -= StopRainbowEffect;
         }
     }
 
@@ -82,7 +86,45 @@ public class UI_SkillButton : RootUI, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         StartCoroutine(skill.StartSkill());
+        
     }
+
+ 
+    private Coroutine rainbowEffect;
+
+    public void StartRainbowEffect()
+    {
+        if (rainbowEffect != null)
+            StopCoroutine(rainbowEffect);
+            
+        rainbowEffect = StartCoroutine(SmoothRainbowColorChange());
+    }
+
+    public void StopRainbowEffect()
+    {
+        if (rainbowEffect != null)
+        {
+            StopCoroutine(rainbowEffect);
+            rainbowEffect = null;
+            IconBoard.color = HexToColor("FFEA7C");  // 원래 색상으로 복귀
+        }
+    }
+        
+    private IEnumerator SmoothRainbowColorChange()
+    {
+        print("레인보우 발동");
+        float hue = 0f;
+        Color currentColor = IconBoard.color;
+
+        while (true)
+        {
+            Color targetColor = Color.HSVToRGB(hue, 0.7f, 1f); // 채도와 명도 값 조정
+            IconBoard.color = targetColor;
+            hue = (hue + Time.deltaTime * 0.5f) % 1f; // 속도 조정
+            yield return null;
+        }
+    }
+    #endregion
 
     //private void BindEventToObjects()
     //{
@@ -118,5 +160,5 @@ public class UI_SkillButton : RootUI, IPointerClickHandler
     //    //}
     //    _boundHandlers.Clear();
     //}
-    #endregion
+
 }

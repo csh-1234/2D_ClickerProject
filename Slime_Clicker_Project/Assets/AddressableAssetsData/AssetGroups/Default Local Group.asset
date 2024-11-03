@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: 5df685e7473c73f4e939575f6b79f52f
   m_SerializeEntries:
   - m_GUID: 0c18e1dec30f930498de887ce79253bf
-    m_Address: DamageText
+    m_Address: CriticalDamageText
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
@@ -29,8 +29,8 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 530039eca54429640848c1cce6b34c44
-    m_Address: CriticalDamageText
+  - m_GUID: a99472fa1ed27a6459442a592a04d049
+    m_Address: DamageText
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

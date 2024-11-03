@@ -10,18 +10,22 @@ public class Monster : Creature
     protected override void Awake()
     {
         base.Awake();
-        MaxHp = 100;
-        Hp = 100;
-        Atk = 3;
-        Def = 1;
-        CriRate = 0f;
-        CriDamage = 0f;
-        MoveSpeed = 3f;
+        // 기본 스탯 설정
+        _baseStats.MaxHp = 100;
+        _baseStats.Hp = 100;
+        _baseStats.Attack = 3;
+        _baseStats.Defense = 1;
+        _baseStats.CriticalRate = 0f;
+        _baseStats.CriticalDamage = 0f;
+        _baseStats.MoveSpeed = 3f;
+        _baseStats.AttackSpeed = 1f;
     }
 
     private void Start()
     {
         Target = Managers.Instance.Game.player;
+        // 현재 스탯에 기본 스탯 복사
+        _currentStats.CopyStats(_baseStats);
     }
 
     private void Update()
@@ -37,8 +41,9 @@ public class Monster : Creature
     void MoveMonster()
     {
         if (Target == null) return;
-        Vector2 movment = (Target.transform.position - transform.position).normalized * Time.deltaTime * MoveSpeed;
-        RigidBody.MovePosition(RigidBody.position + movment);
+        Vector3 movment = (Target.transform.position - transform.position).normalized * Time.deltaTime * MoveSpeed;
+        transform.Translate(movment, Space.World);
+        //RigidBody.MovePosition(RigidBody.position + movment);
     }
 
     public event Action OnDeadEvent;
