@@ -86,11 +86,26 @@ public class Stats
     {
         switch (type)
         {
+            case StatType.Hp:
+                Hp += (int)amount;
+                break;
+            case StatType.MaxHp:
+                MaxHp += (int)amount;
+                break;
             case StatType.Atk:
                 Attack += (int)amount;  
                 break;
             case StatType.Def:
                 Defense += (int)amount; 
+                break;
+            case StatType.CriRate:
+                criticalRate += amount;
+                break;
+            case StatType.CriDamage:
+                CriticalDamage += amount;
+                break;
+            case StatType.MoveSpeed:
+                MoveSpeed += amount;
                 break;
             case StatType.AtkSpeed:
                 attackSpeed += amount;  

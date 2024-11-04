@@ -37,6 +37,7 @@ public class Managers : MonoBehaviour
     CurrencyManager currency = new CurrencyManager();
     StatUpgradeManager statUpgrade = new StatUpgradeManager();
     DataManager data = new DataManager();
+    StageManager stage = new StageManager();
 
     public UI_Manager UI { get { return Instance != null ? Instance.ui : null; } }
     public ResourceManager Resource { get { return Instance != null ? Instance.resource : null; } }
@@ -46,6 +47,7 @@ public class Managers : MonoBehaviour
     public CurrencyManager Currency { get { return Instance != null ? instance.currency : null; } }
     public StatUpgradeManager StatUpgrade { get { return Instance != null ? instance.statUpgrade : null; } }
     public DataManager Data { get { return Instance != null ? instance.data : null; } }
+    public StageManager Stage { get { return Instance != null ? instance.stage : null; } }
 
 
     private void Awake()
@@ -60,10 +62,7 @@ public class Managers : MonoBehaviour
         // 하위 매니저 초기화
         IsInit = true;
     }
-    private void Start()
-    {
-        //statUpgrade.Initialize();
-    }
+
 
     private void OnDestroy()
     {

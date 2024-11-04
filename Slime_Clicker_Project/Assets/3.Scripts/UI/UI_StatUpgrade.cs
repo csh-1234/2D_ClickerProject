@@ -26,12 +26,12 @@ public class UI_StatUpgrade : RootUI
         Managers.Instance.StatUpgrade.OnStatChanged += OnStatChanged;
         var initialStats = Managers.Instance.StatUpgrade.GetStatInfo(statType);
 
-        UpdateStat(initialStats.level, initialStats.bonus, initialStats.cost);
+        UpdateStat(initialStats.level, (int)initialStats.bonus, initialStats.cost);
         BindEventToObjects();
     }
 
 
-    private void OnStatChanged(string type, int level, int bonus, int cost)
+    private void OnStatChanged(string type, int level, float bonus, int cost)
     {
         // 자신의 스탯 타입에 대한 변경사항만 처리
         if (type == statType)
@@ -41,14 +41,14 @@ public class UI_StatUpgrade : RootUI
             {
                 UpdateStat(level, bonus, cost);
                 Managers.Instance.Currency.RemoveGold(cost-1);
-            }
+            }   
             else
             {
                 Debug.Log("스텟 레벨업 자액부족");
             }
         }
     }
-    private void UpdateStat(int level, int bonus, int cost)
+    private void UpdateStat(int level, float bonus, int cost)
     {
         StatLevel.text = $"LV.{level}";
         StatBonus.text = $"{bonus}";

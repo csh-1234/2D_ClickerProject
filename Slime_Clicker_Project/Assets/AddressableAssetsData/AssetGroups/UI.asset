@@ -10,15 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: UI
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: UI
   m_Data:
     m_SerializedData: []
-  m_GUID: 5df685e7473c73f4e939575f6b79f52f
+  m_GUID: 1f00a92096145114c8121bc16b0f5d95
   m_SerializeEntries:
-  - m_GUID: b6af75cb1cc43df4b9007608e6ac0379
-    m_Address: Gold
+  - m_GUID: bf26d9e1b4d453c499167ca75c7ac4ee
+    m_Address: UIParticle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0b3ff38969f77f45a1043c6b541c1eb
+    m_Address: UI_PausePopup
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
@@ -27,5 +33,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 9569e50c1e0abd043b65ee6e475d01e1, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: eacefb93e09552c4a90daac4924bf521, type: 2}
-    - {fileID: 11400000, guid: 8b4238c55203cfb4fb91df24dcd4ebad, type: 2}
+    - {fileID: 11400000, guid: 11e4e3214f389044481cebd48cfcd12d, type: 2}
+    - {fileID: 11400000, guid: d18071a3cbba71140b6f71cddb253074, type: 2}

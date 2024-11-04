@@ -57,7 +57,7 @@ public class Enums
     }
 
 
-    #region 烙矫 贸府
+    #region 祸 包府
     public static Color HexToColor(string color)
     {
         Color parsedColor;
@@ -71,6 +71,17 @@ public class Enums
     public static readonly Color Rare =     HexToColor("ae00ff");
     public static readonly Color Legend =   HexToColor("ffff00");
     public static readonly Color Myth =     HexToColor("ff4d4d");
+
+    #endregion
+
+    #region Data
+    public enum EDataId
+    {
+        Player = 100000,
+        Slime_Yellow = 100001,
+        Slime_Green = 100002,
+        Slime_Purple = 100003,
+    }
 
     #endregion
 }

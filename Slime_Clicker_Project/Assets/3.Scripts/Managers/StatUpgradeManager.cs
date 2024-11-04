@@ -44,9 +44,9 @@ public class StatUpgradeManager
     private int HpBonus = 1;             //레벨당 1
     private int AtkBonus = 1;            //레벨당 1
     private int DefBonus = 1;            //레벨당 1
-    private float CriRateBonus = 1f;   //레벨당 0.1
+    private float CriRateBonus = 0.01f;   //레벨당 0.1
     private float criDamageBonus = 1;    //레벨당 1
-    private float AtkSpeedBonus = 1f;    //레벨당 0.1
+    private float AtkSpeedBonus = 0.01f;    //레벨당 0.1
 
     //레벨당 코스트
     private int HpCost = 1;             //레벨당 1
@@ -88,10 +88,10 @@ public class StatUpgradeManager
     //    }
     //}
 
-    public event Action<string, int, int, int> OnStatChanged;
+    public event Action<string, int, float, int> OnStatChanged;
 
 
-    public (int level, int bonus, int cost) GetStatInfo(string statType)
+    public (int level, float bonus, int cost) GetStatInfo(string statType)
     {
         switch (statType)
         {
@@ -102,11 +102,11 @@ public class StatUpgradeManager
             case "DefUpgrade":
                 return (DefLevel, DefLevel * DefBonus, DefLevel * DefCost);
             case "AtkSpeedUpgrade":
-                return (AtkSpeedLevel, (int)(AtkSpeedLevel * AtkSpeedBonus), AtkSpeedLevel * AtkSpeedCost);
+                return (AtkSpeedLevel, AtkSpeedLevel * AtkSpeedBonus, AtkSpeedLevel * AtkSpeedCost);
             case "CriRateUpgrade":
-                return (CriRateLevel, (int)(CriRateLevel * CriRateBonus), CriRateLevel * CriRateCost);
+                return (CriRateLevel, CriRateLevel * CriRateBonus, CriRateLevel * CriRateCost);
             case "CriDamageUpgrade":
-                return (criDamageLevel, (int)(criDamageLevel * criDamageBonus), criDamageLevel * criDamageCost);
+                return (criDamageLevel, criDamageLevel * criDamageBonus, criDamageLevel * criDamageCost);
             default:
                 return (0, 0, 0);
         }
@@ -119,23 +119,21 @@ public class StatUpgradeManager
             case "AtkUpgrade":
                 UpgradeAtkLevel();
                 break;
-            //case "HpUgrade":
-            //    UpgradeHpLevel();
-            //    break;
-            //case "DefUpgrade":
-            //    UpgradeDefLevel();
-            //    break;
-            //case "AtkSpeedUpgrade":
-            //    UpgradeAtkSpeedLevel();
-            //    break;
-            //case "CriRateUpgrade":
-            //    UpgradeCriRateLevel();
-            //    break;
-            //case "CriDamageUpgrade":
-            //    UpgradeCriDamageLevel();
-            //    break;
-            //default:
-            //    break;
+            case "HpUgrade":
+                UpgradeHpLevel();
+                break;
+            case "DefUpgrade":
+                UpgradeDefLevel();
+                break;
+            case "AtkSpeedUpgrade":
+                UpgradeAtkSpeedLevel();
+                break;
+            case "CriRateUpgrade":
+                UpgradeCriRateLevel();
+                break;
+            case "CriDamageUpgrade":
+                UpgradeCriDamageLevel();
+                break;
         }
     }
 
@@ -147,35 +145,40 @@ public class StatUpgradeManager
         Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.Atk, 1);
         Managers.Instance.Game.UpdatePlayerStats();
     }
-    //public void UpgradeHpLevel()
-    //{
-    //    HpLevel++;
-    //    OnStatChanged?.Invoke("HpUgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
-    //    Managers.Instance.Game.player.Hp += 1;
-    //    Managers.Instance.Game.player.MaxHp += 1;
-    //}
-    //public void UpgradeDefLevel()
-    //{
-    //    DefLevel++;
-    //    OnStatChanged?.Invoke("DefUpgrade", DefLevel, DefLevel * DefBonus, DefLevel * DefCost);
-    //    Managers.Instance.Game.player.Def += 1;
-    //}
-    //public void UpgradeAtkSpeedLevel()
-    //{
-    //    AtkSpeedLevel++;
-    //    OnStatChanged?.Invoke("AtkSpeedUpgrade", AtkSpeedLevel, (int)(AtkSpeedLevel * AtkSpeedBonus), AtkSpeedLevel * AtkSpeedCost);
-    //    Managers.Instance.Game.player.AttackSpeed += 0.1f;
-    //}
-    //public void UpgradeCriRateLevel()
-    //{
-    //    CriRateLevel++;
-    //    OnStatChanged?.Invoke("CriRateUpgrade", CriRateLevel, (int)(CriRateLevel * CriRateBonus), CriRateLevel * CriRateCost);
-    //    Managers.Instance.Game.player.CriRate += 0.1f;
-    //}
-    //public void UpgradeCriDamageLevel()
-    //{
-    //    criDamageLevel++;
-    //    OnStatChanged?.Invoke("CriDamageUpgrade", criDamageLevel, (int)(criDamageLevel * criDamageBonus), criDamageLevel * criDamageCost);
-    //    Managers.Instance.Game.player.CriDamage += 1;
-    //}
+    public void UpgradeHpLevel()
+    {
+        HpLevel++;
+        OnStatChanged?.Invoke("HpUgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.Hp, 1);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.MaxHp, 1);
+        Managers.Instance.Game.UpdatePlayerStats();
+    }
+    public void UpgradeDefLevel()
+    {
+        DefLevel++;
+        OnStatChanged?.Invoke("DefUpgrade", DefLevel, DefLevel * DefBonus, DefLevel * DefCost);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.Def, 1);
+        Managers.Instance.Game.UpdatePlayerStats();
+    }
+    public void UpgradeAtkSpeedLevel()
+    {
+        AtkSpeedLevel++;
+        OnStatChanged?.Invoke("AtkSpeedUpgrade", AtkSpeedLevel, AtkSpeedLevel * AtkSpeedBonus, AtkSpeedLevel * AtkSpeedCost);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.AtkSpeed, 0.01f);
+        Managers.Instance.Game.UpdatePlayerStats();
+    }
+    public void UpgradeCriRateLevel()
+    {
+        CriRateLevel++;
+        OnStatChanged?.Invoke("CriRateUpgrade", CriRateLevel, CriRateLevel * CriRateBonus, CriRateLevel * CriRateCost);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, 0.01f);
+        Managers.Instance.Game.UpdatePlayerStats();
+    }
+    public void UpgradeCriDamageLevel()
+    {
+        criDamageLevel++;
+        OnStatChanged?.Invoke("CriDamageUpgrade", criDamageLevel, criDamageLevel * criDamageBonus, criDamageLevel * criDamageCost);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, 1);
+        Managers.Instance.Game.UpdatePlayerStats();
+    }
 }

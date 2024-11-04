@@ -103,8 +103,6 @@ public class GameManager
         }
     }
 
-
-
     #endregion
 
     #region Equipment
@@ -181,6 +179,10 @@ public class GameManager
     }
     #endregion
 
+    #region Stage
+
+
+    #endregion
 
     #region Save/Load
     public void SaveGame()

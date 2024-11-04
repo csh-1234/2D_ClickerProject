@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Coffee.UIExtensions.UIParticleAttractor;
-
+using static Enums;
 public class Monster : Creature
 {
     private Player Target;
@@ -27,6 +27,12 @@ public class Monster : Creature
         Target = Managers.Instance.Game.player;
         // 현재 스탯에 기본 스탯 복사
         _currentStats.CopyStats(_baseStats);
+    }
+
+    public override void SetInfo(int dataId)
+    {
+        base.SetInfo(dataId);
+        ObjectType = ObjectType.Monster;
     }
 
     private void Update()
@@ -55,6 +61,7 @@ public class Monster : Creature
         base.OnDead();
         //OnDeadEvent?.Invoke();
         Managers.Instance.Game.MonsterList.Remove(this);
+        DropGold gold = Managers.Instance.Object.Spawn<DropGold>(this.transform.position, 0, "Gold");
         Destroy(gameObject);
         
     }

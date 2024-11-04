@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.LowLevel;
 using static BuffManagement;
+using static Coffee.UIExtensions.UIParticleAttractor;
 using static DataManager;
 using static Enums;
 
 [SerializeField]
 public class Player : Creature
 {
-    private Animator anim;
+    public Animator anim;
     [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
     private Vector2 _input;
     public Projectile projectile;
@@ -21,6 +22,12 @@ public class Player : Creature
     private Dictionary<Skill, Coroutine> autoSkillCoroutines = new Dictionary<Skill, Coroutine>();
     private Dictionary<string, BuffInfo> _activeBuffs = new Dictionary<string, BuffInfo>();
     public event Action OnStatsChanged;
+    [SerializeField] private Transform shootPos;
+
+    private Vector2 MiddlePos = new Vector2(0f, 1.9f);
+    private Vector2 ZeroPos = new Vector2(-1.9f, 1.9f);
+
+
     public IEnumerable<BuffInfo> GetActiveBuffs()
     {
         return _activeBuffs.Values;
@@ -101,23 +108,28 @@ public class Player : Creature
     {
         base.Awake();
         Managers.Instance.Game.player = this;
-        _baseStats.MaxHp = 100;
-        _baseStats.Hp = 100;
-        _baseStats.Attack = 100;
-        _baseStats.Defense = 1;
-        _baseStats.CriticalRate = 0f;
-        _baseStats.CriticalDamage = 0f;
-        _baseStats.MoveSpeed = 3f;
-        _baseStats.AttackSpeed = 1f;
+        Addskills();
+        _currentStats.CopyStats(_baseStats);
 
+        SetInfo(100000);
+        anim = GetComponent<Animator>();
+    }
+
+    public override void SetInfo(int dataId)
+    {
+        base.SetInfo(dataId);
+        ObjectType = ObjectType.Player;
+        _currentStats.CopyStats(_baseStats);
+    }
+
+    private void Addskills()
+    {
         AddSkill(typeof(Skill_Zoomies));
         AddSkill(typeof(Skill_BakeBread));
         AddSkill(typeof(Skill_EatChur));
         AddSkill(typeof(Skill_BeastEyes));
         AddSkill(typeof(Skill_FatalStrike));
         //AddSkill(typeof(Skill_CatCatPunch));
-        _currentStats.CopyStats(_baseStats);
-        anim = GetComponent<Animator>();
     }
 
     private void AddSkill(Type skillType)
@@ -174,6 +186,12 @@ public class Player : Creature
         }
     }
 
+
+    public void moveMiddlePos()
+    {
+        
+    }
+    
     private void Update()
     {
         UpdateAni();
@@ -245,7 +263,7 @@ public class Player : Creature
 
     void MovePlayer()
     {
-        Vector2 movement = _input.normalized * Time.fixedDeltaTime * MoveSpeed;
+        Vector2 movement = _input.normalized * Time.deltaTime * MoveSpeed;
         RigidBody.MovePosition(RigidBody.position + movement);
     }
 
@@ -268,12 +286,12 @@ public class Player : Creature
 
     IEnumerator ShootProjectile()
     {
-        while (true)
+        while (true)    
         {
             yield return new WaitForSeconds(_fireRate);  // 1초 대기
             if (Managers.Instance.Game.MonsterList.Count > 0 && target != null)
             {
-                Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity);
+                Projectile proj = Instantiate(projectile, shootPos.transform.position, Quaternion.identity);
                 proj.SetInfo(this, fireDir);
             }
         }

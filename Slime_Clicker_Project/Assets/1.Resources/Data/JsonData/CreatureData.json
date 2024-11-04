@@ -10,7 +10,7 @@
       "Def": 2,
       "CriRate": 10.0,
       "CriDamage": 100.0,
-      "MoveSpeed": 0.0,
+      "MoveSpeed": 3.0,
       "AtkSpeed": 1.0,
       "SpriteName": "PlayerCat.sprite"
     },

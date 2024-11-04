@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static DataManager;
 using Random = UnityEngine.Random;
 
 public class Creature : BaseObject
@@ -13,32 +14,24 @@ public class Creature : BaseObject
     public Animator Anim { get; set; }
     public Vector2 CenterPosition { get { return transform.position; } }
 
-    Enums.CreatureState _creatureState = Enums.CreatureState.Moving;
 
     [SerializeField] public Stats _baseStats = new Stats();    // 기본 스탯
     [SerializeField] public Stats _currentStats = new Stats(); // 최종 함산 스탯
 
-    public event Action<int> OnHpChanged;   //체력변화 감지 이벤트
+    public CreatureData CreatureData { get; set; }
 
-    public virtual Enums.CreatureState CreatureState
-    {
-        get { return _creatureState; }
-        set
-        {
-            _creatureState = value;
-            UpdateAnimation();
-        }
-    }
+    public event Action<int> OnHpChanged;   //체력변화 감지 이벤트
 
     public int Hp
     {
-        get => _currentStats.Hp;
+        get { return _currentStats.Hp; }
         set
         {
             _currentStats.Hp = Mathf.Clamp(value, 0, _currentStats.MaxHp);
             OnHpChanged?.Invoke(_currentStats.Hp);
         }
     }
+    public int DataId { get; protected set; }
     public int MaxHp => _currentStats.MaxHp;
     public int Atk => _currentStats.Attack;
     public int Def => _currentStats.Defense;
@@ -46,6 +39,36 @@ public class Creature : BaseObject
     public float CriDamage => _currentStats.CriticalDamage;
     public float MoveSpeed => _currentStats.MoveSpeed;
     public float AttackSpeed => _currentStats.AttackSpeed;
+
+
+    public virtual void SetInfo(int dataId)
+    {
+        DataId = dataId;
+        if(ObjectType == Enums.ObjectType.Player)
+        {
+            CreatureData = Managers.Instance.Data.CreatureDic[dataId];
+        }
+        else if( ObjectType == Enums.ObjectType.Monster)
+        {
+            CreatureData = Managers.Instance.Data.CreatureDic[dataId];
+        }
+
+        gameObject.name = $"{CreatureData.DataId}_{CreatureData.DataId}";
+
+        _baseStats.MaxHp = CreatureData.MaxHp;
+        _baseStats.Hp = CreatureData.Hp;
+        _baseStats.Attack = CreatureData.Atk;
+        _baseStats.Defense = CreatureData.Def;
+        _baseStats.CriticalRate = CreatureData.CriRate;
+        _baseStats.CriticalDamage = CreatureData.CriDamage;
+        _baseStats.MoveSpeed = CreatureData.MoveSpeed;
+        _baseStats.AttackSpeed = CreatureData.AtkSpeed;
+        if(SpriteRender != null && CreatureData.SpriteName != null)
+        {
+            SpriteRender.sprite = Managers.Instance.Resource.Load<Sprite>(CreatureData.SpriteName);
+        }
+        Initialize();
+    }
 
 
     private BuffManagement _buffManagement = new BuffManagement();
@@ -103,11 +126,7 @@ public class Creature : BaseObject
         _currentStats.CopyStats(_baseStats);
         return true;
     }
-    public virtual void UpdateAnimation() { }
-    protected virtual void UpdateIdle() { }
-    protected virtual void UpdateSkill() { }
-    protected virtual void UpdateMoving() { }
-    protected virtual void UpdateDead() { }
+
     public virtual void Applybuff(Stats modifier, bool isOn = true)
     {
         if (isOn)
