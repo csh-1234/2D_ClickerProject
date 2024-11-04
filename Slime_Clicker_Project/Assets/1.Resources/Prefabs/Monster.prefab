@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3840617814119753551}
   - component: {fileID: 1639543721201578539}
-  - component: {fileID: 4572427415958752045}
   - component: {fileID: 7210913626514094854}
   - component: {fileID: 8183291516664702637}
+  - component: {fileID: 1832502746625178419}
   m_Layer: 8
   m_Name: Monster
   m_TagString: Monster
@@ -88,8 +88,67 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &4572427415958752045
-CircleCollider2D:
+--- !u!114 &7210913626514094854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3779177796407133316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec91663de98bdfa43ae76c3876fd00ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseStats:
+    hp: 0
+    maxHp: 0
+    attack: 0
+    defense: 0
+    criticalRate: 0
+    criticalDamage: 0
+    moveSpeed: 0
+    attackSpeed: 0
+  _currentStats:
+    hp: 0
+    maxHp: 0
+    attack: 0
+    defense: 0
+    criticalRate: 0
+    criticalDamage: 0
+    moveSpeed: 0
+    attackSpeed: 0
+  projectile: {fileID: 5078068720494107823, guid: aef01a62e7b9b5943a863de48d63e1f7, type: 3}
+  _fireRate: 1
+--- !u!50 &8183291516664702637
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3779177796407133316}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!61 &1832502746625178419
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -121,65 +180,18 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 2.56, y: 2.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 1.28
---- !u!114 &7210913626514094854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3779177796407133316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec91663de98bdfa43ae76c3876fd00ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseStats:
-    hp: 0
-    maxHp: 0
-    attack: 0
-    defense: 0
-    criticalRate: 0
-    criticalDamage: 0
-    moveSpeed: 0
-    attackSpeed: 0
-  _currentStats:
-    hp: 0
-    maxHp: 0
-    attack: 0
-    defense: 0
-    criticalRate: 0
-    criticalDamage: 0
-    moveSpeed: 0
-    attackSpeed: 0
---- !u!50 &8183291516664702637
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3779177796407133316}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Size: {x: 2.56, y: 2.56}
+  m_EdgeRadius: 0
 --- !u!1001 &8053683274444656984
 PrefabInstance:
   m_ObjectHideFlags: 0

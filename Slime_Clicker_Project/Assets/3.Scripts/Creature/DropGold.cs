@@ -17,7 +17,7 @@ public class DropGold : BaseObject
 
     private void Update()
     {
-        Vector2 dist = ((Vector2)transform.position - targetpos).normalized;
-        transform.Translate(dist * Time.deltaTime * 2f);
+        //Vector2 dist = ((Vector2)transform.position - targetpos).normalized;
+        //transform.Translate(dist * Time.deltaTime * 2f);
     }
 }

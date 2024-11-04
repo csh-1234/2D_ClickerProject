@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_PausePopup : UI_Popup
+public class UI_PausePopup : UI_Popup   
 {
     [SerializeField] private Button continueButton;
     [SerializeField] private Button exitButton;

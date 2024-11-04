@@ -17,8 +17,20 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5df685e7473c73f4e939575f6b79f52f
   m_SerializeEntries:
+  - m_GUID: aef01a62e7b9b5943a863de48d63e1f7
+    m_Address: MonsterProjectile
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b6af75cb1cc43df4b9007608e6ac0379
     m_Address: Gold
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c35f159b351e214438223dbdcc7b561d
+    m_Address: GoldPrefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

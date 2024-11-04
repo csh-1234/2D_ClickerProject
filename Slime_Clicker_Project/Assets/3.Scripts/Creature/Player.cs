@@ -24,9 +24,6 @@ public class Player : Creature
     public event Action OnStatsChanged;
     [SerializeField] private Transform shootPos;
 
-    private Vector2 MiddlePos = new Vector2(0f, 1.9f);
-    private Vector2 ZeroPos = new Vector2(-1.9f, 1.9f);
-
 
     public IEnumerable<BuffInfo> GetActiveBuffs()
     {
@@ -194,7 +191,6 @@ public class Player : Creature
     
     private void Update()
     {
-        UpdateAni();
         AutoSkill();
         PlayerInput();
         SetTarget();
@@ -278,10 +274,12 @@ public class Player : Creature
                 {
                     distance = (monster.transform.position - transform.position).magnitude;
                     target = monster;
+
                 }
             }
+            fireDir = (target.transform.position - transform.position).normalized;
         }
-        fireDir = (target.transform.position - transform.position).normalized;
+        
     }
 
     IEnumerator ShootProjectile()
@@ -323,11 +321,6 @@ public class Player : Creature
         }
     }
 
-
-    public override void OnDamaged(BaseObject attacker, int damage)
-    {
-
-    }
 
 
     public IEnumerator OnDotHeal(float duration, int healAmount,int tickRate)   

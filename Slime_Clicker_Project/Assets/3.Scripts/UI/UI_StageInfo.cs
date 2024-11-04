@@ -12,14 +12,13 @@ public class UI_StageInfo : RootUI
     [SerializeField]private TextMeshProUGUI StageInfo;
     [SerializeField]private TextMeshProUGUI StageTime;
 
-    [SerializeField] private Transform background1;  // 첫 번째 배경
-    [SerializeField] private Transform background2;  // 두 번째 배경
-    [SerializeField] private float backgroundWidth = 17.8f;  // 배경 하나의 너비
-
+  
     public Button startWave;
 
-    private Vector3 bg1InitialPos;
-    private Vector3 bg2InitialPos;
+    private const int STAGES_PER_CYCLE = 5; // 한 사이클당 스테이지 수
+    private Vector3 playerStartPos; // 플레이어 시작 위치 저장
+
+ 
 
     private int min = 2;
     private float sec = 0f;
@@ -28,14 +27,19 @@ public class UI_StageInfo : RootUI
     {
         base.Awake();
         SetCurrentStageLevel();
-        backgroundWidth = background1.GetComponent<SpriteRenderer>().bounds.size.x;
-        bg1InitialPos = background1.position;
-        bg2InitialPos = background2.position;
+        // 페이드 패널 초기화
+      
+        playerStartPos = Managers.Instance.Game.player.transform.position;
     }
 
-    private void Update()
+    private void Start()
     {
-        //calctime();
+        if (coStartStage != null)
+        {
+            StopCoroutine(coStartStage);
+            coStartStage = null;
+        }
+        coStartStage = StartCoroutine(StartWave());
     }
 
     void SetCurrentStageLevel()
@@ -87,59 +91,55 @@ public class UI_StageInfo : RootUI
                     break;
                 }
             }
+
+            Managers.Instance.Game.player.Hp = Managers.Instance.Game.player.MaxHp;
+            Managers.Instance.Game.UpdatePlayerStats();
+
             print("새로운 스테이지");
-            yield return new WaitForSeconds(1f);
+            // 현재 스테이지가 5의 배수일 때만 원점으로 리셋
+            int currentStage = Managers.Instance.Stage.GetCurrentStageLevel();
+            bool isEndOfCycle = currentStage % STAGES_PER_CYCLE == 0;
 
-            //x로 6.86만큼 이동
-            //Managers.Instance.Game.player.moveMiddlePos();
-
-            StartCoroutine(PlayPlayerMoveAnimation());
-            StartCoroutine(PlayBackgroundAnimation());
-            yield return new WaitForSeconds(7f);
+            yield return StartCoroutine(PlayPlayerMoveAnimation(isEndOfCycle));
+            yield return new WaitForSeconds(2f);
         }
     }
 
-    private IEnumerator PlayPlayerMoveAnimation()
+    private IEnumerator PlayPlayerMoveAnimation(bool resetPosition)
     {
         var player = Managers.Instance.Game.player;
         Vector3 originalPos = player.transform.position;
-        Vector3 targetPos = originalPos + Vector3.right * 2f;
+        Vector3 targetPos = originalPos + Vector3.right * 6f;
 
+        // 걷기 애니메이션 시작
+        player.anim.SetBool("IsWalk", true);
 
-        // 앞으로 이동
+        // 이동 애니메이션
         yield return player.transform
-            .DOMove(targetPos, 3f)
-            .SetEase(Ease.InOutQuad)
+            .DOMove(targetPos, 2.5f)
+            .SetEase(Ease.Linear)
             .WaitForCompletion();
 
-        yield return new WaitForSeconds(1f);
+        player.anim.SetBool("IsWalk", false);
 
-        // 원위치로 이동
-        yield return player.transform
-            .DOMove(originalPos, 3f)
-            .SetEase(Ease.InOutQuad)
-            .WaitForCompletion();
-    }
+        if (resetPosition)
+        {
+            // 5스테이지 완료 후 페이드 아웃
+            yield return StartCoroutine(UI_Fade.Instance.FadeOutCoroutine(0.5f));
 
-    private IEnumerator PlayBackgroundAnimation()
-    {
-        Vector3 originalPos = background1.transform.position;
-        Vector3 targetPos = originalPos - (Vector3.right * 2f);
+            // 플레이어 위치 초기화
+            player.transform.position = playerStartPos;
 
+            yield return new WaitForSeconds(0.5f);
 
-        // 로 이동
-        yield return background1.transform
-            .DOMove(targetPos, 5f)
-            .SetEase(Ease.InOutQuad)
-            .WaitForCompletion();
-
-        yield return new WaitForSeconds(1f);
-
-        //// 원위치로 이동
-        //yield return background1.transform
-        //    .DOMove(originalPos, 3f)
-        //    .SetEase(Ease.InOutQuad)
-        //    .WaitForCompletion();
+            // 페이드 인
+            yield return StartCoroutine(UI_Fade.Instance.FadeInCoroutine(0.5f));
+        }
+        else
+        {
+            // 일반 스테이지 클리어 후 대기
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     void calctime()

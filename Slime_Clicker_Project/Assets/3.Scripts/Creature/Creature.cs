@@ -149,7 +149,7 @@ public class Creature : BaseObject
         // 방어력 적용
         damage = Mathf.Max(1, damage - Def);
 
-        Hp -= damage;
+        _currentStats.Hp -= damage;
         Managers.Instance.Object.ShowDamageFont(Collider.bounds.center, damage, 0, transform, isCritical);
 
         if (Hp <= 0)

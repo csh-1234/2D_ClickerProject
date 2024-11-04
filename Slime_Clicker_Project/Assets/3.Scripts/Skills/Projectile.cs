@@ -42,7 +42,7 @@ public class Projectile : BaseObject
         fireDirection = direction.normalized;
         startPos = transform.position;
     }
-
+    private bool hasHit = false;  // 충돌 여부를 체크하는 플래그 추가
     void ProjectileMove()
     {
         // 기본 이동
@@ -56,10 +56,20 @@ public class Projectile : BaseObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Monster")
+        if (hasHit) return;
+        if (_owner.ObjectType == Enums.ObjectType.Player &&  collision.gameObject.tag == "Monster")
         {
+            hasHit = true;  // 충돌 플래그 설정
             print("투사체가 몬스터 때림");
             collision.gameObject.GetComponent<Monster>().OnDamaged(_owner, Managers.Instance.Game.player.Atk);
+            Destroy(this.gameObject);
+        }
+
+        if (_owner.ObjectType == Enums.ObjectType.Monster && collision.gameObject.tag == "Player")
+        {
+            hasHit = true;  // 충돌 플래그 설정
+            print("투사체가 플레이어 때림");
+            collision.gameObject.GetComponent<Player>().OnDamaged(_owner, _owner.Atk);
             Destroy(this.gameObject);
         }
     }

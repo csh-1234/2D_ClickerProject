@@ -16,7 +16,7 @@ public class UI_HpBar : RootUI
         Transform parent = transform.parent;
         //transform.position = Camera.main.WorldToScreenPoint(parent.position - Vector3.up * 1.2f);
         transform.rotation = Camera.main.transform.rotation;
-        float ratio = creature._currentStats.MaxHp / (float)creature._currentStats.Hp;
+        float ratio = creature._currentStats.Hp / (float)creature._currentStats.MaxHp;
         SetHpRatio(ratio);
     }
     public void SetHpRatio(float ratio)

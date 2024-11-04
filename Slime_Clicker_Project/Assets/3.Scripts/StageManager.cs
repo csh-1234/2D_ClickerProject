@@ -32,8 +32,15 @@ public class StageManager
     {
         for (int i = 0; i < 10; i++)
         {
-            Vector2 spawnPos = new Vector2(Random.Range(3f, 20f), Random.Range(0.7f, 1.5f));
-            Monster mo = Managers.Instance.Object.Spawn<Monster>(spawnPos, (int)EDataId.Slime_Green);
+            Vector2 spawnPos = (Vector2)Managers.Instance.Game.player.transform.position + new Vector2(Random.Range(4f, 20f), Random.Range(-1f, 1f));
+
+            int monsterDataID = 0;
+            int monsterSelect = Random.Range(1, 4);
+            if(monsterSelect == 1) { monsterDataID = (int)EDataId.Slime_Yellow; }
+            else if(monsterSelect == 2) { monsterDataID = (int)EDataId.Slime_Green; }
+            else if(monsterSelect == 3) { monsterDataID = (int)EDataId.Slime_Purple; }
+            
+            Monster mo = Managers.Instance.Object.Spawn<Monster>(spawnPos, monsterDataID);
             //스테이지에 따라 몬스터 스탯 상승(소수점 무시)
             mo._currentStats.Hp = (int)(mo._currentStats.Hp * DifficultyByLevel);
             mo._currentStats.MaxHp = (int)(mo._currentStats.Hp * DifficultyByLevel);

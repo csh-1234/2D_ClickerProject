@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static DataManager;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 
 public class ObjectManager
@@ -83,15 +84,6 @@ public class ObjectManager
             projectile.Initialize();
             return projectile as T;
         }
-        else if (type == typeof(DropGold))
-        {
-            GameObject go = Managers.Instance.Resource.Instantiate(prefabName, pooling: true);
-            DropGold gold = go.GetOrAddComponent<DropGold>();
-            go.transform.position = position;
-            Gold.Add(gold);
-            gold.Initialize();
-            return gold as T;
-        }
         else if (type == typeof(BaseObject))
         {
             GameObject go = Managers.Instance.Resource.Instantiate(prefabName, pooling: true);
@@ -117,7 +109,7 @@ public class ObjectManager
     }
 
 
-    public void ShowDamageFont(Vector2 pos, float damage, float healAmount, Transform parent, bool isCritical = false)
+    public void ShowDamageFont(Vector2 pos, float damage, float healAmount, UnityEngine.Transform parent, bool isCritical = false)
     {
         string prefabName;
         if (isCritical)
