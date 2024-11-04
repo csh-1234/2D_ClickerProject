@@ -4,13 +4,22 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_StageInfo : RootUI
 {
     [SerializeField]private TextMeshProUGUI StageInfo;
     [SerializeField]private TextMeshProUGUI StageTime;
+
+    [SerializeField] private Transform background1;  // 첫 번째 배경
+    [SerializeField] private Transform background2;  // 두 번째 배경
+    [SerializeField] private float backgroundWidth = 17.8f;  // 배경 하나의 너비
+
     public Button startWave;
+
+    private Vector3 bg1InitialPos;
+    private Vector3 bg2InitialPos;
 
     private int min = 2;
     private float sec = 0f;
@@ -19,6 +28,9 @@ public class UI_StageInfo : RootUI
     {
         base.Awake();
         SetCurrentStageLevel();
+        backgroundWidth = background1.GetComponent<SpriteRenderer>().bounds.size.x;
+        bg1InitialPos = background1.position;
+        bg2InitialPos = background2.position;
     }
 
     private void Update()
@@ -82,6 +94,7 @@ public class UI_StageInfo : RootUI
             //Managers.Instance.Game.player.moveMiddlePos();
 
             StartCoroutine(PlayPlayerMoveAnimation());
+            StartCoroutine(PlayBackgroundAnimation());
             yield return new WaitForSeconds(7f);
         }
     }
@@ -90,13 +103,13 @@ public class UI_StageInfo : RootUI
     {
         var player = Managers.Instance.Game.player;
         Vector3 originalPos = player.transform.position;
-        Vector3 targetPos = originalPos + Vector3.right * 6.86f;
+        Vector3 targetPos = originalPos + Vector3.right * 2f;
 
-        
+
         // 앞으로 이동
         yield return player.transform
             .DOMove(targetPos, 3f)
-            .SetEase(Ease.Linear)
+            .SetEase(Ease.InOutQuad)
             .WaitForCompletion();
 
         yield return new WaitForSeconds(1f);
@@ -108,41 +121,26 @@ public class UI_StageInfo : RootUI
             .WaitForCompletion();
     }
 
-    //Coroutine coStartNextStage;
-    //Coroutine coStartRepeatStage;
-
-    //public void NextStage()
-    //{
-    //    if (coStartNextStage != null)
-    //    {
-    //        StopCoroutine(coStartNextStage);
-    //        coStartNextStage = null;
-    //    }
-    //    coStartNextStage = StartCoroutine(StartNextStage());
-    //}
-
-    //public void RepeatStage()
-    //{
-    //    if (coStartRepeatStage != null)
-    //    {
-    //        StopCoroutine(coStartRepeatStage);
-    //        coStartRepeatStage = null;
-    //    }
-    //    coStartRepeatStage = StartCoroutine(StartRepeatStage());
-    //}
+    private IEnumerator PlayBackgroundAnimation()
+    {
+        Vector3 originalPos = background1.transform.position;
+        Vector3 targetPos = originalPos - (Vector3.right * 2f);
 
 
-    //private IEnumerator StartNextStage()
-    //{
-    //    yield return null;
-    //}
+        // 로 이동
+        yield return background1.transform
+            .DOMove(targetPos, 5f)
+            .SetEase(Ease.InOutQuad)
+            .WaitForCompletion();
 
-    //private IEnumerator StartRepeatStage()
-    //{
-    //    yield return null;
-    //}
+        yield return new WaitForSeconds(1f);
 
-
+        //// 원위치로 이동
+        //yield return background1.transform
+        //    .DOMove(originalPos, 3f)
+        //    .SetEase(Ease.InOutQuad)
+        //    .WaitForCompletion();
+    }
 
     void calctime()
     {
@@ -154,7 +152,6 @@ public class UI_StageInfo : RootUI
         }
         StageTime.text = string.Format("{0:D2}:{1:D2}", min, (int)sec);
     }
-
 }
 
 

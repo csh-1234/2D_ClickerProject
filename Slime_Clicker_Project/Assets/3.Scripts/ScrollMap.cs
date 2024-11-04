@@ -24,10 +24,9 @@ public class ScrollMap : MonoBehaviour
         //    transform.position = target.position - moveDirection * scrollAmount;
         //}
     }
-
+    
     void moveScroll()
     {
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
         transform.position += moveDirection * moveSpeed * Time.deltaTime;
         if (transform.position.x <= -scrollAmount)
         {
