@@ -18,15 +18,15 @@
       "DataId": 100001,
       "CreatureName": "탱커 슬라임",
       "CreatureType": 1,
-      "Hp": 500,
-      "MaxHp": 500,
+      "Hp": 600,
+      "MaxHp": 600,
       "Atk": 3,
       "Def": 8,
       "CriRate": 0.0,
       "CriDamage": 0.0,
-      "MoveSpeed": 3.0,
+      "MoveSpeed": 2.0,
       "AtkSpeed": 1.0,
-      "SpriteName": "Slime_Yellow.sprite"
+      "SpriteName": "Slime_Tanker.sprite"
     },
     {
       "DataId": 100002,
@@ -34,27 +34,27 @@
       "CreatureType": 1,
       "Hp": 300,
       "MaxHp": 300,
-      "Atk": 5,
-      "Def": 4,
+      "Atk": 7,
+      "Def": 5,
       "CriRate": 0.0,
       "CriDamage": 0.0,
-      "MoveSpeed": 3.0,
+      "MoveSpeed": 2.0,
       "AtkSpeed": 1.0,
-      "SpriteName": "Slime_Green.sprite"
+      "SpriteName": "Slime_Attacker.sprite"
     },
     {
       "DataId": 100003,
       "CreatureName": "원거리 슬라임",
       "CreatureType": 1,
-      "Hp": 250,
-      "MaxHp": 250,
+      "Hp": 300,
+      "MaxHp": 300,
       "Atk": 5,
       "Def": 3,
       "CriRate": 0.0,
       "CriDamage": 0.0,
       "MoveSpeed": 4.0,
       "AtkSpeed": 1.0,
-      "SpriteName": "Slime_Purple.sprite"
+      "SpriteName": "Slime_Ranger.sprite"
     }
   ]
 }

@@ -11,6 +11,10 @@ public class UI_InGameScene : RootUI
     protected override void Awake()
     {
         base.Awake();
+        Managers.Instance.Game.LoadGame();
+        
+        //Managers.Instance.StatUpgrade.InitStatByLevel();
+        Managers.Instance.StatUpgrade.UpdateAllTexts();
     }
     // Start is called before the first frame update
     void Start()
@@ -24,6 +28,11 @@ public class UI_InGameScene : RootUI
     void Update()
     {
         
+    }
+
+    void OnApplicationQuit()
+    {
+        Managers.Instance.Game.SaveGame();
     }
     private void LoadResource()
     {

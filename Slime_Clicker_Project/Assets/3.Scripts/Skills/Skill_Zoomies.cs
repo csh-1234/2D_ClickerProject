@@ -24,7 +24,7 @@ public class Skill_Zoomies : Skill
         //CurrentSkillUpdate();
     }
 
-    void SetInfo()
+    public void SetInfo()
     {
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
         if (SkillDic.TryGetValue(200000, out SkillData Zoomies))
@@ -89,6 +89,16 @@ public class Skill_Zoomies : Skill
             _currentTarget.ApplyBuff(BuffId, _buffStat, Duration);
         }
     }
+
+    public override void UpdateSkillByLoadedLevel()
+    {
+        Cooldown = Mathf.Max(_zoomies.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_zoomies.MaxDuration, Duration + (0.01f * CurrentLevel));
+        AtkBonus += AtkBonus * CurrentLevel;
+        AtkSpeedBonus += AtkSpeedBonus * CurrentLevel;
+    }
+
+
     private void BuffStatUpdate()
     {
         _buffStat.Attack = AtkBonus;

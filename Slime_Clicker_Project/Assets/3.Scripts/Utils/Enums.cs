@@ -78,9 +78,9 @@ public class Enums
     public enum EDataId
     {
         Player = 100000,
-        Slime_Yellow = 100001,
-        Slime_Green = 100002,
-        Slime_Purple = 100003,
+        Slime_Tanker = 100001,
+        Slime_Attacker = 100002,
+        Slime_Ranger = 100003,
     }
 
     #endregion

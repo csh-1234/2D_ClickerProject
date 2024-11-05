@@ -53,7 +53,7 @@ public class Monster : Creature
         float distance = Vector2.Distance(transform.position, Target.transform.position);
         Vector3 movment = direction * Time.deltaTime * MoveSpeed;
 
-        if (DataId == (int)EDataId.Slime_Yellow )
+        if (DataId == (int)EDataId.Slime_Ranger )
         {
             if (distance > 5f)
             {
@@ -124,7 +124,7 @@ public class Monster : Creature
         //print("몬스터 사망");
         base.OnDead();
         //OnDeadEvent?.Invoke();
-        Managers.Instance.Game.MonsterList.Remove(this);
+        Managers.Instance.Game.MonsterList.Remove(this);    
         //DropGold gold = Managers.Instance.Object.Spawn<DropGold>(this.transform.position, 0, "Gold");
         int goldAmount = 100; // 예시 값, 실제로는 몬스터 데이터에서 가져오기
         Managers.Instance.Currency.AddGold(goldAmount);

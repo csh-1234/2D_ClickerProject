@@ -59,7 +59,7 @@ public class Skill_FatalStrike : Skill
         CurrentLevel++;
         Cooldown = Mathf.Max(_fatalStrike.MaxCooldown, Cooldown - 0.01f);
         Duration = Mathf.Min(_fatalStrike.MaxDuration, Duration + 0.01f);
-        CriRateBonus++;
+        CriDamageBonus++;
         BuffStatUpdate();
 
         // 버프가 활성화 상태였다면 새로운 스탯으로 다시 적용
@@ -68,6 +68,15 @@ public class Skill_FatalStrike : Skill
             _currentTarget.ApplyBuff(BuffId, _buffStat, Duration);
         }
     }
+
+    public override void UpdateSkillByLoadedLevel()
+    {
+        Cooldown = Mathf.Max(_fatalStrike.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_fatalStrike.MaxDuration, Duration + (0.01f * CurrentLevel));
+        CriDamageBonus += CriDamageBonus * CurrentLevel;
+    }
+
+
     private void BuffStatUpdate()
     {
         _buffStat.CriticalDamage = CriDamageBonus;

@@ -69,6 +69,15 @@ public class Skill_BeastEyes : Skill
             _currentTarget.ApplyBuff(BuffId, _buffStat, Duration);
         }
     }
+
+    public override void UpdateSkillByLoadedLevel()
+    {
+        Cooldown = Mathf.Max(_beastEyes.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_beastEyes.MaxDuration, Duration + (0.01f * CurrentLevel));
+        CriRateBonus += CriRateBonus * CurrentLevel;
+    }
+
+
     private void BuffStatUpdate()
     {
         _buffStat.CriticalRate = CriRateBonus;

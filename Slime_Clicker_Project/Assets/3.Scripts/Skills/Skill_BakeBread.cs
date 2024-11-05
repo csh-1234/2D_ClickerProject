@@ -69,6 +69,16 @@ public class Skill_BakeBread : Skill
             _currentTarget.ApplyBuff(BuffId, _buffStat, Duration);
         }
     }
+
+    public override void UpdateSkillByLoadedLevel()
+    {
+        Cooldown = Mathf.Max(_bakeBread.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_bakeBread.MaxDuration, Duration + (0.01f * CurrentLevel));
+        DefBonus += DefBonus * CurrentLevel;
+        HealAmount += HealAmount * CurrentLevel;
+    }
+
+
     private void BuffStatUpdate()
     {
         _buffStat.Defense = DefBonus;

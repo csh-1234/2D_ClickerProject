@@ -1,6 +1,11 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using static Enums;
@@ -37,15 +42,6 @@ public class GameManager
     {
         if (player == null) return;
 
-        //// 현재 버프스탯 저장(버프 없으면 0)
-        //Stats buffStats = new Stats();
-        //if (player._currentStats != null)
-        //{
-        //    Stats totalStats = UpdateTotalStat(); //현재 전체 스탯
-        //    buffStats.CopyStats(player._currentStats);  // 플레이어의 최종스텟
-        //    buffStats.SubStats(totalStats); // 버프스텟
-        //}
-
         //// 현재 스탯을 기본 스탯으로 초기화
         player._currentStats.ClearStat();
         player._currentStats.CopyStats(player._baseStats); //기본스탯만 적용
@@ -77,7 +73,7 @@ public class GameManager
         }
 
         Debug.Log($"최종 스탯 - ATK: {player._currentStats.Attack}, DEF: {player._currentStats.Defense}");
-
+        //SaveGame();
         //OnStatsChanged?.Invoke(player._currentStats);
     }
 
@@ -184,22 +180,198 @@ public class GameManager
 
     #endregion
 
-    #region Save/Load
     public void SaveGame()
     {
-        // 게임 데이터 저장
+        SaveStatData();
         SaveOwnedItems();
         SaveEquippedItems();
-        // 다른 게임 데이터도 여기서 저장
+        SaveSkillData();
     }
 
     public void LoadGame()
     {
         // 게임 데이터 로드
+        StatLevelData loadedStatData = LoadStatData();
+        if (loadedStatData != null)
+        {
+            // 로드된 데이터 적용
+            Managers.Instance.StatUpgrade.AtkLevel = loadedStatData.AtkLevel;
+            Managers.Instance.StatUpgrade.HpLevel = loadedStatData.HpLevel;
+            Managers.Instance.StatUpgrade.DefLevel = loadedStatData.DefLevel;
+            Managers.Instance.StatUpgrade.CriRateLevel = loadedStatData.CriRateLevel;
+            Managers.Instance.StatUpgrade.criDamageLevel = loadedStatData.CriDamageLevel;
+            Managers.Instance.StatUpgrade.AtkSpeedLevel = loadedStatData.AtkSpeedLevel;
+        }
+        SkillLevelData loadedSkillData = LoadSkillData();
+        if(loadedSkillData != null)
+        {
+            player.SkillList[0].CurrentLevel = loadedSkillData.Skill_Zoomies_Level;
+            player.SkillList[1].CurrentLevel = loadedSkillData.Skill_BakeBread_Level;
+            player.SkillList[2].CurrentLevel = loadedSkillData.Skill_EatChur_Level;
+            player.SkillList[3].CurrentLevel = loadedSkillData.Skill_BeastEyes_Level;
+            player.SkillList[4].CurrentLevel = loadedSkillData.Skill_FatalStrike_Level;
+        }
+
+        LoadSkillData();
         LoadOwnedItems();
         LoadEquippedItems();
         // 다른 게임 데이터도 여기서 로드
     }
+
+    #region saveStatData
+    [System.Serializable]
+    public class StatLevelData
+    {
+        public int AtkLevel { get; set; }
+        public int HpLevel { get; set; }
+        public int DefLevel { get; set; }
+        public int CriRateLevel { get; set; }
+        public int CriDamageLevel { get; set; }
+        public int AtkSpeedLevel { get; set; }
+    }
+
+    private void SaveStatData()
+    {
+        StatLevelData statData = new StatLevelData
+        {
+            //0이면 1로 해주기
+            AtkLevel = Managers.Instance.StatUpgrade.AtkLevel == 0 ? 1 : Managers.Instance.StatUpgrade.AtkLevel,
+            HpLevel = Managers.Instance.StatUpgrade.HpLevel == 0 ? 1 : Managers.Instance.StatUpgrade.HpLevel,
+            DefLevel = Managers.Instance.StatUpgrade.DefLevel == 0 ? 1 : Managers.Instance.StatUpgrade.DefLevel,
+            CriRateLevel = Managers.Instance.StatUpgrade.CriRateLevel == 0 ? 1 : Managers.Instance.StatUpgrade.CriRateLevel,
+            CriDamageLevel = Managers.Instance.StatUpgrade.criDamageLevel == 0 ? 1 : Managers.Instance.StatUpgrade.criDamageLevel,
+            AtkSpeedLevel = Managers.Instance.StatUpgrade.AtkSpeedLevel == 0 ? 1 : Managers.Instance.StatUpgrade.AtkSpeedLevel,
+        };
+
+        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/StatLevelData.json";
+
+        try
+        {
+            // 디렉토리가 없으면 생성
+            Directory.CreateDirectory(Path.GetDirectoryName(jsonPath));
+
+            // 데이터를 JSON 문자열로 변환
+            string jsonStr = JsonConvert.SerializeObject(statData, Formatting.Indented);
+
+            // 파일에 저장
+            File.WriteAllText(jsonPath, jsonStr);
+
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+            Debug.Log($"스탯 데이터 저장 완료: {jsonPath}");
+#endif
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"스탯 데이터 저장 실패: {e.Message}");
+        }
+    
+    }
+
+
+    private StatLevelData LoadStatData()
+    {
+        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/StatLevelData.json");
+
+        try
+        {
+            if (File.Exists(jsonPath))
+            {
+                string jsonStr = File.ReadAllText(jsonPath);
+                return JsonConvert.DeserializeObject<StatLevelData>(jsonStr);
+            }
+            else
+            {
+                Debug.Log("저장된 스탯 데이터가 없습니다. 기본값을 사용합니다.");
+                return new StatLevelData(); // 기본값으로 초기화된 객체 반환
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"스탯 데이터 로드 실패: {e.Message}");
+            return new StatLevelData();
+        }
+    }
+
+    #endregion
+
+    #region saveSkillData
+
+    [System.Serializable]
+    public class SkillLevelData
+    {
+        public int Skill_Zoomies_Level { get; set; }
+        public int Skill_BakeBread_Level { get; set; }
+        public int Skill_BeastEyes_Level { get; set; }
+        public int Skill_EatChur_Level { get; set; }
+        public int Skill_FatalStrike_Level { get; set; }
+    }
+
+    private void SaveSkillData()
+    {
+        SkillLevelData skillData = new SkillLevelData
+        {
+            //0이면 1로 해주기
+            Skill_Zoomies_Level = player.SkillList[0].CurrentLevel == 0 ? 1 : player.SkillList[0].CurrentLevel,
+            Skill_BakeBread_Level = player.SkillList[1].CurrentLevel == 0 ? 1 : player.SkillList[1].CurrentLevel,
+            Skill_EatChur_Level = player.SkillList[2].CurrentLevel == 0 ? 1 : player.SkillList[2].CurrentLevel,
+            Skill_BeastEyes_Level = player.SkillList[3].CurrentLevel == 0 ? 1 : player.SkillList[3].CurrentLevel,
+            Skill_FatalStrike_Level = player.SkillList[4].CurrentLevel == 0 ? 1 : player.SkillList[4].CurrentLevel,
+        };
+
+        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/SkillLevelData.json";
+
+        try
+        {
+            // 디렉토리가 없으면 생성
+            Directory.CreateDirectory(Path.GetDirectoryName(jsonPath));
+
+            // 데이터를 JSON 문자열로 변환
+            string jsonStr = JsonConvert.SerializeObject(skillData, Formatting.Indented);
+
+            // 파일에 저장
+            File.WriteAllText(jsonPath, jsonStr);
+
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+            Debug.Log($"스탯 데이터 저장 완료: {jsonPath}");
+#endif
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"스탯 데이터 저장 실패: {e.Message}");
+        }
+
+    }
+
+    private SkillLevelData LoadSkillData()
+    {
+        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/SkillLevelData.json");
+
+        try
+        {
+            if (File.Exists(jsonPath))
+            {
+                string jsonStr = File.ReadAllText(jsonPath);
+                return JsonConvert.DeserializeObject<SkillLevelData>(jsonStr);
+            }
+            else
+            {
+                Debug.Log("저장된 스킬 데이터가 없습니다. 기본값을 사용합니다.");
+                return new SkillLevelData(); // 기본값으로 초기화된 객체 반환
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"스킬 데이터 로드 실패: {e.Message}");
+            return new SkillLevelData();
+        }
+    }
+    #endregion
+
+
+
+
 
     private void SaveOwnedItems()
     {
@@ -211,6 +383,7 @@ public class GameManager
         // 장착 아이템 저장 로직
     }
 
+
     private void LoadOwnedItems()
     {
         // 보유 아이템 로드 로직
@@ -220,5 +393,5 @@ public class GameManager
     {
         // 장착 아이템 로드 로직
     }
-    #endregion
+    
 }

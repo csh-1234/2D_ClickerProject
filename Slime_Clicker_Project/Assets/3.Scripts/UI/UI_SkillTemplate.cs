@@ -14,6 +14,10 @@ public class UI_SkillTemplate : RootUI
     {
         base.Awake();
     }
+    private void Start()
+    {
+        SetLoadedLevel();
+    }
 
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI levelText;
@@ -50,6 +54,16 @@ public class UI_SkillTemplate : RootUI
             
             UpdateUI();
         }
+    }
+
+
+    public void SetLoadedLevel()
+    {
+        if (_skill == null) return;
+
+        // 스킬 타입에 관계없이 공통적으로 레벨에 따른 업데이트 수행
+        _skill.UpdateSkillByLoadedLevel();
+        UpdateUI();
     }
 
     public void OnUpgradeClick()

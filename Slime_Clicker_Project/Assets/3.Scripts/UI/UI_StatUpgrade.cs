@@ -26,9 +26,10 @@ public class UI_StatUpgrade : RootUI
         Managers.Instance.StatUpgrade.OnStatChanged += OnStatChanged;
         var initialStats = Managers.Instance.StatUpgrade.GetStatInfo(statType);
 
-        UpdateStat(initialStats.level, (int)initialStats.bonus, initialStats.cost);
+        UpdateStat(initialStats.level, initialStats.bonus, initialStats.cost);
         BindEventToObjects();
     }
+
 
 
     private void OnStatChanged(string type, int level, float bonus, int cost)
@@ -48,6 +49,8 @@ public class UI_StatUpgrade : RootUI
             }
         }
     }
+
+
     private void UpdateStat(int level, float bonus, int cost)
     {
         StatLevel.text = $"LV.{level}";

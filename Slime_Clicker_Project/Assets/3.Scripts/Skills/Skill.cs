@@ -59,7 +59,7 @@ public class Skill : MonoBehaviour
     public string SpriteName;
     public int UpgradeCost;
 
-    public int CurrentLevel { get; protected set; }
+    public int CurrentLevel { get;  set; }
 
     //public string SkillName;
     //public string SkillInfo;
@@ -169,5 +169,10 @@ public class Skill : MonoBehaviour
         }
 
         return true;
+    }
+
+    public virtual void UpdateSkillByLoadedLevel()
+    {
+
     }
 }

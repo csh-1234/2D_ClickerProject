@@ -17,12 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 46db143bbc6162949a0ee7047730ce1f
   m_SerializeEntries:
-  - m_GUID: 1c19fecb188c64840be25fa748cf3ae7
-    m_Address: Slime_Green.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Prefab
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 20e64efd1755f7641a2bd2c6cc41430d
     m_Address: PlayerCat.sprite
     m_ReadOnly: 0
@@ -30,7 +24,7 @@ MonoBehaviour:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f4158fd2ea11db4aa51f2e54d7a3219
-    m_Address: Slime_Yellow.sprite
+    m_Address: Slime_Ranger.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
@@ -41,20 +35,26 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62ca32e1b0481cb488711e9185551eb2
+    m_Address: Slime_Attacker.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bac333f89f982694d9cf7c92c523cd79
     m_Address: Sword.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cad525655cc8fcb4995a10e493cf35ad
-    m_Address: Slime_Purple.sprite
+  - m_GUID: d828fa445b8be2c42aa9d992966082f7
+    m_Address: Gold.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d828fa445b8be2c42aa9d992966082f7
-    m_Address: Gold.sprite
+  - m_GUID: ded8b55d2367a2b42b7bd90f6c380484
+    m_Address: Slime_Tanker.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

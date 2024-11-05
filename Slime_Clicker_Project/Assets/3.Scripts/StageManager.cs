@@ -36,9 +36,9 @@ public class StageManager
 
             int monsterDataID = 0;
             int monsterSelect = Random.Range(1, 4);
-            if(monsterSelect == 1) { monsterDataID = (int)EDataId.Slime_Yellow; }
-            else if(monsterSelect == 2) { monsterDataID = (int)EDataId.Slime_Green; }
-            else if(monsterSelect == 3) { monsterDataID = (int)EDataId.Slime_Purple; }
+            if(monsterSelect == 1) { monsterDataID = (int)EDataId.Slime_Tanker; }
+            else if(monsterSelect == 2) { monsterDataID = (int)EDataId.Slime_Attacker; }
+            else if(monsterSelect == 3) { monsterDataID = (int)EDataId.Slime_Ranger; }
             
             Monster mo = Managers.Instance.Object.Spawn<Monster>(spawnPos, monsterDataID);
             //스테이지에 따라 몬스터 스탯 상승(소수점 무시)

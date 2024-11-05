@@ -65,6 +65,14 @@ public class Skill_EatChur : Skill
             _currentTarget.ApplyBuff(BuffId, _buffStat, Duration);
         }
     }
+
+    public override void UpdateSkillByLoadedLevel()
+    {
+        Cooldown = Mathf.Max(_eatChur.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_eatChur.MaxDuration, Duration + (0.01f * CurrentLevel));
+    }
+
+
     private void BuffStatUpdate()
     {
 

@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5df685e7473c73f4e939575f6b79f52f
   m_SerializeEntries:
+  - m_GUID: 139158ec4e9e43b46866af425dced691
+    m_Address: TileMap_Obstacle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: aef01a62e7b9b5943a863de48d63e1f7
     m_Address: MonsterProjectile
     m_ReadOnly: 0
