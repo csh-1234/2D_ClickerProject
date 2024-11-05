@@ -44,32 +44,30 @@ public class Creature : BaseObject
     public virtual void SetInfo(int dataId)
     {
         DataId = dataId;
-        if(ObjectType == Enums.ObjectType.Player)
-        {
-            CreatureData = Managers.Instance.Data.CreatureDic[dataId];
-        }
-        else if( ObjectType == Enums.ObjectType.Monster)
-        {
-            CreatureData = Managers.Instance.Data.CreatureDic[dataId];
-        }
+        CreatureData = Managers.Instance.Data.CreatureDic[dataId];
 
         gameObject.name = $"{CreatureData.DataId}_{CreatureData.DataId}";
 
-        _baseStats.MaxHp = CreatureData.MaxHp;
-        _baseStats.Hp = CreatureData.Hp;
-        _baseStats.Attack = CreatureData.Atk;
-        _baseStats.Defense = CreatureData.Def;
-        _baseStats.CriticalRate = CreatureData.CriRate;
-        _baseStats.CriticalDamage = CreatureData.CriDamage;
+        // 기본 스탯 설정
+        _baseStats.Hp = CreatureData.Hp;          // MaxHp 대신 hp
+        _baseStats.MaxHp = CreatureData.MaxHp;       // MaxHp 대신 hp
+        _baseStats.Attack = CreatureData.Atk;   // Atk 대신 attack
+        _baseStats.Defense = CreatureData.Def; // Def 대신 defense
+        _baseStats.CriticalRate = CreatureData.CriRate;   // CriRate 대신 criticalChance
+        _baseStats.CriticalDamage = CreatureData.CriDamage; // CriDamage 대신 criticalDamage
         _baseStats.MoveSpeed = CreatureData.MoveSpeed;
         _baseStats.AttackSpeed = CreatureData.AtkSpeed;
-        if(SpriteRender != null && CreatureData.SpriteName != null)
+
+        if (SpriteRender != null && CreatureData.SpriteName != null)
         {
             SpriteRender.sprite = Managers.Instance.Resource.Load<Sprite>(CreatureData.SpriteName);
         }
+
+        // 현재 스탯을 기본 스탯으로 초기화
+        _currentStats.CopyStats(_baseStats);
+
         Initialize();
     }
-
 
     private BuffManagement _buffManagement = new BuffManagement();
     public virtual void ResetStats(Stats baseStats)

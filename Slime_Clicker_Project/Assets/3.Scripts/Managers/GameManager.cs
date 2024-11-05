@@ -103,6 +103,14 @@ public class GameManager
     #endregion
 
     #region Equipment
+    public Item GetOwnedItem(int dataId)
+    {
+        if (OwnedItems.TryGetValue(dataId, out Item item))
+        {
+            return item;
+        }
+        return null;
+    }
     public bool HasItem(int dataId)
     {
         return OwnedItems.ContainsKey(dataId);
@@ -126,7 +134,7 @@ public class GameManager
             OwnedItems.Add(item.DataId, item);
             return true;
         }
-        SaveOwnedItems();
+        //SaveOwnedItems();
         return false;
     }
     public bool TryUnequipItem(ItemType itemType)
@@ -172,7 +180,7 @@ public class GameManager
         CalcEquipItem();
 
         // 아이템 데이터 저장
-        SaveOwnedItems();
+        //SaveOwnedItems();
         OnEquipmentChanged?.Invoke();
 
         Debug.Log($"장비 장착 완료 후 플레이어 스탯 - ATK: {player.Atk}, DEF: {player.Def}");
@@ -192,11 +200,12 @@ public class GameManager
         {
             CalcEquipItem();
         }
-        SaveOwnedItems();
+        //SaveOwnedItems();
         return true;
     }
     #endregion
 
+    #region Save&Load
     public void SaveGame()
     {
         SaveStatData();
@@ -231,14 +240,7 @@ public class GameManager
         LoadOwnedItems();
         // 다른 게임 데이터도 여기서 로드
     }
-    public Item GetOwnedItem(int dataId)
-    {
-        if (OwnedItems.TryGetValue(dataId, out Item item))
-        {
-            return item;
-        }
-        return null;
-    }
+
     #region saveStatData
     [System.Serializable]
     public class StatLevelData
@@ -497,6 +499,7 @@ public class GameManager
         }
     }
 
+    #endregion
     #endregion
 
 }

@@ -10,18 +10,21 @@ public class Monster : Creature
     private Player Target;
     private Vector2 originalScale;
     public Projectile projectile;
+
+    //private void OnEnable()
+    //{
+    //    float ratio = Managers.Instance.Stage.DifficultyByLevel;
+    //    _currentStats.Hp *= (int)ratio;
+    //    _currentStats.MaxHp *= (int)ratio;
+    //    _currentStats.Attack *= (int)ratio;
+    //    _currentStats.Defense *= (int)ratio;
+
+    //}
     protected override void Awake()
     {
         base.Awake();
         // 기본 스탯 설정
-        _baseStats.MaxHp = 100;
-        _baseStats.Hp = 100;
-        _baseStats.Attack = 3;
-        _baseStats.Defense = 1;
-        _baseStats.CriticalRate = 0f;
-        _baseStats.CriticalDamage = 0f;
-        _baseStats.MoveSpeed = 3f;
-        _baseStats.AttackSpeed = 1f;
+
         originalScale = transform.localScale;
     }
 
@@ -29,7 +32,6 @@ public class Monster : Creature
     {
         Target = Managers.Instance.Game.player;
         // 현재 스탯에 기본 스탯 복사
-        _currentStats.CopyStats(_baseStats);
 
         StartPulseEffect();
     }
@@ -38,6 +40,30 @@ public class Monster : Creature
     {
         base.SetInfo(dataId);
         ObjectType = ObjectType.Monster;
+
+        // 기본 스탯 저장
+        int baseHp = _baseStats.Hp;
+        int baseAtk = _baseStats.Attack;
+        int baseDef = _baseStats.Defense;
+
+        // 기본 스탯을 현재 스탯에 복사
+        _currentStats.CopyStats(_baseStats);
+
+        // 스테이지 레벨에 따른 스탯 보정
+        float difficultyMultiplier = Managers.Instance.Stage.DifficultyByLevel;
+
+        // 스탯 증가 (소수점 이하 버림)
+        _currentStats.Hp = Mathf.FloorToInt(baseHp * difficultyMultiplier);
+        _currentStats.MaxHp = _currentStats.Hp;  // MaxHp도 같이 설정
+        _currentStats.Attack = Mathf.FloorToInt(baseAtk * difficultyMultiplier);
+        _currentStats.Defense = Mathf.FloorToInt(baseDef * difficultyMultiplier);
+
+        // 디버그 로그
+        Debug.Log($"Monster {dataId} Stats - Level {Managers.Instance.Stage.CurrentStageLevel}:");
+        Debug.Log($"Multiplier: {difficultyMultiplier}");
+        Debug.Log($"Base HP: {baseHp} -> Current HP: {_currentStats.Hp}");
+        Debug.Log($"Base ATK: {baseAtk} -> Current ATK: {_currentStats.Attack}");
+        Debug.Log($"Base DEF: {baseDef} -> Current DEF: {_currentStats.Defense}");
     }
 
     private void Update()
@@ -47,20 +73,24 @@ public class Monster : Creature
     private bool hasStartedShooting = false;  // 발사 시작 여부 체크
     void MoveMonster()
     {
+        if (Target == null || Target.Hp <= 0)
+        {
+            hasStartedShooting = false;  // 플레이어가 죽으면 발사 중지
+            return;
+        }
 
-        if (Target == null) return;
         Vector2 direction = (Target.transform.position - transform.position).normalized;
         float distance = Vector2.Distance(transform.position, Target.transform.position);
         Vector3 movment = direction * Time.deltaTime * MoveSpeed;
 
-        if (DataId == (int)EDataId.Slime_Ranger )
+        if (DataId == (int)EDataId.Slime_Ranger)
         {
-            if (distance > 5f)
+            if (distance > 4.3f)
             {
                 transform.Translate(movment, Space.World);
-                hasStartedShooting = false;  // 거리가 멀어지면 발사 상태 리셋
+                hasStartedShooting = false;
             }
-            else if (!hasStartedShooting)  // 처음으로 사정거리 안에 들어왔을 때
+            else if (!hasStartedShooting)
             {
                 hasStartedShooting = true;
                 StartCoroutine(ShootProjectile());
@@ -73,35 +103,44 @@ public class Monster : Creature
                 transform.Translate(movment, Space.World);
             }
         }
-
-        
-        //RigidBody.MovePosition(RigidBody.position + movment);
     }
+
+    public void RetreatFromPlayer(float duration)
+    {
+        // 현재 플레이어와의 방향을 구함
+        Vector2 directionFromPlayer = (transform.position - Target.transform.position).normalized;
+
+        // 현재 위치에서 해당 방향으로 일정 거리만큼 이동
+        Vector3 targetPosition = transform.position + (Vector3)(directionFromPlayer * 4f); // 3f는 후퇴 거리
+
+        // DOTween을 사용하여 부드럽게 이동
+        transform.DOMove(targetPosition, duration)
+            .SetEase(Ease.OutQuad);
+    }
+    public void StopRetreat()
+    {
+        transform.DOKill(); // 현재 진행 중인 DOTween 애니메이션 중지
+    }
+
 
     [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
     Vector2 fireDir;
 
     IEnumerator ShootProjectile()
     {
-        // 첫 발사는 바로
-        fireDir = (Target.transform.position - transform.position).normalized;
-        if (Managers.Instance.Game.player != null)
+        while (hasStartedShooting && Target != null && Target.Hp > 0)  // 플레이어 체력 체크 추가
         {
-            Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity);
-            proj.SetInfo(this, fireDir);
-        }
-
-        while (hasStartedShooting)  // 발사 상태가 true인 동안만 반복
-        {
-            yield return new WaitForSeconds(_fireRate);
-
             fireDir = (Target.transform.position - transform.position).normalized;
             if (Managers.Instance.Game.player != null)
             {
-                Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity);
+                Projectile proj = Managers.Instance.Object.Spawn<Projectile>(CenterPosition, 0, "MonsterProjectile");
                 proj.SetInfo(this, fireDir);
             }
+
+            yield return new WaitForSeconds(_fireRate);
         }
+
+        hasStartedShooting = false;  // 루프 종료 시 발사 상태 해제
     }
     //IEnumerator ShootProjectile()
     //{
@@ -126,12 +165,12 @@ public class Monster : Creature
         //OnDeadEvent?.Invoke();
         Managers.Instance.Game.MonsterList.Remove(this);    
         //DropGold gold = Managers.Instance.Object.Spawn<DropGold>(this.transform.position, 0, "Gold");
-        int goldAmount = 100; // 예시 값, 실제로는 몬스터 데이터에서 가져오기
+        int goldAmount = (int)(100 * Managers.Instance.Stage.DifficultyByLevel); // 예시 값, 실제로는 몬스터 데이터에서 가져오기
         Managers.Instance.Currency.AddGold(goldAmount);
 
         UI_GoldEffect.Instance.PlayGoldEffect(transform.position, goldAmount);
-        Destroy(gameObject);
-        
+        Managers.Instance.Object.Despawn(this);
+
     }
 
     Coroutine _coStartDamage;

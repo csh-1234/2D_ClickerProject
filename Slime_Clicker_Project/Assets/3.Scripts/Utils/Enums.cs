@@ -67,10 +67,10 @@ public class Enums
     }
 
     public static readonly Color Normal =   HexToColor("FFFFFF");
-    public static readonly Color Advanced = HexToColor("6e6eff");
-    public static readonly Color Rare =     HexToColor("ae00ff");
-    public static readonly Color Legend =   HexToColor("ffff00");
-    public static readonly Color Myth =     HexToColor("ff4d4d");
+    public static readonly Color Advanced = HexToColor("7575FF");
+    public static readonly Color Rare =     HexToColor("CA58FF");
+    public static readonly Color Legend =   HexToColor("FFFF36");
+    public static readonly Color Myth =     HexToColor("FF5858");
 
     #endregion
 

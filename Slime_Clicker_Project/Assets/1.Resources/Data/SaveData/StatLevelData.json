@@ -1,8 +1,8 @@
 {
-  "AtkLevel": 10,
+  "AtkLevel": 1,
   "HpLevel": 1,
-  "DefLevel": 1,
-  "CriRateLevel": 10,
-  "CriDamageLevel": 1,
-  "AtkSpeedLevel": 2
+  "DefLevel": 4,
+  "CriRateLevel": 11,
+  "CriDamageLevel": 9,
+  "AtkSpeedLevel": 100
 }

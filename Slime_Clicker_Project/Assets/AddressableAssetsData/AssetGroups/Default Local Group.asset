@@ -17,8 +17,20 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5df685e7473c73f4e939575f6b79f52f
   m_SerializeEntries:
-  - m_GUID: 139158ec4e9e43b46866af425dced691
-    m_Address: TileMap_Obstacle
+  - m_GUID: 8e41ad7d9c7481e46a0bbb0133151233
+    m_Address: GunEffect
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a13e0acc76383674296c24532291b2bd
+    m_Address: Projectile
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1871a8bf34572644be2a6793835e1bd
+    m_Address: HitEffect
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
@@ -27,7 +39,7 @@ MonoBehaviour:
     m_Address: MonsterProjectile
     m_ReadOnly: 0
     m_SerializedLabels:
-    - default
+    - Prefab
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b6af75cb1cc43df4b9007608e6ac0379
     m_Address: Gold
@@ -37,6 +49,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c35f159b351e214438223dbdcc7b561d
     m_Address: GoldPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0680fd2fcc8c594e948fb5314b1eb6c
+    m_Address: HitEffect2
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

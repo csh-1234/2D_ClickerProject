@@ -286,11 +286,22 @@ public class Player : Creature
     {
         while (true)    
         {
-            yield return new WaitForSeconds(_fireRate);  // 1초 대기
+            yield return new WaitForSeconds(1f / _currentStats.AttackSpeed);  // 1초 대기
             if (Managers.Instance.Game.MonsterList.Count > 0 && target != null)
             {
-                Projectile proj = Instantiate(projectile, shootPos.transform.position, Quaternion.identity);
-                proj.SetInfo(this, fireDir);
+                GameObject go = Managers.Instance.Resource.Instantiate("GunEffect");
+                go.transform.position = shootPos.transform.position;
+                
+                Projectile proj = Managers.Instance.Object.Spawn<Projectile>(CenterPosition, 0, "Projectile");
+                //Projectile proj = Instantiate(projectile, shootPos.transform.position, Quaternion.identity);
+
+                bool isForcedCritical = _isCritical;
+                if (_isCritical)
+                {
+                    _isCritical = false;  // 한 번 사용 후 리셋
+                }
+
+                proj.SetInfo(this, fireDir, isForcedCritical);  // SetInfo 메서드에 크리티컬 정보 전달
             }
         }
     }
@@ -307,15 +318,15 @@ public class Player : Creature
     private void CheckMonsterListAndControlShooting()
     {
         bool hasMonsters = Managers.Instance.Game.MonsterList.Count > 0;
-
-        if (hasMonsters && shootingCoroutine == null)
+        bool isAlive = Hp > 0;
+        if (hasMonsters && isAlive && shootingCoroutine == null)
         {
-            // 몬스터가 있고 발사 중이 아니면 시작
+            // 몬스터가 있고, 플레이어가 살아있고, 발사 중이 아니면 시작
             shootingCoroutine = StartCoroutine(ShootProjectile());
         }
-        else if (!hasMonsters && shootingCoroutine != null)
+        else if ((!hasMonsters || !isAlive) && shootingCoroutine != null)
         {
-            // 몬스터가 없고 발사 중이면 중지
+            // 몬스터가 없거나 플레이어가 죽었고, 발사 중이면 중지
             StopCoroutine(shootingCoroutine);
             shootingCoroutine = null;
         }

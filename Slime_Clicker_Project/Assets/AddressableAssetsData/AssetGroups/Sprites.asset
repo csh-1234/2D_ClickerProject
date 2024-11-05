@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3f4158fd2ea11db4aa51f2e54d7a3219
+  - m_GUID: 36e40d3da854bb84d87cc00b5d5b814e
     m_Address: Slime_Ranger.sprite
     m_ReadOnly: 0
     m_SerializedLabels:

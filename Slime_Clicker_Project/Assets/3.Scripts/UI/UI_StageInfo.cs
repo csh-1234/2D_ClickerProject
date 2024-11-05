@@ -1,3 +1,4 @@
+using Cinemachine;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,10 @@ public class UI_StageInfo : RootUI
     [SerializeField]private TextMeshProUGUI StageInfo;
     [SerializeField]private TextMeshProUGUI StageTime;
 
-  
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    private CinemachineBasicMultiChannelPerlin virtualCameraNoise;
+    private float originalOrthoSize;
+    private CinemachineFramingTransposer framingTransposer;
     public Button startWave;
 
     private const int STAGES_PER_CYCLE = 5; // 한 사이클당 스테이지 수
@@ -30,6 +34,14 @@ public class UI_StageInfo : RootUI
         // 페이드 패널 초기화
       
         playerStartPos = Managers.Instance.Game.player.transform.position;
+
+        // 카메라 컴포넌트 초기화
+        if (virtualCamera != null)
+        {
+            virtualCameraNoise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            originalOrthoSize = virtualCamera.m_Lens.OrthographicSize;
+        }
     }
 
     private void Start()
@@ -58,7 +70,7 @@ public class UI_StageInfo : RootUI
         }
         coStartStage = StartCoroutine(StartWave());
     }
-
+    private int stageCounter = 1;
     IEnumerator StartWave()
     {
         while (true)
@@ -71,15 +83,19 @@ public class UI_StageInfo : RootUI
                 calctime();
                 yield return null;
 
-                if (sec <= 0f && min <= 0)  // 부동소수점 비교 수정
+                if (sec <= 0f && min <= 0) 
                 {
                     print("타임아웃");
+                    yield return StartCoroutine(PlayPlayerDeathAnimation());
                     SetCurrentStageLevel();
+                    stageCounter++;
                     break;
                 }
-                else if (Managers.Instance.Game.player.Hp == 0)
+                else if (Managers.Instance.Game.player.Hp <= 0)
                 {
                     print("플레이어 사망");
+                    yield return StartCoroutine(PlayPlayerDeathAnimation());
+                    stageCounter++;
                     SetCurrentStageLevel();
                     break;
                 }
@@ -88,6 +104,7 @@ public class UI_StageInfo : RootUI
                     print("스테이지 클리어 - 몬스터 소탕완료");
                     Managers.Instance.Stage.AddCurrentStageLevel();
                     SetCurrentStageLevel();
+                    stageCounter++;
                     break;
                 }
             }
@@ -98,11 +115,95 @@ public class UI_StageInfo : RootUI
             print("새로운 스테이지");
             // 현재 스테이지가 5의 배수일 때만 원점으로 리셋
             int currentStage = Managers.Instance.Stage.GetCurrentStageLevel();
-            bool isEndOfCycle = currentStage % STAGES_PER_CYCLE == 0;
+            bool isEndOfCycle = stageCounter % STAGES_PER_CYCLE == 0;
 
             yield return StartCoroutine(PlayPlayerMoveAnimation(isEndOfCycle));
             yield return new WaitForSeconds(2f);
         }
+    }
+
+
+    private IEnumerator PlayPlayerDeathAnimation()
+    {
+        var player = Managers.Instance.Game.player;
+
+        // 원래 카메라 설정 저장
+        float originalOrthoSize = virtualCamera.m_Lens.OrthographicSize;
+        Vector3 originalTrackedObjectOffset = framingTransposer.m_TrackedObjectOffset;
+        float originalDeadZoneDepth = framingTransposer.m_DeadZoneDepth;
+        float originalDeadZoneWidth = framingTransposer.m_DeadZoneWidth;
+        float originalDeadZoneHeight = framingTransposer.m_DeadZoneHeight;
+
+        // 플레이어 애니메이션 정지
+        player.anim.SetBool("IsWalk", false);
+
+        // 모든 몬스터들을 뒤로 물러나게 함
+        foreach (var monster in Managers.Instance.Game.MonsterList)
+        {
+            monster.RetreatFromPlayer(1.5f); // 카메라 줌인 시간과 동일하게 설정
+        }
+
+        // 플레이어를 화면 중앙으로 배치하기 위한 설정
+        framingTransposer.m_DeadZoneDepth = 0;
+        framingTransposer.m_DeadZoneWidth = 0;
+        framingTransposer.m_DeadZoneHeight = 0;
+        framingTransposer.m_ScreenX = 0.5f;
+        framingTransposer.m_ScreenY = 0.5f;
+        
+        // 천천히 줌인
+        DOTween.To(() => virtualCamera.m_Lens.OrthographicSize,
+            value => virtualCamera.m_Lens.OrthographicSize = value,
+            originalOrthoSize * 0.5f, 1.5f)
+            .SetEase(Ease.InOutQuad);
+        
+        // TrackedObjectOffset을 조정하여 카메라가 비추는 위치를 낮춤
+        DOTween.To(() => framingTransposer.m_TrackedObjectOffset,
+            value => framingTransposer.m_TrackedObjectOffset = value,
+            new Vector3(0, -1f, 0), 1.5f)
+            .SetEase(Ease.InOutQuad);
+        
+        // 줌인이 완료될 때까지 대기
+        yield return new WaitForSeconds(1.5f);
+    
+        // 잠시 대기
+        yield return new WaitForSeconds(1f);
+
+        // 천천히 줌아웃하며 원래 설정으로 복귀
+        DOTween.To(() => virtualCamera.m_Lens.OrthographicSize,
+            value => virtualCamera.m_Lens.OrthographicSize = value,
+            originalOrthoSize, 1f)
+            .SetEase(Ease.InOutQuad);
+
+        DOTween.To(() => framingTransposer.m_TrackedObjectOffset,
+            value => framingTransposer.m_TrackedObjectOffset = value,
+            originalTrackedObjectOffset, 1f)
+            .SetEase(Ease.InOutQuad);
+
+        Managers.Instance.Stage.ClearCurrentStage();
+        
+        yield return new WaitForSeconds(1f);
+
+        // 모든 카메라 설정 복구
+        framingTransposer.m_DeadZoneDepth = originalDeadZoneDepth;
+        framingTransposer.m_DeadZoneWidth = originalDeadZoneWidth;
+        framingTransposer.m_DeadZoneHeight = originalDeadZoneHeight;
+
+  
+        // 페이드 아웃
+        //yield return StartCoroutine(UI_Fade.Instance.FadeOutCoroutine(0.5f));
+
+        // 플레이어 초기화
+        //player.transform.position = playerStartPos;
+        //Managers.Instance.Game.player.Hp = Managers.Instance.Game.player.MaxHp;
+        //Managers.Instance.Game.UpdatePlayerStats();
+
+        yield return new WaitForSeconds(0.5f);
+
+        // 페이드 인
+        //yield return StartCoroutine(UI_Fade.Instance.FadeInCoroutine(0.5f));
+        
+        // 스테이지 재시작
+
     }
 
     private IEnumerator PlayPlayerMoveAnimation(bool resetPosition)

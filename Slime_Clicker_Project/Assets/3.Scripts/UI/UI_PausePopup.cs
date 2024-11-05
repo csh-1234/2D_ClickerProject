@@ -7,8 +7,12 @@ public class UI_PausePopup : UI_Popup
 {
     [SerializeField] private Button continueButton;
     [SerializeField] private Button exitButton;
+    [SerializeField] private GameObject popup;
     private float checkTimeScale;
-
+    private void OnEnable()
+    {
+        PopupOpenAnimation(popup);
+    }
     protected override void Awake()
     {
         base.Awake();

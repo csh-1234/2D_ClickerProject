@@ -98,12 +98,18 @@ public class ObjectManager
     public void Despawn<T>(T obj) where T : BaseObject
     {
         System.Type type = typeof(T);
+
         if (type == typeof(Player))
         {
         }
         else if (type == typeof(Monster))
         {
             //Monster.Remove(obj as Monster);
+            Managers.Instance.Resource.Destroy(obj.gameObject);
+        }
+        else if (type == typeof(Projectile) || type == typeof(Projectile))
+        {
+            //Projectiles.Remove(obj as ProjectileController);
             Managers.Instance.Resource.Destroy(obj.gameObject);
         }
     }

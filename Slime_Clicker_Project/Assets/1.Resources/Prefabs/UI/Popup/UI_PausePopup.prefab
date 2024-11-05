@@ -96,7 +96,7 @@ MonoBehaviour:
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 24
   m_fontSizeMax: 36
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -394,7 +394,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   continueButton: {fileID: 4444412725398592190}
-  exitButton: {fileID: 0}
+  exitButton: {fileID: 93026453958581451}
+  popup: {fileID: 6215324234067057387}
 --- !u!1 &3795170786379570017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,7 +1285,7 @@ MonoBehaviour:
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 24
   m_fontSizeMax: 36
   m_fontStyle: 0
   m_HorizontalAlignment: 2

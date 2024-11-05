@@ -34,9 +34,9 @@ public class StatUpgradeManager
     private int HpBonus = 1;             //레벨당 1
     private int AtkBonus = 1;            //레벨당 1
     private int DefBonus = 1;            //레벨당 1
-    private float CriRateBonus = 0.1f;   //레벨당 0.1
+    private float CriRateBonus = 0.01f;   //레벨당 0.1
     private float criDamageBonus = 1;    //레벨당 1
-    private float AtkSpeedBonus = 0.1f;    //레벨당 0.1
+    private float AtkSpeedBonus = 0.01f;    //레벨당 0.1
 
     //레벨당 코스트
     private int HpCost = 1;             //레벨당 1
@@ -116,13 +116,13 @@ public class StatUpgradeManager
         Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.Def, DefLevel * 1);
 
         OnStatChanged?.Invoke("AtkSpeedUpgrade", AtkSpeedLevel, AtkSpeedLevel * AtkSpeedBonus, AtkSpeedLevel * AtkSpeedCost);
-        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.AtkSpeed, AtkSpeedLevel * 0.1f);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.AtkSpeed, AtkSpeedLevel * 0.01f);
 
         OnStatChanged?.Invoke("CriRateUpgrade", CriRateLevel, CriRateLevel * CriRateBonus, CriRateLevel * CriRateCost);
-        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, CriRateLevel * 0.1f);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, CriRateLevel * 0.01f);
 
         OnStatChanged?.Invoke("CriDamageUpgrade", criDamageLevel, criDamageLevel * criDamageBonus, criDamageLevel * criDamageCost);
-        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, criDamageLevel * 0.1f);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, criDamageLevel * 1f);
 
         Managers.Instance.Game.UpdatePlayerStats();
     }
@@ -154,14 +154,14 @@ public class StatUpgradeManager
     {
         AtkSpeedLevel++;
         OnStatChanged?.Invoke("AtkSpeedUpgrade", AtkSpeedLevel, AtkSpeedLevel * AtkSpeedBonus, AtkSpeedLevel * AtkSpeedCost);
-        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.AtkSpeed, 0.1f);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.AtkSpeed, 0.01f);
         Managers.Instance.Game.UpdatePlayerStats();
     }
     public void UpgradeCriRateLevel()
     {
         CriRateLevel++;
         OnStatChanged?.Invoke("CriRateUpgrade", CriRateLevel, CriRateLevel * CriRateBonus, CriRateLevel * CriRateCost);
-        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, 0.1f);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, 0.01f);
         Managers.Instance.Game.UpdatePlayerStats();
     }
     public void UpgradeCriDamageLevel()
