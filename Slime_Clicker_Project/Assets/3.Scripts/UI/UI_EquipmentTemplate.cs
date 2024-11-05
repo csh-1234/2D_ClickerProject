@@ -12,8 +12,8 @@ public class UI_EquipmentTemplate : RootUI
     protected override void Awake()
     {
         base.Awake();
-    }
 
+    }
     [SerializeField] private Image iconImage;
     [SerializeField] private Image rarityBoard;
     [SerializeField] private TextMeshProUGUI levelText;
@@ -40,7 +40,6 @@ public class UI_EquipmentTemplate : RootUI
     public void UpdateUI()
     {
         if (_item == null) return;
-
 
         if (!Managers.Instance.Game.HasItem(_item.DataId))
         {

@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using static DataManager;
 using static Enums;
 using static UnityEditor.Progress;
 
@@ -125,6 +126,7 @@ public class GameManager
             OwnedItems.Add(item.DataId, item);
             return true;
         }
+        SaveOwnedItems();
         return false;
     }
     public bool TryUnequipItem(ItemType itemType)
@@ -142,17 +144,36 @@ public class GameManager
     {
         if (!HasItem(item.DataId)) return false;
 
-        // 같은 타입의 장비가 이미 있다면 먼저 해제
+        //// 같은 타입의 장비가 이미 있다면 먼저 해제
+        //if (EquippedItems.ContainsKey(item.Type))
+        //{
+        //    EquippedItems.Remove(item.Type);
+        //}
+
+        //// 새 장비 장착
+        //EquippedItems[item.Type] = item;
+
+        //// 장비 스탯 재계산
+        //CalcEquipItem();
+        //SaveOwnedItems();
+        //Debug.Log($"장비 장착 완료 후 플레이어 스탯 - ATK: {player.Atk}, DEF: {player.Def}");
+        Item ownedItem = OwnedItems[item.DataId];
+
+        // 같은 타입의 장비 이미 있다면 장착 해제
         if (EquippedItems.ContainsKey(item.Type))
         {
             EquippedItems.Remove(item.Type);
         }
 
-        // 새 장비 장착
-        EquippedItems[item.Type] = item;
+        // 새 장비 장착 (OwnedItems의 아이템 참조 사용)
+        EquippedItems[item.Type] = ownedItem;
 
-        // 장비 스탯 재계산
+        // 장비 스탯 계산
         CalcEquipItem();
+
+        // 아이템 데이터 저장
+        SaveOwnedItems();
+        OnEquipmentChanged?.Invoke();
 
         Debug.Log($"장비 장착 완료 후 플레이어 스탯 - ATK: {player.Atk}, DEF: {player.Def}");
         return true;
@@ -171,20 +192,15 @@ public class GameManager
         {
             CalcEquipItem();
         }
+        SaveOwnedItems();
         return true;
     }
-    #endregion
-
-    #region Stage
-
-
     #endregion
 
     public void SaveGame()
     {
         SaveStatData();
         SaveOwnedItems();
-        SaveEquippedItems();
         SaveSkillData();
     }
 
@@ -212,12 +228,17 @@ public class GameManager
             player.SkillList[4].CurrentLevel = loadedSkillData.Skill_FatalStrike_Level;
         }
 
-        LoadSkillData();
         LoadOwnedItems();
-        LoadEquippedItems();
         // 다른 게임 데이터도 여기서 로드
     }
-
+    public Item GetOwnedItem(int dataId)
+    {
+        if (OwnedItems.TryGetValue(dataId, out Item item))
+        {
+            return item;
+        }
+        return null;
+    }
     #region saveStatData
     [System.Serializable]
     public class StatLevelData
@@ -369,29 +390,114 @@ public class GameManager
     }
     #endregion
 
+    #region saveItemData
+    [System.Serializable]
+    public class ItemSaveData
+    {
+        public int DataId { get; set; }
+        public int CurrentLevel { get; set; }
+        public int CurrentAtk { get; set; }
+        public int CurrentDef { get; set; }
+    }
 
-
-
+    [System.Serializable]
+    public class ItemInventorySaveData
+    {
+        public List<ItemSaveData> OwnedItems { get; set; } = new List<ItemSaveData>();
+        public Dictionary<ItemType, int> EquippedItemIds { get; set; } = new Dictionary<ItemType, int>();
+    }
 
     private void SaveOwnedItems()
     {
-        // 보유 아이템 저장 로직
+        var saveData = new ItemInventorySaveData();
+
+        // 보유 아이템 저장
+        foreach (var item in OwnedItems.Values)
+        {
+            saveData.OwnedItems.Add(new ItemSaveData
+            {
+                DataId = item.DataId,
+                CurrentLevel = item.CurrentLevel,
+                CurrentAtk = item.CurrentAtk,
+                CurrentDef = item.CurrentDef
+            });
+        }
+
+        // 장착 중인 아이템 저장
+        foreach (var kvp in EquippedItems)
+        {
+            if (kvp.Value != null)
+            {
+                saveData.EquippedItemIds[kvp.Key] = kvp.Value.DataId;
+            }
+        }
+
+        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/ItemData.json";
+
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(jsonPath));
+            string jsonStr = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+            File.WriteAllText(jsonPath, jsonStr);
+
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+            Debug.Log($"아이템 데이터 저장 완료: {jsonPath}");
+#endif
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"아이템 데이터 저장 실패: {e.Message}");
+        }
     }
-
-    private void SaveEquippedItems()
-    {
-        // 장착 아이템 저장 로직
-    }
-
-
+    public event Action OnEquipmentChanged;
     private void LoadOwnedItems()
     {
-        // 보유 아이템 로드 로직
+        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/ItemData.json");
+
+        try
+        {
+            if (File.Exists(jsonPath))
+            {
+                string jsonStr = File.ReadAllText(jsonPath);
+                var saveData = JsonConvert.DeserializeObject<ItemInventorySaveData>(jsonStr);
+
+                // 보유 아이템 로드
+                OwnedItems.Clear();
+                foreach (var itemData in saveData.OwnedItems)
+                {
+                    if (Managers.Instance.Data.ItemDic.TryGetValue(itemData.DataId, out ItemData baseItemData))
+                    {
+                        Item item = new Item(baseItemData);
+                        item.LoadFromSaveData(itemData);
+                        OwnedItems.Add(item.DataId, item);
+                    }
+                }
+
+                // 장착 아이템 로드
+                EquippedItems.Clear();
+                foreach (var kvp in saveData.EquippedItemIds)
+                {
+                    if (OwnedItems.TryGetValue(kvp.Value, out Item item))
+                    {
+                        EquippedItems[kvp.Key] = item;
+                    }
+                }
+
+                // 장비 스탯 재계산
+                CalcEquipItem();
+
+                // UI 업데이트 알림
+                OnEquipmentChanged?.Invoke();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"아이템 데이터 로드 실패: {e.Message}");
+        }
     }
 
-    private void LoadEquippedItems()
-    {
-        // 장착 아이템 로드 로직
-    }
-    
+    #endregion
+
 }
+

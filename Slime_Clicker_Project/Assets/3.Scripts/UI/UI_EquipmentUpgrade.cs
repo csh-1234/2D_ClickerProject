@@ -23,6 +23,7 @@ public class UI_EquipmentUpgrade : RootUI
         base.Awake();
         SetTemplate();
     }
+
     private void SetTemplate()
     {
         foreach (var itemData in _itemDic.Values)
@@ -32,6 +33,32 @@ public class UI_EquipmentUpgrade : RootUI
 
             var _slot = Instantiate(slotTemplate, slotsParent).GetComponent<UI_EquipmentTemplate>();
             var _item = new Item(itemData);
+            //if (Managers.Instance.Game.HasItem(itemData.DataId))
+            //{
+            //    Item ownedItem = Managers.Instance.Game.GetOwnedItem(itemData.DataId);
+            //    if (ownedItem != null)
+            //    {
+            //        // 저장된 아이템 정보로 설정
+            //        //_item = ownedItem;
+            //        _item.CurrentLevel  = ownedItem.CurrentLevel;
+            //        _item.CurrentAtk  = ownedItem.CurrentAtk;
+            //        _item.CurrentDef  = ownedItem.CurrentDef;
+            //    }
+            //}
+
+            //if (Managers.Instance.Game.IsEquipped(_item) == true)
+            //{
+            //    Managers.Instance.Game.TryEquipItem(_item);
+            //}
+            if (Managers.Instance.Game.HasItem(itemData.DataId))
+            {
+                _item = Managers.Instance.Game.GetOwnedItem(itemData.DataId);
+            }
+            else
+            {
+                // 미보유 아이템은 새로 생성
+                _item = new Item(itemData);
+            }
             _slot.SetItem(_item);
             _slot.OnEquipStateChanged = UpdateAllSlots;
             _slots.Add(_slot);

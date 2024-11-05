@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static DataManager;
 using static Enums;
+using static GameManager;
 
 public class Item
 {
@@ -33,6 +34,10 @@ public class Item
             }
             return 0; 
         }
+        set
+        {
+
+        }
     }
     public int CurrentDef
     {
@@ -43,6 +48,10 @@ public class Item
                 return _data.BaseDef + ((CurrentLevel-1) * _data.BonusDef);
             }
             return 0;
+        }
+        set
+        {
+
         }
     }
 
@@ -66,5 +75,10 @@ public class Item
         }
     }
 
-
+    public void LoadFromSaveData(ItemSaveData saveData)
+    {
+        CurrentLevel = saveData.CurrentLevel;
+        CurrentAtk = saveData.CurrentAtk;
+        CurrentDef = saveData.CurrentDef;
+    }
 }
