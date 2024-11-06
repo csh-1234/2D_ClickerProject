@@ -2,7 +2,7 @@
   "Items": [
     {
       "DataId": 300000,
-      "ItemName": "일반 검",
+      "ItemName": "방금 주운 나뭇가지",
       "ItemType": 0,
       "ItemRarity": 0,
       "BaseLevel": 1,
@@ -14,12 +14,12 @@
       "ItemPrice": 100,
       "UpgradeCost": 10,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 일반 등급의 검이다.",
+      "ItemInfo": "길거리에서 흔히 볼 수 있는 나뭇가지",
       "SpriteName": "Sword.sprite"
     },
     {
       "DataId": 300001,
-      "ItemName": "고급 검",
+      "ItemName": "싱싱한 대파",
       "ItemType": 0,
       "ItemRarity": 1,
       "BaseLevel": 1,
@@ -31,12 +31,12 @@
       "ItemPrice": 1000,
       "UpgradeCost": 100,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 고급 등급의 검이다.",
+      "ItemInfo": "복순이네 텃밭에서 서리해온 대파",
       "SpriteName": "Sword.sprite"
     },
     {
       "DataId": 300002,
-      "ItemName": "희귀 검",
+      "ItemName": "뾰족한 닭꼬치 막대",
       "ItemType": 0,
       "ItemRarity": 2,
       "BaseLevel": 1,
@@ -48,12 +48,12 @@
       "ItemPrice": 10000,
       "UpgradeCost": 1000,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 희귀 등급의 검이다.",
-      "SpriteName": "Sword.sprite"
+      "ItemInfo": "누구 할머니 닭꼬치집(연중무휴) 앞에서 주어온 뾰족한 닭꼬치 막대",
+      "SpriteName": "Chicken.sprite"
     },
     {
       "DataId": 300003,
-      "ItemName": "전설 검",
+      "ItemName": "8번 아이언",
       "ItemType": 0,
       "ItemRarity": 3,
       "BaseLevel": 1,
@@ -65,12 +65,12 @@
       "ItemPrice": 100000,
       "UpgradeCost": 10000,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 레전드 등급의 검이다.",
+      "ItemInfo": "뭐든 때릴 수 있는 다목적 막대기",
       "SpriteName": "Sword.sprite"
     },
     {
       "DataId": 300004,
-      "ItemName": "신화 검",
+      "ItemName": "울어라 지옥참마도!",
       "ItemType": 0,
       "ItemRarity": 4,
       "BaseLevel": 1,
@@ -82,12 +82,12 @@
       "ItemPrice": 1000000,
       "UpgradeCost": 100000,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 신화 등급의 검이다.",
+      "ItemInfo": "영감 미안해요… 다시는 안뽑기로 했는데..",
       "SpriteName": "Sword.sprite"
     },
     {
       "DataId": 300005,
-      "ItemName": "일반 방어구",
+      "ItemName": "파란색 목욕가운",
       "ItemType": 1,
       "ItemRarity": 0,
       "BaseLevel": 1,
@@ -99,12 +99,12 @@
       "ItemPrice": 100,
       "UpgradeCost": 10,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 일반 등급의 방어구다.",
+      "ItemInfo": "사우나에 가고싶게 만드는 목욕가운",
       "SpriteName": "Shield.sprite"
     },
     {
       "DataId": 300006,
-      "ItemName": "고급 방어구",
+      "ItemName": "초롱이형의 형광바지",
       "ItemType": 1,
       "ItemRarity": 1,
       "BaseLevel": 1,
@@ -116,12 +116,12 @@
       "ItemPrice": 1000,
       "UpgradeCost": 100,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 고급 등급의 방어구다.",
+      "ItemInfo": "밝은 형광색이 돋보이는 패션 아이템",
       "SpriteName": "Shield.sprite"
     },
     {
       "DataId": 300007,
-      "ItemName": "희귀 방어구",
+      "ItemName": "냥모그의 갑옷",
       "ItemType": 1,
       "ItemRarity": 2,
       "BaseLevel": 1,
@@ -133,12 +133,12 @@
       "ItemPrice": 10000,
       "UpgradeCost": 1000,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 희귀 등급의 방어구다.",
+      "ItemInfo": "착용하면 든든해지는 갑옷",
       "SpriteName": "Shield.sprite"
     },
     {
       "DataId": 300008,
-      "ItemName": "전설 방어구",
+      "ItemName": "라이더 벨트",
       "ItemType": 1,
       "ItemRarity": 3,
       "BaseLevel": 1,
@@ -150,12 +150,12 @@
       "ItemPrice": 100000,
       "UpgradeCost": 10000,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 레전드 등급의 방어구다.",
+      "ItemInfo": "특정 조건을 만족하면 변신할 수 있을지도?",
       "SpriteName": "Shield.sprite"
     },
     {
       "DataId": 300009,
-      "ItemName": "신화 방어구",
+      "ItemName": "노X 페이스 히말라야",
       "ItemType": 1,
       "ItemRarity": 4,
       "BaseLevel": 1,
@@ -167,8 +167,25 @@
       "ItemPrice": 1000000,
       "UpgradeCost": 100000,
       "CostRatio": 0.1,
-      "ItemInfo": "냥팡에서 구할 수 있는 신화 등급의 방어구다.",
+      "ItemInfo": "거위 솜털 90% 깃털 10%로 이루어진 따뜻한 패딩",
       "SpriteName": "Shield.sprite"
+    },
+    {
+      "DataId": 300010,
+      "ItemName": "페이커 친필싸인",
+      "ItemType": 1,
+      "ItemRarity": 4,
+      "BaseLevel": 1,
+      "MaxLevel": 5000,
+      "BaseAtk": 5000,
+      "BonusAtk": 5000,
+      "BaseDef": 5000,
+      "BonusDef": 5000,
+      "ItemPrice": 1000000,
+      "UpgradeCost": 100000,
+      "CostRatio": 0.1,
+      "ItemInfo": "또 당신입니까? GOAT 기습숭배 상시숭배",
+      "SpriteName": "FakerSign.sprite"
     }
   ]
 }

@@ -250,7 +250,8 @@ public class Player : Creature
         }
     }
 
-    Vector2 fireDir;
+    private Vector2 fireDir;
+    private float EnemyDist;
 
     void PlayerInput()
     {
@@ -277,6 +278,7 @@ public class Player : Creature
 
                 }
             }
+            EnemyDist = (target.transform.position - transform.position).magnitude;
             fireDir = (target.transform.position - transform.position).normalized;
         }
         
@@ -287,7 +289,7 @@ public class Player : Creature
         while (true)    
         {
             yield return new WaitForSeconds(1f / _currentStats.AttackSpeed);  // 1ÃÊ ´ë±â
-            if (Managers.Instance.Game.MonsterList.Count > 0 && target != null)
+            if (Managers.Instance.Game.MonsterList.Count > 0 && target != null && EnemyDist <= 5)
             {
                 GameObject go = Managers.Instance.Resource.Instantiate("GunEffect");
                 go.transform.position = shootPos.transform.position;

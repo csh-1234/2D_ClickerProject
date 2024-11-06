@@ -63,7 +63,7 @@ public class StatUpgradeManager
         {
             case "AtkUpgrade":
                 return (AtkLevel, AtkLevel * AtkBonus, AtkLevel * AtkCost);
-            case "HpUgrade":
+            case "HpUpgrade":
                 return (HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
             case "DefUpgrade":
                 return (DefLevel, DefLevel * DefBonus, DefLevel * DefCost);
@@ -85,7 +85,7 @@ public class StatUpgradeManager
             case "AtkUpgrade":
                 UpgradeAtkLevel();
                 break;
-            case "HpUgrade":
+            case "HpUpgrade":
                 UpgradeHpLevel();
                 break;
             case "DefUpgrade":
@@ -108,7 +108,7 @@ public class StatUpgradeManager
         OnStatChanged?.Invoke("AtkUpgrade", AtkLevel, AtkLevel * AtkBonus, AtkLevel * AtkCost);
         Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.Atk, AtkLevel * 1);
 
-        OnStatChanged?.Invoke("HpUgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
+        OnStatChanged?.Invoke("HpUpgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
         Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.Hp, HpLevel * 1);
         Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.MaxHp, HpLevel * 1);
 
@@ -138,7 +138,7 @@ public class StatUpgradeManager
     public void UpgradeHpLevel()
     {
         HpLevel++;
-        OnStatChanged?.Invoke("HpUgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
+        OnStatChanged?.Invoke("HpUpgrade", HpLevel, HpLevel * HpBonus, HpLevel * HpCost);
         Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.Hp, 1);
         Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.MaxHp, 1);
         Managers.Instance.Game.UpdatePlayerStats();

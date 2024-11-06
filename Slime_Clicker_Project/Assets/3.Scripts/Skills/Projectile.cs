@@ -8,21 +8,19 @@ public class Projectile : BaseObject
 {
     private Creature _owner;
     private Monster target;
+
     private Vector2 fireDirection;
+    private Vector3 startPos;
+
     private bool _isForcedCritical;  // 강제 크리티컬 여부 추가
+    private bool hasHit = false;  // 충돌 체크
+
     protected override void Awake()
     {
         base.Awake();
     }
 
-
-    void Update()
-    {
-        //SetTarget();
-        
-    }
-
-    private void FixedUpdate()
+    private void Update()
     {
         ProjectileMove();
     }
@@ -35,24 +33,29 @@ public class Projectile : BaseObject
         _isForcedCritical = isForcedCritical;  // 크리티컬 정보 저장
     }
 
-    private Vector3 startPos;
+    
     public void Initialize(Vector2 direction)
     {
         fireDirection = direction.normalized;
         startPos = transform.position;
     }
-    private bool hasHit = false;  // 충돌 여부를 체크하는 플래그 추가
+    
+
     void ProjectileMove()
     {
         // 기본 이동
         if (hasHit) return;
         Vector2 movement = fireDirection * Time.deltaTime * 10f;
         transform.Translate(movement);
-        //RigidBody.AddForce(transform.up * -1 * RigidBody.gravityScale);
+        StartCoroutine(DelayDestroy());
+    } 
 
-
-        //RigidBody.MovePosition(RigidBody.position + movement);
+    private IEnumerator DelayDestroy()
+    {
+        yield return new WaitForSeconds(5f);
+        Managers.Instance.Object.Despawn(this);
     }
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -130,6 +130,7 @@ public class Monster : Creature
     {
         while (hasStartedShooting && Target != null && Target.Hp > 0)  // 플레이어 체력 체크 추가
         {
+            yield return new WaitForSeconds(1f / _currentStats.AttackSpeed);
             fireDir = (Target.transform.position - transform.position).normalized;
             if (Managers.Instance.Game.player != null)
             {
@@ -137,7 +138,7 @@ public class Monster : Creature
                 proj.SetInfo(this, fireDir);
             }
 
-            yield return new WaitForSeconds(_fireRate);
+            
         }
 
         hasStartedShooting = false;  // 루프 종료 시 발사 상태 해제

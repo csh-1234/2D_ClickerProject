@@ -23,6 +23,7 @@ public class Item
     public int UpgradeCost { get { return _data.UpgradeCost; } }
     public string SpriteName { get { return _data.SpriteName; } }
     public int ItemPrice { get { return _data.ItemPrice; } }
+    public string ItemInfo { get { return _data.ItemInfo; } }
 
     public int CurrentAtk
     {

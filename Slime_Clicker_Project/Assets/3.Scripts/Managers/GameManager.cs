@@ -421,7 +421,7 @@ public class GameManager
                 DataId = item.DataId,
                 CurrentLevel = item.CurrentLevel,
                 CurrentAtk = item.CurrentAtk,
-                CurrentDef = item.CurrentDef
+                CurrentDef = item.CurrentDef,
             });
         }
 
@@ -434,7 +434,7 @@ public class GameManager
             }
         }
 
-        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/ItemData.json";
+        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/ItemLevelData.json";
 
         try
         {
@@ -455,7 +455,7 @@ public class GameManager
     public event Action OnEquipmentChanged;
     private void LoadOwnedItems()
     {
-        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/ItemData.json");
+        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/ItemLevelData.json");
 
         try
         {

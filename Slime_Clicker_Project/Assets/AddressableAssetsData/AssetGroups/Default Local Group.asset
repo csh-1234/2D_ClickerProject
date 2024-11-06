@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5df685e7473c73f4e939575f6b79f52f
   m_SerializeEntries:
+  - m_GUID: 6f7f0a8b25f0e0f4ca6349561b76c38e
+    m_Address: Chicken
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8e41ad7d9c7481e46a0bbb0133151233
     m_Address: GunEffect
     m_ReadOnly: 0

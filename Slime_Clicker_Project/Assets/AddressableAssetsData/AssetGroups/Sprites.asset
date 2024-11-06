@@ -41,6 +41,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f613fda49445f4469f7fac0ebdb87bd
+    m_Address: FakerSign.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bac333f89f982694d9cf7c92c523cd79
     m_Address: Sword.sprite
     m_ReadOnly: 0

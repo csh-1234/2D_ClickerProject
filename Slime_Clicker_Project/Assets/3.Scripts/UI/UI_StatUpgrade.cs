@@ -54,7 +54,7 @@ public class UI_StatUpgrade : RootUI
     private void UpdateStat(int level, float bonus, int cost)
     {
         StatLevel.text = $"LV.{level}";
-        StatBonus.text = $"{bonus}";
+        StatBonus.text = $"{statType.Replace("Upgrade", "")} +{bonus.ToString("F2")}";
         StatCost.text = $"{cost}";
     }
 

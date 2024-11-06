@@ -21,6 +21,7 @@ public class UI_EquipmentTemplate : RootUI
     [SerializeField] private TextMeshProUGUI statText;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI priceText;
+    [SerializeField] private TextMeshProUGUI infoText;
 
     [SerializeField] private Button buyButton;
     [SerializeField] private Button equipButton;
@@ -75,6 +76,9 @@ public class UI_EquipmentTemplate : RootUI
         statText.text = _item.GetMainStatText();
         costText.text = _item.UpgradeCost.ToString();
         priceText.text = _item.ItemPrice.ToString();
+        infoText.text = _item.ItemInfo;
+
+        //infoText.text = Managers.Instance.Data.ItemDic[_item.DataId].ItemInfo;
         upgradeButton.interactable = _item.CurrentLevel < 1000;
     }
 
