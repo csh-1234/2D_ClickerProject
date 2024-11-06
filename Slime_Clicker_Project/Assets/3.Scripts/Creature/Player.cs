@@ -282,6 +282,7 @@ public class Player : Creature
             {
                 //EffectBase Effect = Managers.Instance.Object.Spawn<EffectBase>(transform.position, 0 ,"GunEffect");
                 Managers.Instance.Object.ShowEffect(shootPos.transform.position, "GunEffect");
+                Managers.Instance.Sound.Play("Fire", SoundManager.Sound.Effect);
                 Projectile proj = Managers.Instance.Object.Spawn<Projectile>(CenterPosition, 0, "Projectile");
                 bool isForcedCritical = _isCritical;
                 if (_isCritical)

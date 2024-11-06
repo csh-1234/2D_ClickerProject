@@ -38,6 +38,7 @@ public class Managers : MonoBehaviour
     StatUpgradeManager statUpgrade = new StatUpgradeManager();
     DataManager data = new DataManager();
     StageManager stage = new StageManager();
+    SoundManager sound = new SoundManager();
 
     public UI_Manager UI { get { return Instance != null ? Instance.ui : null; } }
     public ResourceManager Resource { get { return Instance != null ? Instance.resource : null; } }
@@ -48,6 +49,7 @@ public class Managers : MonoBehaviour
     public StatUpgradeManager StatUpgrade { get { return Instance != null ? instance.statUpgrade : null; } }
     public DataManager Data { get { return Instance != null ? instance.data : null; } }
     public StageManager Stage { get { return Instance != null ? instance.stage : null; } }
+    public SoundManager Sound { get {  return Instance != null ? instance.sound : null; } }
 
 
     private void Awake()
@@ -58,8 +60,7 @@ public class Managers : MonoBehaviour
     private void Init()
     {
         if (IsInit) return;
-        
-        // 하위 매니저 초기화
+        sound.Init();
         IsInit = true;
     }
 

@@ -168,6 +168,7 @@ public class Monster : Creature
         //DropGold gold = Managers.Instance.Object.Spawn<DropGold>(this.transform.position, 0, "Gold");
         int goldAmount = (int)(100 * Managers.Instance.Stage.DifficultyByLevel); // 예시 값, 실제로는 몬스터 데이터에서 가져오기
         Managers.Instance.Currency.AddGold(goldAmount);
+        Managers.Instance.Sound.Play("Coin", SoundManager.Sound.Effect);
 
         UI_GoldEffect.Instance.PlayGoldEffect(transform.position, goldAmount);
         Managers.Instance.Object.Despawn(this);

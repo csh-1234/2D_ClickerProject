@@ -21,6 +21,7 @@ public class UI_InGameScene : RootUI
     {
         LoadResource();
         BindEventToObjects();
+        Managers.Instance.Sound.Play("InGameBgm", SoundManager.Sound.Bgm);
         //기본 상태 = 스텟 업그레이드
     }
 

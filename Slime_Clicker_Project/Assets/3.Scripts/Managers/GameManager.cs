@@ -245,6 +245,11 @@ public class GameManager
         }
     }
 
+    private string GetSavePath(string fileName)
+    {
+        return Path.Combine(Application.persistentDataPath, "SaveData", fileName);
+    }
+
     #region saveStatData
     [System.Serializable]
     public class StatLevelData
@@ -270,7 +275,7 @@ public class GameManager
             AtkSpeedLevel = Managers.Instance.StatUpgrade.AtkSpeedLevel == 0 ? 1 : Managers.Instance.StatUpgrade.AtkSpeedLevel,
         };
 
-        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/StatLevelData.json";
+        string jsonPath = GetSavePath("StatLevelData.json");
 
         try
         {
@@ -298,7 +303,7 @@ public class GameManager
 
     private StatLevelData LoadStatData()
     {
-        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/StatLevelData.json");
+        string jsonPath = GetSavePath("StatLevelData.json");
 
         try
         {
@@ -346,7 +351,7 @@ public class GameManager
             Skill_FatalStrike_Level = player.SkillList[4].CurrentLevel == 0 ? 1 : player.SkillList[4].CurrentLevel,
         };
 
-        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/SkillLevelData.json";
+        string jsonPath = GetSavePath("SkillLevelData.json");
 
         try
         {
@@ -373,7 +378,7 @@ public class GameManager
 
     private SkillLevelData LoadSkillData()
     {
-        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/SkillLevelData.json");
+        string jsonPath = GetSavePath("SkillLevelData.json");
 
         try
         {
@@ -484,8 +489,7 @@ public class GameManager
                 saveData.EquippedItemIds[kvp.Key] = kvp.Value.DataId;
             }
         }
-
-        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/ItemLevelData.json";
+        string jsonPath = GetSavePath("ItemLevelData.json");
 
         try
         {
@@ -506,7 +510,7 @@ public class GameManager
     public event Action OnEquipmentChanged;
     private void LoadOwnedItems()
     {
-        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/ItemLevelData.json");
+        string jsonPath = GetSavePath("ItemLevelData.json");
 
         try
         {
@@ -568,8 +572,7 @@ public class GameManager
             CurrentGold = Managers.Instance.Currency.GetCurrentGold(),
             CurrentStage = Managers.Instance.Stage.GetCurrentStageLevel(),
         };
-
-        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/GoldStageData.json";
+        string jsonPath = GetSavePath("GoldStageData.json");
 
         try
         {
@@ -594,7 +597,7 @@ public class GameManager
     }
     private GoldStageData LoadGoldStageData()
     {
-        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/GoldStageData.json");
+        string jsonPath = GetSavePath("GoldStageData.json");
 
         try
         {

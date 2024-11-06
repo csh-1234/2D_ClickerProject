@@ -2,28 +2,37 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static Enums;
 
 public class UI_TitleScene : RootUI
 {
     public Image TitleTextBox;
     public TextMeshProUGUI TitleText;
+    public Slider loadingSlider;
+    public TextMeshProUGUI loadingValue;
+    public TextMeshProUGUI loadingText;
+    public Image LoadingCircle;
+    public Image startButton;
+
     
     private DG.Tweening.Sequence _titleAnimation;
     protected override void Awake()
     {
         base.Awake();
+        LoadResource();
     }
 
     void Start()
     {
-        StartButtonAnimation();
         BindEventToObjects();
-        LoadResource();
+        StartCoroutine(StartLoadingBar());
+        Managers.Instance.Sound.Play("TitleBgm", SoundManager.Sound.Bgm);
     }
 
     void Update()
@@ -51,13 +60,15 @@ public class UI_TitleScene : RootUI
     private void BindEventToObjects()
     {
         // 이벤트를 추가할 (오브젝트 이름, 메서드)
-        BindEvent("TitleImage", OnTitleClickButtonClick);
+        BindEvent("StartButton", OnTitleClickButtonClick);
+        
     }
 
     private void OnTitleClickButtonClick()
     {
-        Debug.Log("Ddd");
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         SceneManager.LoadScene("InGameScene");
+        Managers.Instance.Sound.Clear();
     }
 
     private void LoadResource()
@@ -98,14 +109,37 @@ public class UI_TitleScene : RootUI
     #region Animation
     void StartButtonAnimation()
     {
+        startButton.gameObject.SetActive(true);
         DOTween.Init();
         _titleAnimation = DOTween.Sequence();
 
-        _titleAnimation.Join(TitleText.DOFade(0, 2f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic));
-        _titleAnimation.Join(TitleTextBox.DOFade(0, 2f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic));
+        _titleAnimation.Join(TitleText.DOFade(0, 1.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic));
+        _titleAnimation.Join(TitleTextBox.DOFade(0, 1.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic));
     }
 
     #endregion
 
-   
+    IEnumerator StartLoadingBar()
+    {
+        loadingSlider.GetComponent<Slider>().DOValue(1, 5);
+        LoadingCircle.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, -360), 5f, RotateMode.FastBeyond360).SetEase(Ease.Linear);
+
+        float timeElapsed = 0f;
+        while (timeElapsed < 5f)
+        {
+            timeElapsed += Time.deltaTime;
+            float percent = Mathf.Clamp01(timeElapsed / 4f) * 100f;
+            loadingValue.SetText(percent.ToString("F0") + "%");
+            yield return null;
+        }
+
+        // 10초 후에 로딩 이미지 비활성화
+        LoadingCircle.gameObject.SetActive(false);
+        loadingText.gameObject.SetActive(false);
+        TitleTextBox.gameObject.SetActive(true);
+        loadingSlider.gameObject.SetActive(false);
+
+
+        StartButtonAnimation();
+    }
 }

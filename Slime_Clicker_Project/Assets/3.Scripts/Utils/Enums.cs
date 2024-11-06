@@ -55,6 +55,12 @@ public class Enums
         CriDamage,
         MoveSpeed,
     }
+    public enum Sound
+    {
+        Bgm,
+        Effect,
+        MaxCount,
+    }
 
 
     #region »ö °ü¸®

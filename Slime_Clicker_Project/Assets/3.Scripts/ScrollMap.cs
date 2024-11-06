@@ -6,31 +6,41 @@ using UnityEngine.UIElements;
 
 public class ScrollMap : MonoBehaviour
 {
-    [SerializeField]
-    private Transform target;
-    [SerializeField]
-    private float scrollAmount;
-    [SerializeField]
-    private float moveSpeed;
-    [SerializeField]
-    private Vector3 moveDirection;
+    [SerializeField] private float defaultFlowSpeed = 0.3f;
+    private float currentFlowSpeed;
 
-    void Update()
+    private MeshRenderer meshRenderer;
+    private Material backgroundMaterial;
+    private float offset;
+
+    public bool IsScrolling { get; set; }
+
+    private void Awake()
     {
-        //transform.position += moveDirection * moveSpeed * Time.deltaTime;
-        //transform.position += moveDirection * moveSpeed * Time.deltaTime;
-        //if(transform.position.x <= -scrollAmount)
-        //{
-        //    transform.position = target.position - moveDirection * scrollAmount;
-        //}
+        meshRenderer = GetComponent<MeshRenderer>();
+        // 새로운 머티리얼 인스턴스 생성
+        backgroundMaterial = new Material(meshRenderer.material);
+        meshRenderer.material = backgroundMaterial;
     }
-    
-    void moveScroll()
+
+    private void Update()
     {
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
-        if (transform.position.x <= -scrollAmount)
+        currentFlowSpeed = IsScrolling ? defaultFlowSpeed : 0f;
+        offset += Time.deltaTime * currentFlowSpeed;
+        backgroundMaterial.mainTextureOffset = new Vector2(offset, 0);
+    }
+
+    private void OnDestroy()
+    {
+        if (backgroundMaterial != null)
         {
-            transform.position = target.position - moveDirection * scrollAmount;
+            Destroy(backgroundMaterial);
         }
+    }
+
+    // 스크롤 속도를 직접 설정하는 메서드 추가
+    public void SetScrollSpeed(float speed)
+    {
+        defaultFlowSpeed = speed;
     }
 }

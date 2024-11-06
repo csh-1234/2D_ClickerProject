@@ -26,7 +26,23 @@ public class ResourceManager
                 return temp as T;
             }
         }
+        if (typeof(T) == typeof(AudioClip))
+        {
+            // 전체 Resources 폴더에서 검색
+            AudioClip[] allClips = Resources.LoadAll<AudioClip>("");
+            foreach (var clip in allClips)
+            {
+                Debug.Log($"Found clip: {clip.name} in Resources folder");
+                if (clip.name == key.Replace("Sounds/", ""))
+                {
+                    Debug.Log($"Found matching clip: {clip.name}");
+                    resources.Add(key, clip);
+                    return clip as T;
+                }
+            }
+        }
 
+        Debug.LogError($"Failed to load resource: {key}");
         return null;
     }
     public GameObject Instantiate(string key, Transform parent = null, bool pooling = false)

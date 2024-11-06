@@ -9,10 +9,46 @@ using System.Xml;
 using UnityEditor;
 using UnityEngine;
 using static Enums;
+using Formatting = Newtonsoft.Json.Formatting;
 
 
 public class DataManager
 {
+    private string GetDataPath(string fileName, bool isLoad = true)
+    {
+        if (isLoad)
+        {
+#if UNITY_EDITOR
+            return Path.Combine(Application.dataPath, "1.Resources/Data", fileName);
+#else
+        // 빌드된 버전에서는 StreamingAssets 폴더 사용
+        string streamingPath = Path.Combine(Application.streamingAssetsPath, "Data", fileName);
+        
+        // 파일이 존재하는지 확인하고 로그 출력
+        if (File.Exists(streamingPath))
+        {
+            Debug.Log($"Data file found at: {streamingPath}");
+        }
+        else
+        {
+            Debug.LogError($"Data file not found at: {streamingPath}");
+        }
+        
+        return streamingPath;
+#endif
+        }
+        else
+        {
+            // 저장 데이터용 경로
+            string savePath = Path.Combine(Application.persistentDataPath, "SaveData", fileName);
+
+            // 저장 폴더가 없다면 생성
+            Directory.CreateDirectory(Path.GetDirectoryName(savePath));
+
+            return savePath;
+        }
+    }
+
     public Dictionary<int, CreatureData> CreatureDic { get; private set; } = new Dictionary<int, CreatureData>();
     public Dictionary<int, SkillData> SkillDic { get; private set; } = new Dictionary<int, SkillData>();
     public Dictionary<int, ItemData> ItemDic { get; private set; } = new Dictionary<int, ItemData>();
@@ -27,8 +63,8 @@ public class DataManager
     #region Creature
     private void LoadCreatureData()
     {
-        string csvPath = $"{Application.dataPath}/1.Resources/Data/Excel/CreatureData.csv";
-        string jsonPath = $"{Application.dataPath}/1.Resources/Data/JsonData/CreatureData.json";
+        string csvPath = GetDataPath("Excel/CreatureData.csv", true);
+        string jsonPath = GetDataPath("JsonData/CreatureData.json", true);
 
         //csv파일이 존재하고, json파일이 최신화 되지 않으면 다시 읽어서 dic에 넣어줌
         if (File.Exists(csvPath) && (!File.Exists(jsonPath) || File.GetLastWriteTime(csvPath) > File.GetLastWriteTime(jsonPath)))
@@ -51,8 +87,8 @@ public class DataManager
     public void ParseCreatureData(string filename)
     {
         List<CreatureData> creatureList = new List<CreatureData>();
-
-        string[] lines = File.ReadAllText($"{Application.dataPath}/1.Resources/Data/Excel/{filename}Data.csv").Split("\n");
+        string csvPath = GetDataPath($"Excel/{filename}Data.csv", true);
+        string[] lines = File.ReadAllText(csvPath).Split("\n");
 
         //0번째 줄은 어떤 데이터인지 나타내기 때문에 1부터 시작
         for (int y = 1; y < lines.Length; y++)
@@ -67,7 +103,7 @@ public class DataManager
             {
                 //순서대로 저장되었기 때문에 row에 저장된 단어를 하나씩 가져감
                 DataId = ConvertValue<int>(row[i++]),
-                CreatureName = ConvertValue<string>(row[i++]),  
+                CreatureName = ConvertValue<string>(row[i++]),
                 CreatureType = ConvertValue<ObjectType>(row[i++]),
                 Hp = ConvertValue<int>(row[i++]),
                 MaxHp = ConvertValue<int>(row[i++]),
@@ -84,21 +120,20 @@ public class DataManager
         }
 
         CreatureDataWrapper wrapper = new CreatureDataWrapper { Creatures = creatureList };
-        string jsonStr = JsonConvert.SerializeObject(wrapper, Newtonsoft.Json.Formatting.Indented); // Formatting.Indented : 자동으로 라인 / 들여쓰기된 문자열을 리턴해
-        File.WriteAllText($"{Application.dataPath}/1.Resources/Data/JsonData/{filename}Data.json", jsonStr);
-#if UNITY_EDITOR
-        UnityEditor.AssetDatabase.Refresh();
-#endif
+        string jsonPath = GetDataPath($"JsonData/{filename}Data.json", true);
+        string jsonStr = JsonConvert.SerializeObject(wrapper, Formatting.Indented);
+        File.WriteAllText(jsonPath, jsonStr);
+
 
         CreatureDic = creatureList.ToDictionary(c => c.DataId);
     }
     #endregion
 
     #region Item
-    private void LoadItemData()
+        private void LoadItemData()
     {
-        string csvPath = $"{Application.dataPath}/1.Resources/Data/Excel/ItemData.csv";
-        string jsonPath = $"{Application.dataPath}/1.Resources/Data/JsonData/ItemData.json";
+        string csvPath = GetDataPath("Excel/ItemData.csv", true);
+        string jsonPath = GetDataPath("JsonData/ItemData.json", true);
 
         //csv파일이 존재하고, json파일이 최신화 되지 않으면 다시 읽어서 dic에 넣어줌
         if (File.Exists(csvPath) && (!File.Exists(jsonPath) || File.GetLastWriteTime(csvPath) > File.GetLastWriteTime(jsonPath)))
@@ -125,8 +160,8 @@ public class DataManager
     public void ParseItemData(string filename)
     {
         List<ItemData> itemList = new List<ItemData>();
-
-        string[] lines = File.ReadAllText($"{Application.dataPath}/1.Resources/Data/Excel/{filename}Data.csv").Split("\n");
+        string csvPath = GetDataPath($"Excel/{filename}Data.csv", true);
+        string[] lines = File.ReadAllText(csvPath).Split("\n");
 
         //0번째 줄은 어떤 데이터인지 나타내기 때문에 1부터 시작
         for (int y = 1; y < lines.Length; y++)
@@ -161,11 +196,9 @@ public class DataManager
         }
         
         ItemDataWrapper wrapper = new ItemDataWrapper { Items = itemList };
-        string jsonStr = JsonConvert.SerializeObject(wrapper, Newtonsoft.Json.Formatting.Indented); // Formatting.Indented : 자동으로 라인 / 들여쓰기된 문자열을 리턴해
-        File.WriteAllText($"{Application.dataPath}/1.Resources/Data/JsonData/{filename}Data.json", jsonStr);
-#if UNITY_EDITOR
-        UnityEditor.AssetDatabase.Refresh();
-#endif
+        string jsonPath = GetDataPath($"JsonData/{filename}Data.json", true);
+        string jsonStr = JsonConvert.SerializeObject(wrapper, Formatting.Indented);
+        File.WriteAllText(jsonPath, jsonStr);
 
         ItemDic = itemList.ToDictionary(c => c.DataId);
     }
@@ -174,8 +207,8 @@ public class DataManager
     #region Skill
     private void LoadSklillData()
     {
-        string csvPath = $"{Application.dataPath}/1.Resources/Data/Excel/SkillData.csv";
-        string jsonPath = $"{Application.dataPath}/1.Resources/Data/JsonData/SkillData.json";
+        string csvPath = GetDataPath("Excel/SkillData.csv", true);
+        string jsonPath = GetDataPath("JsonData/SkillData.json", true);
 
         //csv파일이 존재하고, json파일이 최신화 되지 않으면 다시 읽어서 dic에 넣어줌
         if (File.Exists(csvPath) && (!File.Exists(jsonPath) || File.GetLastWriteTime(csvPath) > File.GetLastWriteTime(jsonPath)))
@@ -198,8 +231,8 @@ public class DataManager
     public void ParseSkillData(string filename)
     {
         List<SkillData> skillList = new List<SkillData>();
-
-        string[] lines = File.ReadAllText($"{Application.dataPath}/1.Resources/Data/Excel/{filename}Data.csv").Split("\n");
+        string csvPath = GetDataPath($"Excel/{filename}Data.csv", true);
+        string[] lines = File.ReadAllText(csvPath).Split("\n");
 
         //0번째 줄은 어떤 데이터인지 나타내기 때문에 1부터 시작
         for (int y = 1; y < lines.Length; y++)
@@ -239,11 +272,9 @@ public class DataManager
         }
 
         SkillDataWrapper wrapper = new SkillDataWrapper { Skills = skillList };
-        string jsonStr = JsonConvert.SerializeObject(wrapper, Newtonsoft.Json.Formatting.Indented); // Formatting.Indented : 자동으로 라인 / 들여쓰기된 문자열을 리턴해
-        File.WriteAllText($"{Application.dataPath}/1.Resources/Data/JsonData/{filename}Data.json", jsonStr);
-#if UNITY_EDITOR
-        UnityEditor.AssetDatabase.Refresh();
-#endif
+        string jsonPath = GetDataPath($"JsonData/{filename}Data.json", true);
+        string jsonStr = JsonConvert.SerializeObject(wrapper, Formatting.Indented);
+        File.WriteAllText(jsonPath, jsonStr);
 
         SkillDic = skillList.ToDictionary(c => c.DataId);
     }

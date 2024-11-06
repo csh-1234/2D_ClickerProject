@@ -33,7 +33,11 @@ public class UI_StageInfo : RootUI
         SetCurrentStageLevel();
         // 페이드 패널 초기화
       
-        playerStartPos = Managers.Instance.Game.player.transform.position;
+        if(Managers.Instance.Game.player!=null)
+        {
+            playerStartPos = Managers.Instance.Game.player.transform.position;
+
+        }
 
         // 카메라 컴포넌트 초기화
         if (virtualCamera != null)

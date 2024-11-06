@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CurrencyManager
 {
-    private int CurrentGold;
+    private int CurrentGold = 100000000;
     public event Action<int> OnGoldChanged;
 
     public void Initialize()

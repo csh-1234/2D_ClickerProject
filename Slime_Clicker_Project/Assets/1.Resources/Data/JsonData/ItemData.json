@@ -87,7 +87,7 @@
     },
     {
       "DataId": 300005,
-      "ItemName": "파란색 목욕가운",
+      "ItemName": "파란색 가운",
       "ItemType": 1,
       "ItemRarity": 0,
       "BaseLevel": 1,
@@ -99,12 +99,12 @@
       "ItemPrice": 100,
       "UpgradeCost": 10,
       "CostRatio": 0.1,
-      "ItemInfo": "사우나에 가고싶게 만드는 목욕가운",
+      "ItemInfo": "고오급 사우나에 가고 싶게 만드는 파란색 목욕가운",
       "SpriteName": "Shield.sprite"
     },
     {
       "DataId": 300006,
-      "ItemName": "초롱이형의 형광바지",
+      "ItemName": "세이크리드 아머",
       "ItemType": 1,
       "ItemRarity": 1,
       "BaseLevel": 1,
@@ -116,7 +116,7 @@
       "ItemPrice": 1000,
       "UpgradeCost": 100,
       "CostRatio": 0.1,
-      "ItemInfo": "밝은 형광색이 돋보이는 패션 아이템",
+      "ItemInfo": "이 도자기가 아니야!",
       "SpriteName": "Shield.sprite"
     },
     {
@@ -133,7 +133,7 @@
       "ItemPrice": 10000,
       "UpgradeCost": 1000,
       "CostRatio": 0.1,
-      "ItemInfo": "착용하면 든든해지는 갑옷",
+      "ItemInfo": "착용시 든든해지는 기분이 드는 갑옷",
       "SpriteName": "Shield.sprite"
     },
     {
