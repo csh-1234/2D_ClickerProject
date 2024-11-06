@@ -6,7 +6,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 using static Enums;
-using static UnityEditor.Progress;
 
 public class UI_SkillTemplate : RootUI
 {

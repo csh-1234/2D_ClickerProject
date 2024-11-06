@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine.Pool;
 using UnityEngine;
-using UnityEditor.SceneManagement;
 class Pool
 {
     private GameObject _prefab;  // 풀링할 원본 프리팹

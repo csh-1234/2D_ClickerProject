@@ -1,4 +1,3 @@
-using Cinemachine.Editor;
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -193,13 +192,12 @@ public class Player : Creature
     private void Update()
     {
         AutoSkill();
-        PlayerInput();
         SetTarget();
     }
 
     private void FixedUpdate()
     {
-        MovePlayer();
+        
         CheckMonsterListAndControlShooting();
     }
 
@@ -254,16 +252,6 @@ public class Player : Creature
     private Vector2 fireDir;
     private float EnemyDist;
 
-    void PlayerInput()
-    {
-        _input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-    }    
-
-    void MovePlayer()
-    {
-        Vector2 movement = _input.normalized * Time.deltaTime * MoveSpeed;
-        RigidBody.MovePosition(RigidBody.position + movement);
-    }
 
     void SetTarget()
     {

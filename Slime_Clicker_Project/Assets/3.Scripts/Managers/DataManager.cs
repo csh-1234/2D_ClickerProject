@@ -86,7 +86,9 @@ public class DataManager
         CreatureDataWrapper wrapper = new CreatureDataWrapper { Creatures = creatureList };
         string jsonStr = JsonConvert.SerializeObject(wrapper, Newtonsoft.Json.Formatting.Indented); // Formatting.Indented : 자동으로 라인 / 들여쓰기된 문자열을 리턴해
         File.WriteAllText($"{Application.dataPath}/1.Resources/Data/JsonData/{filename}Data.json", jsonStr);
-        AssetDatabase.Refresh(); // 새로 생성된 json파일을 인식하게 하기 위한 초기화
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
 
         CreatureDic = creatureList.ToDictionary(c => c.DataId);
     }
@@ -161,7 +163,9 @@ public class DataManager
         ItemDataWrapper wrapper = new ItemDataWrapper { Items = itemList };
         string jsonStr = JsonConvert.SerializeObject(wrapper, Newtonsoft.Json.Formatting.Indented); // Formatting.Indented : 자동으로 라인 / 들여쓰기된 문자열을 리턴해
         File.WriteAllText($"{Application.dataPath}/1.Resources/Data/JsonData/{filename}Data.json", jsonStr);
-        AssetDatabase.Refresh(); // 새로 생성된 json파일을 인식하게 하기 위한 초기화
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
 
         ItemDic = itemList.ToDictionary(c => c.DataId);
     }
@@ -237,7 +241,9 @@ public class DataManager
         SkillDataWrapper wrapper = new SkillDataWrapper { Skills = skillList };
         string jsonStr = JsonConvert.SerializeObject(wrapper, Newtonsoft.Json.Formatting.Indented); // Formatting.Indented : 자동으로 라인 / 들여쓰기된 문자열을 리턴해
         File.WriteAllText($"{Application.dataPath}/1.Resources/Data/JsonData/{filename}Data.json", jsonStr);
-        AssetDatabase.Refresh(); // 새로 생성된 json파일을 인식하게 하기 위한 초기화
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
 
         SkillDic = skillList.ToDictionary(c => c.DataId);
     }

@@ -6,11 +6,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using static DataManager;
 using static Enums;
-using static UnityEditor.Progress;
 
 public class GameManager
 {
