@@ -41,6 +41,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f7f0a8b25f0e0f4ca6349561b76c38e
+    m_Address: Chicken.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7f613fda49445f4469f7fac0ebdb87bd
     m_Address: FakerSign.sprite
     m_ReadOnly: 0

@@ -22,6 +22,10 @@ public class Skill_EatChur : Skill
         //CurrentSkillUpdate();
     }
 
+    private void Start()
+    {
+        //UpdateSkillByLoadedLevel();
+    }
     void SetInfo()
     {
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
@@ -31,10 +35,16 @@ public class Skill_EatChur : Skill
             SkillName = EatChur.SkillName;
             skillType = EatChur.SkillType;
             SkillInfo = EatChur.SkillInfo;
-            CurrentLevel = EatChur.BaseLevel;
             MaxLevel = EatChur.MaxLevel;
-            Cooldown = EatChur.Cooldown;
-            BuffStatUpdate();
+            DataId = EatChur.DataId;
+
+            if (CurrentLevel == 0)
+            {
+                CurrentLevel = EatChur.BaseLevel;
+                Cooldown = EatChur.Cooldown;
+                Duration = EatChur.Duration;
+            }
+
         }
     }
 
@@ -56,7 +66,6 @@ public class Skill_EatChur : Skill
 
         CurrentLevel++;
         Cooldown = Mathf.Max(_eatChur.MaxCooldown, Cooldown - 0.01f);
-        Duration = Mathf.Min(_eatChur.MaxDuration, Duration + 0.01f);
         BuffStatUpdate();
 
         // 버프가 활성화 상태였다면 새로운 스탯으로 다시 적용
@@ -68,8 +77,8 @@ public class Skill_EatChur : Skill
 
     public override void UpdateSkillByLoadedLevel()
     {
-        Cooldown = Mathf.Max(_eatChur.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
-        Duration = Mathf.Min(_eatChur.MaxDuration, Duration + (0.01f * CurrentLevel));
+        Cooldown = Mathf.Max(_eatChur.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
+        BuffStatUpdate();
     }
 
 

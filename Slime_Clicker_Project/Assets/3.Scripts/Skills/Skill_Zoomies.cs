@@ -23,6 +23,10 @@ public class Skill_Zoomies : Skill
         SetInfo();
         //CurrentSkillUpdate();
     }
+    private void Start()
+    {
+        //UpdateSkillByLoadedLevel();
+    }
 
     public void SetInfo()
     {
@@ -33,33 +37,20 @@ public class Skill_Zoomies : Skill
             SkillName = Zoomies.SkillName;
             skillType = Zoomies.SkillType;
             SkillInfo = Zoomies.SkillInfo;
-            CurrentLevel = Zoomies.BaseLevel;
             MaxLevel = Zoomies.MaxLevel;
-            Cooldown = Zoomies.Cooldown;
-            Duration = Zoomies.Duration;
-            AtkBonus = Zoomies.AtkBonus;
-            AtkSpeedBonus = Zoomies.AtkSpeedBonus;
-            BuffStatUpdate();
+            DataId = Zoomies.DataId;
+
+            if (CurrentLevel == 0)
+            {
+                CurrentLevel = Zoomies.BaseLevel;
+                Cooldown = Zoomies.Cooldown;
+                Duration = Zoomies.Duration;
+                AtkBonus = Zoomies.AtkBonus;
+                AtkSpeedBonus = Zoomies.AtkSpeedBonus;
+            }
         }
     }
 
-    //스킬 레벨업시 변경된 스탯 적용
-    //public void SkillLevelUp()
-    //{
-    //    if (CurrentLevel + 1 > MaxLevel)
-    //    {
-    //        Debug.LogError("SkillUpdate - skillLevel의 maxLevel을 초과할 수 없습니다.");
-    //    }
-    //    else
-    //    {
-    //        CurrentLevel++;
-    //        Cooldown = Mathf.Max(_zoomies.MaxCooldown, Cooldown - 0.01f); // cooldown은 10초까지 줄어든다. 레벨 1당 쿨타임-0.01 
-    //        Duration = Mathf.Min(_zoomies.MaxDuration, Duration + 0.01f); // duration은 10초까지 늘어난다. 레벨 1당 쿨타임-0.01 
-    //        AtkBonus++;         // 레벨 1당 공격력+1
-    //        AtkSpeedBonus++;     // 레벨 1당 공속+1
-    //        BuffStatUpdate();
-    //    }
-    //}
     private bool _isBuffActive = false;  // 버프 활성화 상태 추적
     private Player _currentTarget = null; // 현재 버프가 적용된 대상
     public void SkillLevelUp()
@@ -92,10 +83,16 @@ public class Skill_Zoomies : Skill
 
     public override void UpdateSkillByLoadedLevel()
     {
-        Cooldown = Mathf.Max(_zoomies.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
-        Duration = Mathf.Min(_zoomies.MaxDuration, Duration + (0.01f * CurrentLevel));
-        AtkBonus += AtkBonus * CurrentLevel;
+        float baseCooldown = _zoomies.Cooldown;
+        float baseDuration = _zoomies.Duration;
+        int baseAtkBonus = _zoomies.AtkBonus;
+        float baseAtkSpeedBonus = _zoomies.AtkSpeedBonus;
+
+        Cooldown = Mathf.Max(_zoomies.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
+        Duration = Mathf.Min(_zoomies.MaxDuration, Duration + (0.01f * CurrentLevel-1));
+        AtkBonus += AtkBonus * (CurrentLevel -1);
         AtkSpeedBonus += AtkSpeedBonus * CurrentLevel;
+        BuffStatUpdate();
     }
 
 
@@ -103,6 +100,8 @@ public class Skill_Zoomies : Skill
     {
         _buffStat.Attack = AtkBonus;
         _buffStat.AttackSpeed = AtkSpeedBonus;
+        Debug.Log($"BuffStatUpdate cooldown{Cooldown}");
+        Debug.Log($"BuffStatUpdate Duration{Duration}");
     }
 
 
@@ -123,6 +122,7 @@ public class Skill_Zoomies : Skill
 
     protected override IEnumerator StartBuffSkill()
     {
+        Debug.Log($"zoomies 쿨타임 : {Cooldown}");
         Player player = Managers.Instance.Game.player;
         _currentTarget = player;
         if (player != null)

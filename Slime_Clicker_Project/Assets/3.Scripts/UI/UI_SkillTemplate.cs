@@ -16,7 +16,7 @@ public class UI_SkillTemplate : RootUI
     }
     private void Start()
     {
-        SetLoadedLevel();
+        //SetLoadedLevel();
     }
 
     [SerializeField] private Image iconImage;

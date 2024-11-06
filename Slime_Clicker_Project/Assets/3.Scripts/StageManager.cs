@@ -15,7 +15,7 @@ public class StageManager
         {
             //1 = 1.0, 2 = 1.0*1.1, 3 = 1.1 *1.1.......
             float baseMultiplier = 1.0f;
-            float exponentialGrowth = Mathf.Pow(1.1f, CurrentStageLevel - 1);
+            float exponentialGrowth = Mathf.Pow(1.01f, CurrentStageLevel - 1); // 난이도 배율 설정
             float finalMultiplier = baseMultiplier * exponentialGrowth;
             Debug.Log($"Stage Level: {CurrentStageLevel}");
             Debug.Log($"Difficulty Multiplier: {finalMultiplier}");
@@ -60,11 +60,11 @@ public class StageManager
             
             //Monster mo = Managers.Instance.Object.Spawn<Monster>(spawnPos, monsterDataID);
             Monster mo = Managers.Instance.Object.Spawn<Monster>(spawnPos, monsterDataID);
-            mo._currentStats.Hp *= (int)DifficultyByLevel;
-            mo._currentStats.MaxHp *= (int)DifficultyByLevel;
-            mo._currentStats.Attack *= (int)DifficultyByLevel;
-            mo._currentStats.Defense *= (int)DifficultyByLevel;
-            Debug.Log($"Spawned Monster ID: {monsterDataID}");
+            mo._currentStats.Hp = (int)DifficultyByLevel * mo._baseStats.Hp;
+            mo._currentStats.MaxHp = (int)DifficultyByLevel * mo._baseStats.MaxHp;
+            mo._currentStats.Attack = (int)DifficultyByLevel * mo._baseStats.Attack;
+            mo._currentStats.Defense = (int)DifficultyByLevel * mo._baseStats.Defense;
+            Debug.Log($"배율 : {DifficultyByLevel}");
             Managers.Instance.Game.MonsterList.Add(mo);
             StageMonster.Add(mo);
 

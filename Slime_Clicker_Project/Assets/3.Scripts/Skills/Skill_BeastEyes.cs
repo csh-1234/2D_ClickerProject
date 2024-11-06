@@ -22,6 +22,10 @@ public class Skill_BeastEyes : Skill
         //CurrentSkillUpdate();
     }
 
+    private void Start()
+    {
+        //UpdateSkillByLoadedLevel();
+    }
     void SetInfo()
     {
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
@@ -31,12 +35,17 @@ public class Skill_BeastEyes : Skill
             SkillName = beastEyes.SkillName;
             skillType = beastEyes.SkillType;
             SkillInfo = beastEyes.SkillInfo;
-            CurrentLevel = beastEyes.BaseLevel;
             MaxLevel = beastEyes.MaxLevel;
-            Cooldown = beastEyes.Cooldown;
-            Duration = beastEyes.Duration;
-            CriRateBonus = beastEyes.CriRateBonus;
-            BuffStatUpdate();
+            DataId = beastEyes.DataId;
+
+            if (CurrentLevel == 0)
+            {
+                CurrentLevel = beastEyes.BaseLevel;
+                Cooldown = beastEyes.Cooldown;
+                Duration = beastEyes.Duration;
+                CriRateBonus = beastEyes.CriRateBonus;
+            }
+
         }
     }
 
@@ -72,9 +81,10 @@ public class Skill_BeastEyes : Skill
 
     public override void UpdateSkillByLoadedLevel()
     {
-        Cooldown = Mathf.Max(_beastEyes.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
-        Duration = Mathf.Min(_beastEyes.MaxDuration, Duration + (0.01f * CurrentLevel));
-        CriRateBonus += CriRateBonus * CurrentLevel;
+        Cooldown = Mathf.Max(_beastEyes.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
+        Duration = Mathf.Min(_beastEyes.MaxDuration, Duration + (0.01f * CurrentLevel-1));
+        CriRateBonus += CriRateBonus * (CurrentLevel-1);
+        BuffStatUpdate();
     }
 
 

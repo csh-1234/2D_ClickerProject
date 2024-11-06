@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
 public class Projectile : BaseObject
@@ -60,13 +61,11 @@ public class Projectile : BaseObject
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (hasHit) return;
-        if (_owner.ObjectType == Enums.ObjectType.Player &&  collision.gameObject.tag == "Monster")
+        if (_owner.ObjectType == Enums.ObjectType.Player && collision.gameObject.tag == "Monster")
         {
             hasHit = true;  // 충돌 플래그 설정
             print("투사체가 몬스터 때림");
-            GameObject go = Managers.Instance.Resource.Instantiate("HitEffect2");
-            go.transform.position = transform.position  ;
-            
+            Managers.Instance.Object.ShowEffect(transform.position, "HitEffect");
             Monster monster = collision.gameObject.GetComponent<Monster>();
             if (monster != null)
             {
@@ -98,4 +97,4 @@ public class Projectile : BaseObject
             Managers.Instance.Object.Despawn(this);
         }
     }
-}
+ }

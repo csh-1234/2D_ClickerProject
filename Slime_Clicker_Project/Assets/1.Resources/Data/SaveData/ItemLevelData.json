@@ -1,4 +1,56 @@
 {
-  "OwnedItems": [],
-  "EquippedItemIds": {}
+  "OwnedItems": [
+    {
+      "DataId": 300004,
+      "CurrentLevel": 171,
+      "CurrentAtk": 17300,
+      "CurrentDef": 0
+    },
+    {
+      "DataId": 300010,
+      "CurrentLevel": 95,
+      "CurrentAtk": 0,
+      "CurrentDef": 475000
+    },
+    {
+      "DataId": 300009,
+      "CurrentLevel": 1,
+      "CurrentAtk": 0,
+      "CurrentDef": 300
+    },
+    {
+      "DataId": 300000,
+      "CurrentLevel": 31,
+      "CurrentAtk": 40,
+      "CurrentDef": 0
+    },
+    {
+      "DataId": 300002,
+      "CurrentLevel": 24,
+      "CurrentAtk": 132,
+      "CurrentDef": 0
+    },
+    {
+      "DataId": 300001,
+      "CurrentLevel": 6,
+      "CurrentAtk": 30,
+      "CurrentDef": 0
+    },
+    {
+      "DataId": 300003,
+      "CurrentLevel": 33,
+      "CurrentAtk": 356,
+      "CurrentDef": 0
+    },
+    {
+      "DataId": 300008,
+      "CurrentLevel": 8,
+      "CurrentAtk": 0,
+      "CurrentDef": 156
+    }
+  ],
+  "EquippedItemIds": {
+    "Weapon": 300004,
+    "Armor": 300010
+  }
 }

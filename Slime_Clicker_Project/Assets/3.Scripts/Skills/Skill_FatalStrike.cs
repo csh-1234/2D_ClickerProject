@@ -21,6 +21,10 @@ public class Skill_FatalStrike : Skill
         SetInfo();
         //CurrentSkillUpdate();
     }
+    private void Start()
+    {
+        //UpdateSkillByLoadedLevel();
+    }
 
     void SetInfo()
     {
@@ -31,12 +35,15 @@ public class Skill_FatalStrike : Skill
             SkillName = FatalStrike.SkillName;
             skillType = FatalStrike.SkillType;
             SkillInfo = FatalStrike.SkillInfo;
-            CurrentLevel = FatalStrike.BaseLevel;
             MaxLevel = FatalStrike.MaxLevel;
-            Cooldown = FatalStrike.Cooldown;
-            Duration = FatalStrike.Duration;
-            CriDamageBonus = FatalStrike.CriDamageBonus;
-            BuffStatUpdate();
+
+            if (CurrentLevel == 0)
+            {
+                CurrentLevel = FatalStrike.BaseLevel;
+                Cooldown = FatalStrike.Cooldown;
+                Duration = FatalStrike.Duration;
+                CriDamageBonus = FatalStrike.CriDamageBonus;
+            }
         }
     }
 
@@ -71,9 +78,10 @@ public class Skill_FatalStrike : Skill
 
     public override void UpdateSkillByLoadedLevel()
     {
-        Cooldown = Mathf.Max(_fatalStrike.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
-        Duration = Mathf.Min(_fatalStrike.MaxDuration, Duration + (0.01f * CurrentLevel));
-        CriDamageBonus += CriDamageBonus * CurrentLevel;
+        Cooldown = Mathf.Max(_fatalStrike.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
+        Duration = Mathf.Min(_fatalStrike.MaxDuration, Duration + (0.01f * CurrentLevel-1));
+        CriDamageBonus += CriDamageBonus * (CurrentLevel -1);
+        BuffStatUpdate();
     }
 
 

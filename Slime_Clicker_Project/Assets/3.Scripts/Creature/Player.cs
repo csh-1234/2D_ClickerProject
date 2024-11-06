@@ -1,3 +1,4 @@
+using Cinemachine.Editor;
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -291,12 +292,9 @@ public class Player : Creature
             yield return new WaitForSeconds(1f / _currentStats.AttackSpeed);  // 1ÃÊ ´ë±â
             if (Managers.Instance.Game.MonsterList.Count > 0 && target != null && EnemyDist <= 5)
             {
-                GameObject go = Managers.Instance.Resource.Instantiate("GunEffect");
-                go.transform.position = shootPos.transform.position;
-                
+                //EffectBase Effect = Managers.Instance.Object.Spawn<EffectBase>(transform.position, 0 ,"GunEffect");
+                Managers.Instance.Object.ShowEffect(shootPos.transform.position, "GunEffect");
                 Projectile proj = Managers.Instance.Object.Spawn<Projectile>(CenterPosition, 0, "Projectile");
-                //Projectile proj = Instantiate(projectile, shootPos.transform.position, Quaternion.identity);
-
                 bool isForcedCritical = _isCritical;
                 if (_isCritical)
                 {

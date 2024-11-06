@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
 using static DataManager;
 using static UnityEngine.RuleTile.TilingRuleOutput;
@@ -84,6 +85,7 @@ public class ObjectManager
             projectile.Initialize();
             return projectile as T;
         }
+       
         else if (type == typeof(BaseObject))
         {
             GameObject go = Managers.Instance.Resource.Instantiate(prefabName, pooling: true);
@@ -107,7 +109,7 @@ public class ObjectManager
             //Monster.Remove(obj as Monster);
             Managers.Instance.Resource.Destroy(obj.gameObject);
         }
-        else if (type == typeof(Projectile) || type == typeof(Projectile))
+        else if (type == typeof(Projectile))
         {
             //Projectiles.Remove(obj as ProjectileController);
             Managers.Instance.Resource.Destroy(obj.gameObject);
@@ -129,5 +131,13 @@ public class ObjectManager
         GameObject go = Managers.Instance.Resource.Instantiate(prefabName, pooling: true);
         ShowDamage damageText = go.GetOrAddComponent<ShowDamage>();
         damageText.SetInfo(pos, damage, healAmount, parent, isCritical);
+    }
+
+    public void ShowEffect(Vector2 pos, string name)
+    {
+        string prefabName = name;
+        GameObject go = Managers.Instance.Resource.Instantiate(prefabName, pooling: true);
+        EffectBase effect = go.GetOrAddComponent<EffectBase>();
+        effect.SetInfo(pos);
     }
 }

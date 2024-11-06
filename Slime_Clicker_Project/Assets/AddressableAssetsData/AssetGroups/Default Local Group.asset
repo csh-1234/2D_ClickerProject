@@ -17,12 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5df685e7473c73f4e939575f6b79f52f
   m_SerializeEntries:
-  - m_GUID: 6f7f0a8b25f0e0f4ca6349561b76c38e
-    m_Address: Chicken
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Prefab
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8e41ad7d9c7481e46a0bbb0133151233
     m_Address: GunEffect
     m_ReadOnly: 0
@@ -31,12 +25,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a13e0acc76383674296c24532291b2bd
     m_Address: Projectile
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Prefab
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a1871a8bf34572644be2a6793835e1bd
-    m_Address: HitEffect
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
@@ -60,7 +48,7 @@ MonoBehaviour:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e0680fd2fcc8c594e948fb5314b1eb6c
-    m_Address: HitEffect2
+    m_Address: HitEffect
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

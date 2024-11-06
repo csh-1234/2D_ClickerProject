@@ -24,8 +24,8 @@ public class UI_StageInfo : RootUI
 
  
 
-    private int min = 2;
-    private float sec = 0f;
+    private int min = 0;
+    private float sec = 30f;
 
     protected override void Awake()
     {
@@ -52,6 +52,7 @@ public class UI_StageInfo : RootUI
             coStartStage = null;
         }
         coStartStage = StartCoroutine(StartWave());
+        SetCurrentStageLevel();
     }
 
     void SetCurrentStageLevel()
@@ -76,16 +77,17 @@ public class UI_StageInfo : RootUI
         while (true)
         {
             Managers.Instance.Stage.StartStage();
-            min = 2;
-            sec = 0f;
+            min = 0;
+            sec = 30f;
             while (true)
             {
                 calctime();
                 yield return null;
 
-                if (sec <= 0f && min <= 0) 
+                if (min < 0) 
                 {
                     print("е╦юс╬ф©Т");
+                    StageTime.text = "00:30";
                     yield return StartCoroutine(PlayPlayerDeathAnimation());
                     SetCurrentStageLevel();
                     stageCounter++;

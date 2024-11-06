@@ -20,6 +20,12 @@ public class Skill_BakeBread : Skill
         //SkillDic.TryGetValue(200001, out _bakeBread);
         SetInfo();
         //CurrentSkillUpdate();
+    
+    
+    }
+    private void Start()
+    {
+        //UpdateSkillByLoadedLevel();
     }
 
     void SetInfo()
@@ -31,13 +37,17 @@ public class Skill_BakeBread : Skill
             SkillName = BakeBread.SkillName;
             skillType = BakeBread.SkillType;
             SkillInfo = BakeBread.SkillInfo;
-            CurrentLevel = BakeBread.BaseLevel;
             MaxLevel = BakeBread.MaxLevel;
-            Cooldown = BakeBread.Cooldown;
-            Duration = BakeBread.Duration;
-            DefBonus = BakeBread.DefBonus;
-            HealAmount = BakeBread.HealAmount;
-            BuffStatUpdate();
+            DataId = BakeBread.DataId;
+
+            if (CurrentLevel == 0)
+            {
+                CurrentLevel = BakeBread.BaseLevel;
+                Cooldown = BakeBread.Cooldown;
+                Duration = BakeBread.Duration;
+                HealAmount = BakeBread.HealAmount;
+                DefBonus = BakeBread.DefBonus;
+            }
         }
     }
     private bool _isBuffActive = false;  // 버프 활성화 상태 추적
@@ -72,10 +82,16 @@ public class Skill_BakeBread : Skill
 
     public override void UpdateSkillByLoadedLevel()
     {
-        Cooldown = Mathf.Max(_bakeBread.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
-        Duration = Mathf.Min(_bakeBread.MaxDuration, Duration + (0.01f * CurrentLevel));
-        DefBonus += DefBonus * CurrentLevel;
-        HealAmount += HealAmount * CurrentLevel;
+        float baseCooldown = _bakeBread.Cooldown;
+        float baseDuration = _bakeBread.Duration;
+        int baseDefBonus = _bakeBread.DefBonus;
+        float baseHealAmount = _bakeBread.HealAmount;
+
+        Cooldown = Mathf.Max(_bakeBread.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
+        Duration = Mathf.Min(_bakeBread.MaxDuration, Duration + (0.01f * CurrentLevel-1));
+        DefBonus += DefBonus * (CurrentLevel-1);
+        HealAmount += HealAmount * (CurrentLevel-1);
+        BuffStatUpdate();
     }
 
 

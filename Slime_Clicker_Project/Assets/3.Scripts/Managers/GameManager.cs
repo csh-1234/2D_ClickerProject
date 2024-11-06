@@ -211,6 +211,7 @@ public class GameManager
         SaveStatData();
         SaveOwnedItems();
         SaveSkillData();
+        SaveGoldStageData();
     }
 
     public void LoadGame()
@@ -238,7 +239,12 @@ public class GameManager
         }
 
         LoadOwnedItems();
-        // 다른 게임 데이터도 여기서 로드
+        GoldStageData loadedGoldStageData = LoadGoldStageData();
+        if(loadedGoldStageData != null)
+        {
+            Managers.Instance.Stage.CurrentStageLevel = loadedGoldStageData.CurrentStage;
+            Managers.Instance.Currency.SetGold(loadedGoldStageData.CurrentGold);
+        }
     }
 
     #region saveStatData
@@ -376,12 +382,28 @@ public class GameManager
             if (File.Exists(jsonPath))
             {
                 string jsonStr = File.ReadAllText(jsonPath);
-                return JsonConvert.DeserializeObject<SkillLevelData>(jsonStr);
+                var data = JsonConvert.DeserializeObject<SkillLevelData>(jsonStr);
+                // 0인 경우 1로 초기화
+                if (data.Skill_Zoomies_Level == 0) data.Skill_Zoomies_Level = 1;
+                if (data.Skill_BakeBread_Level == 0) data.Skill_BakeBread_Level = 1;
+                if (data.Skill_EatChur_Level == 0) data.Skill_EatChur_Level = 1;
+                if (data.Skill_BeastEyes_Level == 0) data.Skill_BeastEyes_Level = 1;
+                if (data.Skill_FatalStrike_Level == 0) data.Skill_FatalStrike_Level = 1;
+
+                Debug.Log($"스킬 데이터 로드 - Zoomies: {data.Skill_Zoomies_Level}, BakeBread: {data.Skill_BakeBread_Level}");
+                return data;
             }
             else
             {
                 Debug.Log("저장된 스킬 데이터가 없습니다. 기본값을 사용합니다.");
-                return new SkillLevelData(); // 기본값으로 초기화된 객체 반환
+                return new SkillLevelData
+                {
+                    Skill_Zoomies_Level = 1,
+                    Skill_BakeBread_Level = 1,
+                    Skill_EatChur_Level = 1,
+                    Skill_BeastEyes_Level = 1,
+                    Skill_FatalStrike_Level = 1
+                };
             }
         }
         catch (Exception e)
@@ -390,6 +412,37 @@ public class GameManager
             return new SkillLevelData();
         }
     }
+    // 스킬 데이터를 캐시로 저장
+    private SkillLevelData _cachedSkillData;
+
+    // 스킬 데이터 가져오는 메서드 수정
+    public SkillLevelData GetSkillData()
+    {
+        if (_cachedSkillData == null)
+        {
+            _cachedSkillData = LoadSkillData();
+        }
+        return _cachedSkillData;
+    }
+
+    public void InitializeSkillLevels(Skill skill)
+    {
+        var skillData = GetSkillData();
+
+        // 스킬 타입에 따라 저장된 레벨 적용
+        if (skill is Skill_Zoomies) skill.CurrentLevel = skillData.Skill_Zoomies_Level;
+        else if (skill is Skill_BakeBread) skill.CurrentLevel = skillData.Skill_BakeBread_Level;
+        else if (skill is Skill_EatChur) skill.CurrentLevel = skillData.Skill_EatChur_Level;
+        else if (skill is Skill_BeastEyes) skill.CurrentLevel = skillData.Skill_BeastEyes_Level;
+        else if (skill is Skill_FatalStrike) skill.CurrentLevel = skillData.Skill_FatalStrike_Level;
+
+        // 레벨에 따른 스킬 업데이트
+        skill.UpdateSkillByLoadedLevel();
+
+        Debug.Log($"스킬 {skill.GetType().Name} 초기화 완료 - Level: {skill.CurrentLevel}");
+    }
+
+
     #endregion
 
     #region saveItemData
@@ -500,6 +553,73 @@ public class GameManager
     }
 
     #endregion
+
+    #region Gold&StageData
+    [System.Serializable]
+    public class GoldStageData
+    {
+        public int CurrentGold { get; set; }
+        public int CurrentStage { get; set; }
+    }
+
+    private void SaveGoldStageData()
+    {
+        GoldStageData goldStageData = new GoldStageData
+        {
+            //0이면 1로 해주기
+            CurrentGold = Managers.Instance.Currency.GetCurrentGold(),
+            CurrentStage = Managers.Instance.Stage.GetCurrentStageLevel(),
+        };
+
+        string jsonPath = $"{Application.dataPath}/1.Resources/Data/SaveData/GoldStageData.json";
+
+        try
+        {
+            // 디렉토리가 없으면 생성
+            Directory.CreateDirectory(Path.GetDirectoryName(jsonPath));
+
+            // 데이터를 JSON 문자열로 변환
+            string jsonStr = JsonConvert.SerializeObject(goldStageData, Formatting.Indented);
+
+            // 파일에 저장
+            File.WriteAllText(jsonPath, jsonStr);
+
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+            Debug.Log($"골드&스테이지 데이터 저장 완료: {jsonPath}");
+#endif
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"골드&스테이지 저장 실패: {e.Message}");
+        }
+    }
+    private GoldStageData LoadGoldStageData()
+    {
+        string jsonPath = Path.Combine(Application.dataPath, "1.Resources/Data/SaveData/GoldStageData.json");
+
+        try
+        {
+            if (File.Exists(jsonPath))
+            {
+                string jsonStr = File.ReadAllText(jsonPath);
+                return JsonConvert.DeserializeObject<GoldStageData>(jsonStr);
+            }
+            else
+            {
+                Debug.Log("저장된 스탯 데이터가 없습니다. 기본값을 사용합니다.");
+                return new GoldStageData(); // 기본값으로 초기화된 객체 반환
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"스탯 데이터 로드 실패: {e.Message}");
+            return new GoldStageData();
+        }
+    }
+
+    #endregion
+
     #endregion
 
 }

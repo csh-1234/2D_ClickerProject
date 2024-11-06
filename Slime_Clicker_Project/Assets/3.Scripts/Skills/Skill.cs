@@ -11,29 +11,42 @@ public class Skill : MonoBehaviour
 {
     public void InitializeWithData(SkillData data)
     {
-        _data = data;
-        CurrentLevel = data.BaseLevel;
+        //_data = data;
+        //CurrentLevel = data.BaseLevel;
 
-        // 필요한 데이터 초기화
+        //// 필요한 데이터 초기화
+        //DataId = data.DataId;
+        //SkillName = data.SkillName;
+        //SkillType = data.SkillType;
+        //BaseLevel = data.BaseLevel;
+        //MaxLevel = data.MaxLevel;
+        //Cooldown = data.Cooldown;
+        //Duration = data.Duration;
+        //MaxDuration= data.MaxDuration;
+        //HpBonus= data.HpBonus;
+        //AtkBonus= data.AtkBonus;
+        //DefBonus= data.DefBonus;
+        
+        //AtkSpeedBonus= data.AtkSpeedBonus;
+        //HealAmount= data.HealAmount;
+        
+        if (data == null) return;
+
+        _data = data;
         DataId = data.DataId;
         SkillName = data.SkillName;
         SkillType = data.SkillType;
         BaseLevel = data.BaseLevel;
         MaxLevel = data.MaxLevel;
-        Cooldown = data.Cooldown;
-        Duration = data.Duration;
-        MaxDuration= data.MaxDuration;
-        HpBonus= data.HpBonus;
-        AtkBonus= data.AtkBonus;
-        DefBonus= data.DefBonus;
-        CriRateBonus= data.CriRateBonus;
-        CriDamageBonus= data.CriDamageBonus;
-        AtkSpeedBonus= data.AtkSpeedBonus;
-        HealAmount= data.HealAmount;
-        SkillInfo= data.SkillInfo;
         SpriteName= data.SpriteName;
+        SkillInfo = data.SkillInfo;
         UpgradeCost = data.UpgradCost;
-}
+        HealAmount = data.HealAmount;
+        CriRateBonus = data.CriRateBonus;
+        CriDamageBonus = data.CriDamageBonus;
+        // 저장된 스킬 레벨 로드 및 적용
+        Managers.Instance.Game.InitializeSkillLevels(this);
+    }
     protected SkillData _data;
 
     public SkillType skillType;
