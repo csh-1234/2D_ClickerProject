@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Enums;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 using Object = UnityEngine.Object;
 public class SoundManager : MonoBehaviour
 {

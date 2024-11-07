@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Coffee.UIExtensions.UIParticleAttractor;
 using static Enums;
+using Random = UnityEngine.Random;
 public class Monster : Creature
 {
     private Player Target;
@@ -58,7 +59,6 @@ public class Monster : Creature
         _currentStats.Attack = Mathf.FloorToInt(baseAtk * difficultyMultiplier);
         _currentStats.Defense = Mathf.FloorToInt(baseDef * difficultyMultiplier);
 
-        // 디버그 로그
         Debug.Log($"Monster {dataId} Stats - Level {Managers.Instance.Stage.CurrentStageLevel}:");
         Debug.Log($"Multiplier: {difficultyMultiplier}");
         Debug.Log($"Base HP: {baseHp} -> Current HP: {_currentStats.Hp}");
@@ -165,10 +165,9 @@ public class Monster : Creature
         base.OnDead();
         //OnDeadEvent?.Invoke();
         Managers.Instance.Game.MonsterList.Remove(this);    
-        //DropGold gold = Managers.Instance.Object.Spawn<DropGold>(this.transform.position, 0, "Gold");
-        int goldAmount = (int)(100 * Managers.Instance.Stage.DifficultyByLevel); // 예시 값, 실제로는 몬스터 데이터에서 가져오기
+        int goldAmount = (int)(Random.Range(100, 1000) * Managers.Instance.Stage.DifficultyByLevel);
         Managers.Instance.Currency.AddGold(goldAmount);
-        Managers.Instance.Sound.Play("Coin", SoundManager.Sound.Effect);
+        
 
         UI_GoldEffect.Instance.PlayGoldEffect(transform.position, goldAmount);
         Managers.Instance.Object.Despawn(this);

@@ -10,8 +10,13 @@ using UnityEngine.UI;
 
 public class UI_StageInfo : RootUI
 {
-    [SerializeField]private TextMeshProUGUI StageInfo;
-    [SerializeField]private TextMeshProUGUI StageTime;
+    [SerializeField] private TextMeshProUGUI StageInfo;
+    [SerializeField] private TextMeshProUGUI StageTime;
+
+
+    [SerializeField] private Image StageClearAlarm;
+    [SerializeField] private Image StageFailAlarm;
+
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     private CinemachineBasicMultiChannelPerlin virtualCameraNoise;
@@ -22,7 +27,7 @@ public class UI_StageInfo : RootUI
     private const int STAGES_PER_CYCLE = 5; // 한 사이클당 스테이지 수
     private readonly Vector3 playerStartPos = new Vector2(0, 8.58f); // 플레이어 시작 위치 저장
 
- 
+
 
     private int min = 1;
     private float sec = 0f;
@@ -32,7 +37,7 @@ public class UI_StageInfo : RootUI
         base.Awake();
         SetCurrentStageLevel();
         // 페이드 패널 초기화
-      
+
         //if(Managers.Instance.Game.player!=null)
         //{
         //    playerStartPos = Managers.Instance.Game.player.transform.position;
@@ -61,7 +66,7 @@ public class UI_StageInfo : RootUI
 
     void SetCurrentStageLevel()
     {
-        StageInfo.text = $"Stage { Managers.Instance.Stage.GetCurrentStageLevel()}";
+        StageInfo.text = $"Stage {Managers.Instance.Stage.GetCurrentStageLevel()}";
     }
 
     Coroutine coStartStage;
@@ -88,11 +93,12 @@ public class UI_StageInfo : RootUI
                 calctime();
                 yield return null;
 
-                if (min < 0) 
+                if (min < 0)
                 {
                     print("타임아웃");
                     StageTime.text = "00:30";
                     yield return StartCoroutine(PlayPlayerDeathAnimation());
+                    StartCoroutine(ShowStageAlarm(StageFailAlarm));
                     SetCurrentStageLevel();
                     stageCounter++;
                     break;
@@ -102,6 +108,7 @@ public class UI_StageInfo : RootUI
                     print("플레이어 사망");
                     yield return StartCoroutine(PlayPlayerDeathAnimation());
                     stageCounter++;
+                    StartCoroutine(ShowStageAlarm(StageFailAlarm));
                     SetCurrentStageLevel();
                     break;
                 }
@@ -109,6 +116,7 @@ public class UI_StageInfo : RootUI
                 {
                     print("스테이지 클리어 - 몬스터 소탕완료");
                     Managers.Instance.Stage.AddCurrentStageLevel();
+                    StartCoroutine(ShowStageAlarm(StageClearAlarm));
                     SetCurrentStageLevel();
                     stageCounter++;
                     break;
@@ -155,22 +163,22 @@ public class UI_StageInfo : RootUI
         framingTransposer.m_DeadZoneHeight = 0;
         framingTransposer.m_ScreenX = 0.5f;
         framingTransposer.m_ScreenY = 0.5f;
-        
+
         // 천천히 줌인
         DOTween.To(() => virtualCamera.m_Lens.OrthographicSize,
             value => virtualCamera.m_Lens.OrthographicSize = value,
             originalOrthoSize * 0.5f, 1.5f)
             .SetEase(Ease.InOutQuad);
-        
+
         // TrackedObjectOffset을 조정하여 카메라가 비추는 위치를 낮춤
         DOTween.To(() => framingTransposer.m_TrackedObjectOffset,
             value => framingTransposer.m_TrackedObjectOffset = value,
             new Vector3(0, -1f, 0), 1.5f)
             .SetEase(Ease.InOutQuad);
-        
+
         // 줌인이 완료될 때까지 대기
         yield return new WaitForSeconds(1.5f);
-    
+
         // 잠시 대기
         yield return new WaitForSeconds(1f);
 
@@ -186,7 +194,7 @@ public class UI_StageInfo : RootUI
             .SetEase(Ease.InOutQuad);
 
         Managers.Instance.Stage.ClearCurrentStage();
-        
+
         yield return new WaitForSeconds(1f);
 
         // 모든 카메라 설정 복구
@@ -194,7 +202,7 @@ public class UI_StageInfo : RootUI
         framingTransposer.m_DeadZoneWidth = originalDeadZoneWidth;
         framingTransposer.m_DeadZoneHeight = originalDeadZoneHeight;
 
-  
+
         // 페이드 아웃
         //yield return StartCoroutine(UI_Fade.Instance.FadeOutCoroutine(0.5f));
 
@@ -207,7 +215,7 @@ public class UI_StageInfo : RootUI
 
         // 페이드 인
         //yield return StartCoroutine(UI_Fade.Instance.FadeInCoroutine(0.5f));
-        
+
         // 스테이지 재시작
 
     }
@@ -248,6 +256,13 @@ public class UI_StageInfo : RootUI
             // 일반 스테이지 클리어 후 대기
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    private IEnumerator ShowStageAlarm(Image image)
+    {
+        image.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        image.gameObject.SetActive(false);
     }
 
     void calctime()

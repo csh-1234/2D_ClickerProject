@@ -59,6 +59,7 @@ public class UI_MenuToggle : RootUI
 
     private void OnStatUpgradeClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         TStatUpgrade.isOn = true;
         if (TStatUpgrade != null)
         {
@@ -76,6 +77,7 @@ public class UI_MenuToggle : RootUI
 
     private void OnSkillUpgradeClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         TSkillUpgrade.isOn = true;
         if (TSkillUpgrade != null)
         {
@@ -92,6 +94,7 @@ public class UI_MenuToggle : RootUI
 
     private void OnWeaponUpgradeClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         TWeaponUpgrade.isOn = true;
         if (TWeaponUpgrade != null)
         {
@@ -108,6 +111,7 @@ public class UI_MenuToggle : RootUI
 
     private void OnArmorUpgradeClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         TArmorUpgrade.isOn = true;
         if (TArmorUpgrade != null)
         {

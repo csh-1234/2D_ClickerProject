@@ -11,7 +11,7 @@ public class UI_InGameScene : RootUI
     protected override void Awake()
     {
         base.Awake();
-        Managers.Instance.Game.LoadGame();
+        
         
         //Managers.Instance.StatUpgrade.InitStatByLevel();
         Managers.Instance.StatUpgrade.UpdateAllTexts();
@@ -19,6 +19,7 @@ public class UI_InGameScene : RootUI
     // Start is called before the first frame update
     void Start()
     {
+        Managers.Instance.Game.LoadGame();
         LoadResource();
         BindEventToObjects();
         Managers.Instance.Sound.Play("InGameBgm", SoundManager.Sound.Bgm);

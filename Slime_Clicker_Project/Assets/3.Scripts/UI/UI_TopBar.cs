@@ -31,7 +31,8 @@ public class UI_TopBar : RootUI
 
     public void OnSpeedClick()
     {
-        if(isFast == false)
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
+        if (isFast == false)
         {
             Time.timeScale = 2f;
             NormalIcon.gameObject.SetActive(false);
@@ -51,6 +52,7 @@ public class UI_TopBar : RootUI
 
     public void OnPauseClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         Managers.Instance.UI.ShowPopupUI<UI_PausePopup>();
     }
 

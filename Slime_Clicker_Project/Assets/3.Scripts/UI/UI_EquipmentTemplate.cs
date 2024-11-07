@@ -83,6 +83,7 @@ public class UI_EquipmentTemplate : RootUI
 
     public void OnBuyClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         print("구매");
         if (Managers.Instance.Game.TryBuyItem(_item))
         {
@@ -100,6 +101,7 @@ public class UI_EquipmentTemplate : RootUI
 
     public void OnEquipClick()
     {
+        Managers.Instance.Sound.Play("Equip", SoundManager.Sound.Effect);
         print("장착");
 
         if (Managers.Instance.Game.TryEquipItem(_item))
@@ -119,6 +121,7 @@ public class UI_EquipmentTemplate : RootUI
 
     public void OnUpgradeClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         print("업글");
         if (Managers.Instance.Game.TryUpgrade(Managers.Instance.Currency.GetCurrentGold(), _item))
         {

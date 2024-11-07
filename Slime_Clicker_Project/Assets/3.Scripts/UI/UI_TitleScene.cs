@@ -33,13 +33,8 @@ public class UI_TitleScene : RootUI
         BindEventToObjects();
         StartCoroutine(StartLoadingBar());
         Managers.Instance.Sound.Play("TitleBgm", SoundManager.Sound.Bgm);
-    }
-
-    void Update()
-    {
         
     }
-
 
     #region ObjectEvent
     private List<UI_EventHandler> _boundHandlers = new List<UI_EventHandler>();

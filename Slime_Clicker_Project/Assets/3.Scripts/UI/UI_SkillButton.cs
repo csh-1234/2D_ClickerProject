@@ -83,8 +83,8 @@ public class UI_SkillButton : RootUI, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         StartCoroutine(skill.StartSkill());
-        
     }
 
  

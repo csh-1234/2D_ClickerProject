@@ -46,6 +46,7 @@ public class UI_SkillTemplate : RootUI
 
     public void OnUpgradeClick2()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         print("업글");
         if (_skill.TryUpgrade(Managers.Instance.Currency.GetCurrentGold()))
         {
@@ -71,27 +72,22 @@ public class UI_SkillTemplate : RootUI
         {
             Managers.Instance.Currency.RemoveGold(_skill.UpgradeCost);
 
-            // 스킬 타입에 따라 적절한 레벨업 메서드 호출
             if (_skill is Skill_Zoomies zoomiesSkill)
             {
                 zoomiesSkill.SkillLevelUp();
             }
-            // 스킬 타입에 따라 적절한 레벨업 메서드 호출
             if (_skill is Skill_BakeBread bakeBread)
             {
                 bakeBread.SkillLevelUp();
             }
-            // 스킬 타입에 따라 적절한 레벨업 메서드 호출
             if (_skill is Skill_BeastEyes beastEyes)
             {
                 beastEyes.SkillLevelUp();
             }
-            // 스킬 타입에 따라 적절한 레벨업 메서드 호출
             if (_skill is Skill_FatalStrike fatalStrike)
             {
                 fatalStrike.SkillLevelUp();
             }
-            // 스킬 타입에 따라 적절한 레벨업 메서드 호출
             if (_skill is Skill_EatChur eatChur)
             {
                 eatChur.SkillLevelUp();

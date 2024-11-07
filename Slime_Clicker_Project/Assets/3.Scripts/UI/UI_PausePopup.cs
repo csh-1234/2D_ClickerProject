@@ -21,13 +21,15 @@ public class UI_PausePopup : UI_Popup
     }
     public void OnContinueButtonClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         Time.timeScale = checkTimeScale;
         ClosePopupUI();
     }
     public void OnExitButtonClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
     #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+        UnityEditor.EditorApplication.isPlaying = false;
     #else
             Application.Quit(); // 어플리케이션 종료
     #endif

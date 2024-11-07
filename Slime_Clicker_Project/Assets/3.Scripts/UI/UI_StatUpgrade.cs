@@ -83,6 +83,7 @@ public class UI_StatUpgrade : RootUI
 
     private void OnUpgradeButtonClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         Managers.Instance.StatUpgrade.statUpgrade(statType);
     }
 
