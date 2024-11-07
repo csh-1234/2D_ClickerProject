@@ -168,7 +168,7 @@ public class StatUpgradeManager
     {
         criDamageLevel++;
         OnStatChanged?.Invoke("CriDamageUpgrade", criDamageLevel, criDamageLevel * criDamageBonus, criDamageLevel * criDamageCost);
-        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriRate, 1);
+        Managers.Instance.Game._upgradeStats.AddStatByType(Enums.StatType.CriDamage, 1);
         Managers.Instance.Game.UpdatePlayerStats();
     }
 }

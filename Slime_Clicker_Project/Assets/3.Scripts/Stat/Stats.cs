@@ -50,7 +50,7 @@ public class Stats
         }
 
         MaxHp += other.MaxHp;
-        Hp = Mathf.Min(Hp + other.Hp, MaxHp);
+        Hp = Mathf.Min(Hp, MaxHp);  // 이 부분 수정
         Attack += other.Attack;
         Defense += other.Defense;
         CriticalRate += other.CriticalRate;

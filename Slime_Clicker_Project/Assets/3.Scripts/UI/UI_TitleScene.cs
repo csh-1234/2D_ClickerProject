@@ -123,7 +123,7 @@ public class UI_TitleScene : RootUI
         while (timeElapsed < 5f)
         {
             timeElapsed += Time.deltaTime;
-            float percent = Mathf.Clamp01(timeElapsed / 4f) * 100f;
+            float percent = Mathf.Clamp01(timeElapsed / 5f) * 100f;
             loadingValue.SetText(percent.ToString("F0") + "%");
             yield return null;
         }

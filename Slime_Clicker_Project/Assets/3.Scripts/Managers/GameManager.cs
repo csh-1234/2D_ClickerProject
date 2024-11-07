@@ -40,6 +40,7 @@ public class GameManager
     public void UpdatePlayerStats()
     {
         if (player == null) return;
+        float currentHpRatio = (float)player._currentStats.Hp / player._currentStats.MaxHp;
 
         //// 현재 스탯을 기본 스탯으로 초기화
         player._currentStats.ClearStat();
@@ -70,7 +71,7 @@ public class GameManager
                 player._currentStats.AddStats(buff.BuffStats);
             }
         }
-
+        player._currentStats.Hp = Mathf.RoundToInt(player._currentStats.MaxHp * currentHpRatio);
         Debug.Log($"최종 스탯 - ATK: {player._currentStats.Attack}, DEF: {player._currentStats.Defense}");
         //SaveGame();
         //OnStatsChanged?.Invoke(player._currentStats);

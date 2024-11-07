@@ -17,6 +17,9 @@ public class UI_StageInfo : RootUI
     [SerializeField] private Image StageClearAlarm;
     [SerializeField] private Image StageFailAlarm;
 
+    public Animator CanAnim;
+    public static bool isCutSceneOn;
+
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     private CinemachineBasicMultiChannelPerlin virtualCameraNoise;
@@ -136,89 +139,111 @@ public class UI_StageInfo : RootUI
         }
     }
 
-
+    public void StopCutScene()
+    {
+        isCutSceneOn = false;
+        CanAnim.SetBool("cutscene1", false);
+    }
     private IEnumerator PlayPlayerDeathAnimation()
     {
         var player = Managers.Instance.Game.player;
 
-        // 원래 카메라 설정 저장
-        float originalOrthoSize = virtualCamera.m_Lens.OrthographicSize;
-        Vector3 originalTrackedObjectOffset = framingTransposer.m_TrackedObjectOffset;
-        float originalDeadZoneDepth = framingTransposer.m_DeadZoneDepth;
-        float originalDeadZoneWidth = framingTransposer.m_DeadZoneWidth;
-        float originalDeadZoneHeight = framingTransposer.m_DeadZoneHeight;
-
-        // 플레이어 애니메이션 정지
         player.anim.SetBool("IsWalk", false);
+        CanAnim.SetBool("cutscene1", true);
+        Invoke(nameof(StopCutScene), 3f);
 
         // 모든 몬스터들을 뒤로 물러나게 함
         foreach (var monster in Managers.Instance.Game.MonsterList)
         {
-            monster.RetreatFromPlayer(1.5f); // 카메라 줌인 시간과 동일하게 설정
+            monster.RetreatFromPlayer(2f); // 카메라 줌인 시간과 동일하게 설정
         }
-
-        // 플레이어를 화면 중앙으로 배치하기 위한 설정
-        framingTransposer.m_DeadZoneDepth = 0;
-        framingTransposer.m_DeadZoneWidth = 0;
-        framingTransposer.m_DeadZoneHeight = 0;
-        framingTransposer.m_ScreenX = 0.5f;
-        framingTransposer.m_ScreenY = 0.5f;
-
-        // 천천히 줌인
-        DOTween.To(() => virtualCamera.m_Lens.OrthographicSize,
-            value => virtualCamera.m_Lens.OrthographicSize = value,
-            originalOrthoSize * 0.5f, 1.5f)
-            .SetEase(Ease.InOutQuad);
-
-        // TrackedObjectOffset을 조정하여 카메라가 비추는 위치를 낮춤
-        DOTween.To(() => framingTransposer.m_TrackedObjectOffset,
-            value => framingTransposer.m_TrackedObjectOffset = value,
-            new Vector3(0, -1f, 0), 1.5f)
-            .SetEase(Ease.InOutQuad);
-
-        // 줌인이 완료될 때까지 대기
-        yield return new WaitForSeconds(1.5f);
-
         // 잠시 대기
-        yield return new WaitForSeconds(1f);
-
-        // 천천히 줌아웃하며 원래 설정으로 복귀
-        DOTween.To(() => virtualCamera.m_Lens.OrthographicSize,
-            value => virtualCamera.m_Lens.OrthographicSize = value,
-            originalOrthoSize, 1f)
-            .SetEase(Ease.InOutQuad);
-
-        DOTween.To(() => framingTransposer.m_TrackedObjectOffset,
-            value => framingTransposer.m_TrackedObjectOffset = value,
-            originalTrackedObjectOffset, 1f)
-            .SetEase(Ease.InOutQuad);
-
+        yield return new WaitForSeconds(2f);
         Managers.Instance.Stage.ClearCurrentStage();
-
-        yield return new WaitForSeconds(1f);
-
-        // 모든 카메라 설정 복구
-        framingTransposer.m_DeadZoneDepth = originalDeadZoneDepth;
-        framingTransposer.m_DeadZoneWidth = originalDeadZoneWidth;
-        framingTransposer.m_DeadZoneHeight = originalDeadZoneHeight;
-
-
-        // 페이드 아웃
-        //yield return StartCoroutine(UI_Fade.Instance.FadeOutCoroutine(0.5f));
-
-        // 플레이어 초기화
-        //player.transform.position = playerStartPos;
-        //Managers.Instance.Game.player.Hp = Managers.Instance.Game.player.MaxHp;
-        //Managers.Instance.Game.UpdatePlayerStats();
-
-        yield return new WaitForSeconds(0.5f);
-
-        // 페이드 인
-        //yield return StartCoroutine(UI_Fade.Instance.FadeInCoroutine(0.5f));
-
-        // 스테이지 재시작
-
+        yield return new WaitForSeconds(1.5f);
     }
+    //private IEnumerator PlayPlayerDeathAnimation()
+    //{
+    //    var player = Managers.Instance.Game.player;
+
+    //    // 원래 카메라 설정 저장
+    //    float originalOrthoSize = virtualCamera.m_Lens.OrthographicSize;
+    //    Vector3 originalTrackedObjectOffset = framingTransposer.m_TrackedObjectOffset;
+    //    float originalDeadZoneDepth = framingTransposer.m_DeadZoneDepth;
+    //    float originalDeadZoneWidth = framingTransposer.m_DeadZoneWidth;
+    //    float originalDeadZoneHeight = framingTransposer.m_DeadZoneHeight;
+
+    //    // 플레이어 애니메이션 정지
+    //    player.anim.SetBool("IsWalk", false);
+
+    //    // 모든 몬스터들을 뒤로 물러나게 함
+    //    foreach (var monster in Managers.Instance.Game.MonsterList)
+    //    {
+    //        monster.RetreatFromPlayer(1.5f); // 카메라 줌인 시간과 동일하게 설정
+    //    }
+
+    //    // 플레이어를 화면 중앙으로 배치하기 위한 설정
+    //    framingTransposer.m_DeadZoneDepth = 0;
+    //    framingTransposer.m_DeadZoneWidth = 0;
+    //    framingTransposer.m_DeadZoneHeight = 0;
+    //    framingTransposer.m_ScreenX = 0.5f;
+    //    framingTransposer.m_ScreenY = 0.5f;
+
+    //    // 천천히 줌인
+    //    DOTween.To(() => virtualCamera.m_Lens.OrthographicSize,
+    //        value => virtualCamera.m_Lens.OrthographicSize = value,
+    //        originalOrthoSize * 0.5f, 1.5f)
+    //        .SetEase(Ease.InOutQuad);
+
+    //    // TrackedObjectOffset을 조정하여 카메라가 비추는 위치를 낮춤
+    //    DOTween.To(() => framingTransposer.m_TrackedObjectOffset,
+    //        value => framingTransposer.m_TrackedObjectOffset = value,
+    //        new Vector3(0, -1f, 0), 1.5f)
+    //        .SetEase(Ease.InOutQuad);
+
+    //    // 줌인이 완료될 때까지 대기
+    //    yield return new WaitForSeconds(1.5f);
+
+    //    // 잠시 대기
+    //    yield return new WaitForSeconds(1f);
+
+    //    // 천천히 줌아웃하며 원래 설정으로 복귀
+    //    DOTween.To(() => virtualCamera.m_Lens.OrthographicSize,
+    //        value => virtualCamera.m_Lens.OrthographicSize = value,
+    //        originalOrthoSize, 1f)
+    //        .SetEase(Ease.InOutQuad);
+
+    //    DOTween.To(() => framingTransposer.m_TrackedObjectOffset,
+    //        value => framingTransposer.m_TrackedObjectOffset = value,
+    //        originalTrackedObjectOffset, 1f)
+    //        .SetEase(Ease.InOutQuad);
+
+    //    Managers.Instance.Stage.ClearCurrentStage();
+
+    //    yield return new WaitForSeconds(1f);
+
+    //    // 모든 카메라 설정 복구
+    //    framingTransposer.m_DeadZoneDepth = originalDeadZoneDepth;
+    //    framingTransposer.m_DeadZoneWidth = originalDeadZoneWidth;
+    //    framingTransposer.m_DeadZoneHeight = originalDeadZoneHeight;
+
+
+    //    // 페이드 아웃
+    //    //yield return StartCoroutine(UI_Fade.Instance.FadeOutCoroutine(0.5f));
+
+    //    // 플레이어 초기화
+    //    //player.transform.position = playerStartPos;
+    //    //Managers.Instance.Game.player.Hp = Managers.Instance.Game.player.MaxHp;
+    //    //Managers.Instance.Game.UpdatePlayerStats();
+
+    //    yield return new WaitForSeconds(0.5f);
+
+    //    // 페이드 인
+    //    //yield return StartCoroutine(UI_Fade.Instance.FadeInCoroutine(0.5f));
+
+    //    // 스테이지 재시작
+
+    //}
 
     private IEnumerator PlayPlayerMoveAnimation(bool resetPosition)
     {

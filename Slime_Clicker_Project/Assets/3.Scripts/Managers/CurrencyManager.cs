@@ -15,7 +15,7 @@ public class CurrencyManager
     }
     public void SetGold(int addAmount)
     {
-        CurrentGold += addAmount;
+        CurrentGold = addAmount;
         OnGoldChanged?.Invoke(CurrentGold);
     }
 

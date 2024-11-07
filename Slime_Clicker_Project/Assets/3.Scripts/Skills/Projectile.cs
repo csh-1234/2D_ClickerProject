@@ -91,7 +91,7 @@ public class Projectile : BaseObject
 
         if (_owner.ObjectType == Enums.ObjectType.Monster && collision.gameObject.tag == "Player")
         {
-            if(Managers.Instance.Game.player.Hp != 0)
+            if(Managers.Instance.Game.player.Hp >= 0)
             {
                 hasHit = true;  // 충돌 플래그 설정
                 print("투사체가 플레이어 때림");

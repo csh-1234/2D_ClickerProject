@@ -14,7 +14,7 @@ public class UI_InGameScene : RootUI
         
         
         //Managers.Instance.StatUpgrade.InitStatByLevel();
-        Managers.Instance.StatUpgrade.UpdateAllTexts();
+        
     }
     // Start is called before the first frame update
     void Start()
@@ -23,6 +23,8 @@ public class UI_InGameScene : RootUI
         LoadResource();
         BindEventToObjects();
         Managers.Instance.Sound.Play("InGameBgm", SoundManager.Sound.Bgm);
+
+        Managers.Instance.StatUpgrade.UpdateAllTexts();
         //기본 상태 = 스텟 업그레이드
     }
 
