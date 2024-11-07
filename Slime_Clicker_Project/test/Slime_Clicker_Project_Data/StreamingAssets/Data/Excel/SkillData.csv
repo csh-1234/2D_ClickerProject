@@ -1,7 +1,0 @@
- DataID,SkillName,SkillType,BaseLevel,MaxLevel,Cooldown,MaxCooldown,Duration,MaxDuration,HpBonus,AtkBonus,DefBonus,CriRateBonus,CriDamageBonus,AtkSpeedBonus,HealAmount,Damage,SkillInfo,UpgradeCost,SpriteName
-200000,우다다다,Buff,1,1000,15,10,5,8,0,10,0,0,0,1,0,0,지속시간 동안 공격력과 이동속도가 증가합니다.,500,Skill_Zoomies_Icon
-200001,식빵굽기,Buff,1,1000,15,10,5,8,0,0,10,0,0,0,30,0,지속시간 동안 방어력이 증가하고 체력을 회복합니다.,500,Skill_BakeBread_Icon
-200002,츄르먹기,Buff,1,1000,30,20,0,0,0,0,0,0,0,0,0,0,모든 스킬의 쿨타임을 초기화합니다.,500,Skill_EatChur_Icon
-200003,맹수의 눈빛,Buff,1,1000,30,20,5,8,0,0,0,10,0,0,0,0,지속시간 동안 크리티컬 확률이 증가합니다.,500,Skill_BeastEyes_Icon
-200004,일격필살,Buff,1,1000,25,20,5,5,0,0,0,0,100,0,0,0,다음 공격에 치명타 판정이 적용됩니다. 지속시간 동안 크리티컬 데미지가 증가합니다.,500,Skill_FatalStrike_Icon
-200005,냥냥펀치!,Active,1,1000,10,5,0,0,0,0,0,0,0,0,0,50,냥펀치를 날려 물리 피해를 입힙니다.,500,Skill_CatCatPunch_Icon

@@ -13,12 +13,9 @@ public class StageManager
     {
         get 
         {
-            //1 = 1.0, 2 = 1.0*1.1, 3 = 1.1 *1.1.......
             float baseMultiplier = 1.0f;
-            float exponentialGrowth = Mathf.Pow(1.01f, CurrentStageLevel - 1); // 난이도 배율 설정
+            float exponentialGrowth = Mathf.Pow(1.015f, CurrentStageLevel - 1); // 난이도 배율 설정
             float finalMultiplier = baseMultiplier * exponentialGrowth;
-            Debug.Log($"Stage Level: {CurrentStageLevel}");
-            Debug.Log($"Difficulty Multiplier: {finalMultiplier}");
             return baseMultiplier * exponentialGrowth;
         }
     }
