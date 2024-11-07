@@ -15,10 +15,10 @@
       "DefBonus": 0,
       "CriRateBonus": 0.0,
       "CriDamageBonus": 0.0,
-      "AtkSpeedBonus": 1.0,
+      "AtkSpeedBonus": 0.01,
       "HealAmount": 0,
       "Damage": 0,
-      "SkillInfo": "지속시간 동안 공격력과 이동속도가 증가합니다.",
+      "SkillInfo": "{0:F2}초 동안 공격력이 {1}증가하고 공격속도가 {2:F2}만큼 증가합니다.(쿨타임 : {3:F2}초)",
       "UpgradCost": 500,
       "SpriteName": "Skill_Zoomies_Icon"
     },
@@ -40,7 +40,7 @@
       "AtkSpeedBonus": 0.0,
       "HealAmount": 30,
       "Damage": 0,
-      "SkillInfo": "지속시간 동안 방어력이 증가하고 체력을 회복합니다.",
+      "SkillInfo": "{0:F2}초 동안 방어력이 {1}증가하고 체력을 {2}만큼 회복합니다.(쿨타임 : {3:F2}초)",
       "UpgradCost": 500,
       "SpriteName": "Skill_BakeBread_Icon"
     },
@@ -62,7 +62,7 @@
       "AtkSpeedBonus": 0.0,
       "HealAmount": 0,
       "Damage": 0,
-      "SkillInfo": "모든 스킬의 쿨타임을 초기화합니다.",
+      "SkillInfo": "모든 스킬의 쿨타임을 초기화합니다.(쿨타임 : {0:F2}초)",
       "UpgradCost": 500,
       "SpriteName": "Skill_EatChur_Icon"
     },
@@ -84,7 +84,7 @@
       "AtkSpeedBonus": 0.0,
       "HealAmount": 0,
       "Damage": 0,
-      "SkillInfo": "지속시간 동안 크리티컬 확률이 증가합니다.",
+      "SkillInfo": "{0:F2}초 동안 치명타 확률이 {1:F2}% 증가합니다.(쿨타임: {2:F2}초)",
       "UpgradCost": 500,
       "SpriteName": "Skill_BeastEyes_Icon"
     },
@@ -106,7 +106,7 @@
       "AtkSpeedBonus": 0.0,
       "HealAmount": 0,
       "Damage": 0,
-      "SkillInfo": "다음 공격에 치명타 판정이 적용됩니다. 지속시간 동안 크리티컬 데미지가 증가합니다.",
+      "SkillInfo": "다음 공격에 치명타 판정이 적용됩니다. {0:F2}초 동안 크리티컬 데미지가 {1}%증가합니다.(쿨타임 : {2:F2}초)",
       "UpgradCost": 500,
       "SpriteName": "Skill_FatalStrike_Icon"
     },

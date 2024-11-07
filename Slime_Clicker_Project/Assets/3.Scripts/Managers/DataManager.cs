@@ -14,6 +14,8 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 public class DataManager
 {
+
+
     private string GetDataPath(string fileName, bool isLoad = true)
     {
         if (isLoad)
@@ -299,6 +301,8 @@ public class DataManager
 
         return value.Split('&').Select(x => ConvertValue<T>(x)).ToList();
     }
+
+
     #endregion
 
     #region Data
@@ -328,6 +332,22 @@ public class DataManager
     [Serializable]
     public class SkillData
     {
+        public string GetFormattedInfo(params object[] parameters)
+        {
+            if (string.IsNullOrEmpty(SkillInfo))
+                return SkillInfo;  // 포맷이 없으면 기본 설명 반환
+
+            try
+            {
+                return string.Format(SkillInfo, parameters);
+            }
+            catch (FormatException)
+            {
+                Debug.LogError($"Invalid format string for skill {SkillName}: {SkillInfo}");
+                return SkillInfo;  // 포맷 오류시 기본 설명 반환
+            }
+        }
+
         public int DataId;
         public string SkillName;
         public SkillType SkillType;

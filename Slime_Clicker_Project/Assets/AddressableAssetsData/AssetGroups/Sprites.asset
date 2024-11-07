@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a58ab51d307aba4198808c5df1aa1d2
+    m_Address: bluerobe.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 411cf3a8e47a81d43904267b269e9942
     m_Address: Shield.sprite
     m_ReadOnly: 0
@@ -47,14 +53,44 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f34a8fa01bb4674bba6d73f5070de23
+    m_Address: pa.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7f613fda49445f4469f7fac0ebdb87bd
     m_Address: FakerSign.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8fa57bef7450e3d45ac04c74d3cb5531
+    m_Address: hellsworld.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 972cbdbdb48e98547af6de9bb497dec7
+    m_Address: riderbelt.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac92329bcc332cb4384c35e5105344e4
+    m_Address: SacredArmor.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bac333f89f982694d9cf7c92c523cd79
     m_Address: Sword.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c81153ca03912474db92ffd0260a98f0
+    m_Address: warmog.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
@@ -67,6 +103,24 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ded8b55d2367a2b42b7bd90f6c380484
     m_Address: Slime_Tanker.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea1f3b0a014774f4aa3cf913030f67a5
+    m_Address: Iron8.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb5b2636de7a2af44894a3d4c626cec8
+    m_Address: woodstick.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc2842249bd9a3145854478c60f03127
+    m_Address: xface.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

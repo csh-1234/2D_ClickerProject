@@ -101,6 +101,7 @@ public class UI_StageInfo : RootUI
                     print("타임아웃");
                     StageTime.text = "00:30";
                     yield return StartCoroutine(PlayPlayerDeathAnimation());
+                    Managers.Instance.Sound.Play("Fail", SoundManager.Sound.Effect);
                     StartCoroutine(ShowStageAlarm(StageFailAlarm));
                     SetCurrentStageLevel();
                     stageCounter++;
@@ -110,15 +111,17 @@ public class UI_StageInfo : RootUI
                 {
                     print("플레이어 사망");
                     yield return StartCoroutine(PlayPlayerDeathAnimation());
-                    stageCounter++;
+                    Managers.Instance.Sound.Play("Fail", SoundManager.Sound.Effect);
                     StartCoroutine(ShowStageAlarm(StageFailAlarm));
                     SetCurrentStageLevel();
+                    stageCounter++;
                     break;
                 }
                 else if (Managers.Instance.Game.MonsterList.Count == 0)
                 {
                     print("스테이지 클리어 - 몬스터 소탕완료");
                     Managers.Instance.Stage.AddCurrentStageLevel();
+                    Managers.Instance.Sound.Play("Clear", SoundManager.Sound.Effect);
                     StartCoroutine(ShowStageAlarm(StageClearAlarm));
                     SetCurrentStageLevel();
                     stageCounter++;

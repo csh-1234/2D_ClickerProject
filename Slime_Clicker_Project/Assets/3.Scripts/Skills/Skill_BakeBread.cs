@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,19 +28,41 @@ public class Skill_BakeBread : Skill
     {
         //UpdateSkillByLoadedLevel();
     }
+    public override string GetCurrentSkillInfo()
+    {
+        if (_bakeBread == null) return string.Empty;
+
+        try
+        {
+            return _data.GetFormattedInfo(
+            Duration,          // {0}
+            DefBonus,     // {1}
+            HealAmount,          // {2}
+            Cooldown           // {3}
+        );
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error formatting skill info: {e.Message}");
+            return _bakeBread.SkillInfo;  // 포맷팅 실패시 기본 텍스트 반환
+        }
+    }
 
     void SetInfo()
     {
+        if (SkillDic == null)
+        {
+            Debug.LogError("SkillDic is not initialized!");
+            return;
+        }
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
         if (SkillDic.TryGetValue(200001, out SkillData BakeBread))
         {
             _bakeBread = BakeBread;
             SkillName = BakeBread.SkillName;
             skillType = BakeBread.SkillType;
-            SkillInfo = BakeBread.SkillInfo;
             MaxLevel = BakeBread.MaxLevel;
             DataId = BakeBread.DataId;
-
             if (CurrentLevel == 0)
             {
                 CurrentLevel = BakeBread.BaseLevel;
@@ -48,6 +71,8 @@ public class Skill_BakeBread : Skill
                 HealAmount = BakeBread.HealAmount;
                 DefBonus = BakeBread.DefBonus;
             }
+            //SkillInfo = GetCurrentSkillInfo();
+            SkillInfo = BakeBread.SkillInfo;
         }
     }
     private bool _isBuffActive = false;  // 버프 활성화 상태 추적

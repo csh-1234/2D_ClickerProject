@@ -129,6 +129,7 @@ public class UI_TitleScene : RootUI
         }
 
         // 10초 후에 로딩 이미지 비활성화
+        Managers.Instance.Sound.Play("Clear", SoundManager.Sound.Effect);
         LoadingCircle.gameObject.SetActive(false);
         loadingText.gameObject.SetActive(false);
         TitleTextBox.gameObject.SetActive(true);

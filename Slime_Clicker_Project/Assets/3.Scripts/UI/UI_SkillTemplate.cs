@@ -40,21 +40,21 @@ public class UI_SkillTemplate : RootUI
         iconImage.sprite = Resources.Load<Sprite>(_skill.SpriteName);
         levelText.text = $"LV.{_skill.CurrentLevel}";
         nameText.text = _skill.SkillName;
-        infoText.text = _skill.SkillInfo;
+        infoText.text = _skill.GetCurrentSkillInfo();
         costText.text = _skill.UpgradeCost.ToString();
     }
 
-    public void OnUpgradeClick2()
-    {
-        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
-        print("업글");
-        if (_skill.TryUpgrade(Managers.Instance.Currency.GetCurrentGold()))
-        {
-            Managers.Instance.Currency.RemoveGold(_skill.UpgradeCost);
+    //public void OnUpgradeClick2()
+    //{
+    //    Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
+    //    print("업글");
+    //    if (_skill.TryUpgrade(Managers.Instance.Currency.GetCurrentGold()))
+    //    {
+    //        Managers.Instance.Currency.RemoveGold(_skill.UpgradeCost);
             
-            UpdateUI();
-        }
-    }
+    //        UpdateUI();
+    //    }
+    //}
 
 
     public void SetLoadedLevel()
@@ -68,6 +68,7 @@ public class UI_SkillTemplate : RootUI
 
     public void OnUpgradeClick()
     {
+        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         if (_skill.TryUpgrade(Managers.Instance.Currency.GetCurrentGold()))
         {
             Managers.Instance.Currency.RemoveGold(_skill.UpgradeCost);

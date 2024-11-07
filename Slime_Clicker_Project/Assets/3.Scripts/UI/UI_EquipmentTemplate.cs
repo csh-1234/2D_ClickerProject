@@ -83,7 +83,7 @@ public class UI_EquipmentTemplate : RootUI
 
     public void OnBuyClick()
     {
-        Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
+        Managers.Instance.Sound.Play("Buy", SoundManager.Sound.Effect);
         print("±¸¸Å");
         if (Managers.Instance.Game.TryBuyItem(_item))
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,15 +27,38 @@ public class Skill_BeastEyes : Skill
     {
         //UpdateSkillByLoadedLevel();
     }
+    public override string GetCurrentSkillInfo()
+    {
+        if (_beastEyes == null) return string.Empty;
+
+        try
+        {
+            return _data.GetFormattedInfo(
+            Duration,          // {0}
+            CriRateBonus,     // {1}
+            Cooldown           // {2}
+        );
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error formatting skill info: {e.Message}");
+            return _beastEyes.SkillInfo;  // 포맷팅 실패시 기본 텍스트 반환
+        }
+    }
+
     void SetInfo()
     {
+        if (SkillDic == null)
+        {
+            Debug.LogError("SkillDic is not initialized!");
+            return;
+        }
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
         if (SkillDic.TryGetValue(200003, out SkillData beastEyes))
         {
             _beastEyes = beastEyes;
             SkillName = beastEyes.SkillName;
             skillType = beastEyes.SkillType;
-            SkillInfo = beastEyes.SkillInfo;
             MaxLevel = beastEyes.MaxLevel;
             DataId = beastEyes.DataId;
 
@@ -45,6 +69,7 @@ public class Skill_BeastEyes : Skill
                 Duration = beastEyes.Duration;
                 CriRateBonus = beastEyes.CriRateBonus;
             }
+            SkillInfo = beastEyes.SkillInfo;
 
         }
     }

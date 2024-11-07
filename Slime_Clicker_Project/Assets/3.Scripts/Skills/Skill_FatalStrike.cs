@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,16 +26,38 @@ public class Skill_FatalStrike : Skill
     {
         //UpdateSkillByLoadedLevel();
     }
+    public override string GetCurrentSkillInfo()
+    {
+        if (_fatalStrike == null) return string.Empty;
+
+        try
+        {
+            return _data.GetFormattedInfo(
+            Duration,          // {0}
+            CriDamageBonus,     // {1}
+            Cooldown           // {2}
+        );
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error formatting skill info: {e.Message}");
+            return _fatalStrike.SkillInfo;  // 포맷팅 실패시 기본 텍스트 반환
+        }
+    }
 
     void SetInfo()
     {
+        if (SkillDic == null)
+        {
+            Debug.LogError("SkillDic is not initialized!");
+            return;
+        }
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
         if (SkillDic.TryGetValue(200004, out SkillData FatalStrike))
         {
             _fatalStrike = FatalStrike;
             SkillName = FatalStrike.SkillName;
             skillType = FatalStrike.SkillType;
-            SkillInfo = FatalStrike.SkillInfo;
             MaxLevel = FatalStrike.MaxLevel;
 
             if (CurrentLevel == 0)
@@ -44,6 +67,7 @@ public class Skill_FatalStrike : Skill
                 Duration = FatalStrike.Duration;
                 CriDamageBonus = FatalStrike.CriDamageBonus;
             }
+            SkillInfo = FatalStrike.SkillInfo;
         }
     }
 
@@ -108,6 +132,7 @@ public class Skill_FatalStrike : Skill
     protected override IEnumerator StartBuffSkill()
     {
         Player player = Managers.Instance.Game.player;
+        player._isCritical = true;
         _currentTarget = player;
         if (player != null)
         {

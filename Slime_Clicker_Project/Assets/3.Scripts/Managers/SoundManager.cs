@@ -62,10 +62,13 @@ public class SoundManager : MonoBehaviour
             AudioSource audioSource = _audioSources[(int)Sound.Bgm];
             if (audioSource.isPlaying)
                 audioSource.Stop();
-
+            
             audioSource.pitch = pitch;
             audioSource.clip = audioClip;
+            audioSource.volume = 0.7f;
             audioSource.Play();
+            
+            
         }
         else
         {

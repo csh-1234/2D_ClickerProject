@@ -183,6 +183,10 @@ public class Skill : MonoBehaviour
 
         return true;
     }
+    public virtual string GetCurrentSkillInfo()
+    {
+        return SkillInfo;  // 기본 구현
+    }
 
     public virtual void UpdateSkillByLoadedLevel()
     {

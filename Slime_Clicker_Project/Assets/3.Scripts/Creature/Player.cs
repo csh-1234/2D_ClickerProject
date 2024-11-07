@@ -105,6 +105,11 @@ public class Player : Creature
     {
         base.Awake();
         Managers.Instance.Game.player = this;
+        if (Managers.Instance.Data.SkillDic == null || Managers.Instance.Data.SkillDic.Count == 0)
+        {
+            Debug.LogError("Skill data not loaded. Initializing Data Manager...");
+            Managers.Instance.Data.Initialize();
+        }
         Addskills();
         _currentStats.CopyStats(_baseStats);
 
@@ -121,12 +126,25 @@ public class Player : Creature
 
     private void Addskills()
     {
-        AddSkill(typeof(Skill_Zoomies));
+        if (Managers.Instance.Data.SkillDic == null || Managers.Instance.Data.SkillDic.Count == 0)
+        {
+            Debug.LogError("Skill data not loaded!");
+            return;
+        }
+
+        try
+        {
+            AddSkill(typeof(Skill_Zoomies));
         AddSkill(typeof(Skill_BakeBread));
         AddSkill(typeof(Skill_EatChur));
         AddSkill(typeof(Skill_BeastEyes));
         AddSkill(typeof(Skill_FatalStrike));
-        //AddSkill(typeof(Skill_CatCatPunch));
+            //AddSkill(typeof(Skill_CatCatPunch));
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error adding skills: {e.Message}\n{e.StackTrace}");
+        }
     }
 
     private void AddSkill(Type skillType)

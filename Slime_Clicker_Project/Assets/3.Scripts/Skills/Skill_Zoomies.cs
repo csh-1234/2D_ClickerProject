@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -27,7 +28,25 @@ public class Skill_Zoomies : Skill
     {
         //UpdateSkillByLoadedLevel();
     }
+    public override string GetCurrentSkillInfo()
+    {
+        if (_zoomies == null) return string.Empty;
 
+        try
+        {
+            return _data.GetFormattedInfo(
+            Duration,          // {0}
+            AtkBonus,     // {1}
+            AtkSpeedBonus,          // {2}
+            Cooldown           // {3}
+        );
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error formatting skill info: {e.Message}");
+            return _zoomies.SkillInfo;  // 포맷팅 실패시 기본 텍스트 반환
+        }
+    }
     public void SetInfo()
     {
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
@@ -36,7 +55,6 @@ public class Skill_Zoomies : Skill
             _zoomies = Zoomies;
             SkillName = Zoomies.SkillName;
             skillType = Zoomies.SkillType;
-            SkillInfo = Zoomies.SkillInfo;
             MaxLevel = Zoomies.MaxLevel;
             DataId = Zoomies.DataId;
 
@@ -48,6 +66,7 @@ public class Skill_Zoomies : Skill
                 AtkBonus = Zoomies.AtkBonus;
                 AtkSpeedBonus = Zoomies.AtkSpeedBonus;
             }
+            SkillInfo = Zoomies.SkillInfo;
         }
     }
 
@@ -71,7 +90,7 @@ public class Skill_Zoomies : Skill
         Cooldown = Mathf.Max(_zoomies.MaxCooldown, Cooldown - 0.01f);
         Duration = Mathf.Min(_zoomies.MaxDuration, Duration + 0.01f);
         AtkBonus++;
-        AtkSpeedBonus++;
+        AtkSpeedBonus+=0.01f;
         BuffStatUpdate();
 
         // 버프가 활성화 상태였다면 새로운 스탯으로 다시 적용

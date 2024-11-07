@@ -164,7 +164,8 @@ public class Monster : Creature
         //print("∏ÛΩ∫≈Õ ªÁ∏¡");
         base.OnDead();
         //OnDeadEvent?.Invoke();
-        Managers.Instance.Game.MonsterList.Remove(this);    
+        Managers.Instance.Game.MonsterList.Remove(this);
+        //Managers.Instance.Sound.Play("SlimeDie", SoundManager.Sound.Effect);
         int goldAmount = (int)(Random.Range(100, 1000) * Managers.Instance.Stage.DifficultyByLevel);
         Managers.Instance.Currency.AddGold(goldAmount);
         

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,15 +27,37 @@ public class Skill_EatChur : Skill
     {
         //UpdateSkillByLoadedLevel();
     }
+    public override string GetCurrentSkillInfo()
+    {
+        if (_eatChur == null) return string.Empty;
+
+        try
+        {
+            return _data.GetFormattedInfo(
+            Cooldown           // {0}
+        );
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error formatting skill info: {e.Message}");
+            return _eatChur.SkillInfo;  // 포맷팅 실패시 기본 텍스트 반환
+        }
+    }
+
     void SetInfo()
     {
+        if (SkillDic == null)
+        {
+            Debug.LogError("SkillDic is not initialized!");
+            return;
+        }
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
         if (SkillDic.TryGetValue(200002, out SkillData EatChur))
         {
             _eatChur = EatChur;
             SkillName = EatChur.SkillName;
             skillType = EatChur.SkillType;
-            SkillInfo = EatChur.SkillInfo;
+            
             MaxLevel = EatChur.MaxLevel;
             DataId = EatChur.DataId;
 
@@ -44,7 +67,7 @@ public class Skill_EatChur : Skill
                 Cooldown = EatChur.Cooldown;
                 Duration = EatChur.Duration;
             }
-
+            SkillInfo = EatChur.SkillInfo;
         }
     }
 
