@@ -20,12 +20,12 @@ public class UI_StageInfo : RootUI
     public Button startWave;
 
     private const int STAGES_PER_CYCLE = 5; // 한 사이클당 스테이지 수
-    private Vector3 playerStartPos; // 플레이어 시작 위치 저장
+    private readonly Vector3 playerStartPos = new Vector2(0, 8.58f); // 플레이어 시작 위치 저장
 
  
 
-    private int min = 0;
-    private float sec = 30f;
+    private int min = 1;
+    private float sec = 0f;
 
     protected override void Awake()
     {
@@ -33,11 +33,11 @@ public class UI_StageInfo : RootUI
         SetCurrentStageLevel();
         // 페이드 패널 초기화
       
-        if(Managers.Instance.Game.player!=null)
-        {
-            playerStartPos = Managers.Instance.Game.player.transform.position;
+        //if(Managers.Instance.Game.player!=null)
+        //{
+        //    playerStartPos = Managers.Instance.Game.player.transform.position;
 
-        }
+        //}
 
         // 카메라 컴포넌트 초기화
         if (virtualCamera != null)
@@ -81,8 +81,8 @@ public class UI_StageInfo : RootUI
         while (true)
         {
             Managers.Instance.Stage.StartStage();
-            min = 0;
-            sec = 30f;
+            min = 1;
+            sec = 0f;
             while (true)
             {
                 calctime();
@@ -236,6 +236,7 @@ public class UI_StageInfo : RootUI
 
             // 플레이어 위치 초기화
             player.transform.position = playerStartPos;
+            Debug.Log($"플레이어 위치 :{playerStartPos.x}, {playerStartPos.y}");
 
             yield return new WaitForSeconds(0.5f);
 

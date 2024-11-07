@@ -1,0 +1,60 @@
+{
+  "Creatures": [
+    {
+      "DataId": 100000,
+      "CreatureName": "김고양",
+      "CreatureType": 0,
+      "Hp": 500,
+      "MaxHp": 500,
+      "Atk": 10,
+      "Def": 2,
+      "CriRate": 10.0,
+      "CriDamage": 100.0,
+      "MoveSpeed": 3.0,
+      "AtkSpeed": 1.0,
+      "SpriteName": "PlayerCat.sprite"
+    },
+    {
+      "DataId": 100001,
+      "CreatureName": "탱커 슬라임",
+      "CreatureType": 1,
+      "Hp": 600,
+      "MaxHp": 600,
+      "Atk": 3,
+      "Def": 8,
+      "CriRate": 0.0,
+      "CriDamage": 0.0,
+      "MoveSpeed": 2.0,
+      "AtkSpeed": 1.0,
+      "SpriteName": "Slime_Tanker.sprite"
+    },
+    {
+      "DataId": 100002,
+      "CreatureName": "근접딜러 슬라임",
+      "CreatureType": 1,
+      "Hp": 300,
+      "MaxHp": 300,
+      "Atk": 7,
+      "Def": 5,
+      "CriRate": 0.0,
+      "CriDamage": 0.0,
+      "MoveSpeed": 2.0,
+      "AtkSpeed": 1.0,
+      "SpriteName": "Slime_Attacker.sprite"
+    },
+    {
+      "DataId": 100003,
+      "CreatureName": "원거리 슬라임",
+      "CreatureType": 1,
+      "Hp": 300,
+      "MaxHp": 300,
+      "Atk": 5,
+      "Def": 3,
+      "CriRate": 0.0,
+      "CriDamage": 0.0,
+      "MoveSpeed": 4.0,
+      "AtkSpeed": 1.0,
+      "SpriteName": "Slime_Ranger.sprite"
+    }
+  ]
+}
