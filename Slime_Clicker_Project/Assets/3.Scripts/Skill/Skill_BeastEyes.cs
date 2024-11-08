@@ -99,9 +99,9 @@ public class Skill_BeastEyes : Skill
 
     public override void UpdateSkillByLoadedLevel()
     {
-        Cooldown = Mathf.Max(_beastEyes.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
-        Duration = Mathf.Min(_beastEyes.MaxDuration, Duration + (0.01f * CurrentLevel-1));
-        CriRateBonus += CriRateBonus * (CurrentLevel-1);
+        Cooldown = Mathf.Max(_beastEyes.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_beastEyes.MaxDuration, Duration + (0.01f * CurrentLevel));
+        CriRateBonus += CriRateBonus * (CurrentLevel);
         BuffStatUpdate();
     }
 

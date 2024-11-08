@@ -83,10 +83,11 @@ public class UI_EquipmentTemplate : RootUI
 
     public void OnBuyClick()
     {
-        Managers.Instance.Sound.Play("Buy", SoundManager.Sound.Effect);
+        
         print("구매");
         if (Managers.Instance.Game.TryBuyItem(_item))
         {
+            Managers.Instance.Sound.Play("Buy", SoundManager.Sound.Effect);
             print($"{_item.ItemName} 구매완료");
             equipButton.gameObject.SetActive(true);
             buyButton.gameObject.SetActive(false);

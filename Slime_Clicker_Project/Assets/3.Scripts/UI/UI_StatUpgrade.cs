@@ -28,6 +28,20 @@ public class UI_StatUpgrade : RootUI
 
         UpdateStat(initialStats.level, initialStats.bonus, initialStats.cost);
         BindEventToObjects();
+        
+        //StartCoroutine(InitializeStats());
+    }
+
+    private IEnumerator InitializeStats()
+    {
+        // 데이터 로드가 완료될 때까지 대기
+        yield return new WaitUntil(() => Managers.Instance.Game.loadedStage != 0);
+
+        // 초기 스탯 정보 가져오기
+        var initialStats = Managers.Instance.StatUpgrade.GetStatInfo(statType);
+        UpdateStat(initialStats.level, initialStats.bonus, initialStats.cost);
+        // 버튼 이벤트 바인딩
+        
     }
 
     private void OnStatChanged(string type, int level, float bonus, int cost)

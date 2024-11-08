@@ -38,7 +38,8 @@ MonoBehaviour:
   - m_GUID: edb0de595335fb5478b1589d35af8ecb
     m_Address: SkillButtonTemplate
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Prefab
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 9569e50c1e0abd043b65ee6e475d01e1, type: 2}

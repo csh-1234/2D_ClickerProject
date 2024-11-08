@@ -95,9 +95,9 @@ public class Skill_FatalStrike : Skill
 
     public override void UpdateSkillByLoadedLevel()
     {
-        Cooldown = Mathf.Max(_fatalStrike.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
-        Duration = Mathf.Min(_fatalStrike.MaxDuration, Duration + (0.01f * CurrentLevel-1));
-        CriDamageBonus += CriDamageBonus * (CurrentLevel -1);
+        Cooldown = Mathf.Max(_fatalStrike.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_fatalStrike.MaxDuration, Duration + (0.01f * CurrentLevel));
+        CriDamageBonus += CriDamageBonus * (CurrentLevel);
         BuffStatUpdate();
     }
 

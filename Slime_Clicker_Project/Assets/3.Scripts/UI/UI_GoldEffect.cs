@@ -47,7 +47,10 @@ public class UI_GoldEffect : BaseObject
             .DOMove(targetPos, 0.5f).SetDelay(0.5f)
             .SetEase(Ease.OutQuad));
 
-        Managers.Instance.Sound.Play("Coin", SoundManager.Sound.Effect);
-        sequence.OnComplete(() => Destroy(coin));
+        
+        sequence.OnComplete(() => {
+            Managers.Instance.Sound.Play("Coin", SoundManager.Sound.Effect);
+            Destroy(coin);
+            });
     }
 }

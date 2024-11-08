@@ -1,5 +1,5 @@
 DataId,CreatureName,CreatureType,Hp,MaxHp,Atk,Def,CriRate,CriDamage,MoveSpeed,AtkSpeed,SpriteName
-100000,김고양,Player,500,500,10,2,10,100,3,1,PlayerCat.sprite
+100000,김고양,Player,500,500,100,2,10,100,3,1,PlayerCat.sprite
 100001,탱커 슬라임,Monster,600,600,3,8,0,0,2,1,Slime_Tanker.sprite
 100002,근접딜러 슬라임,Monster,300,300,7,5,0,0,2,1,Slime_Attacker.sprite
 100003,원거리 슬라임,Monster,300,300,5,3,0,0,4,1,Slime_Ranger.sprite

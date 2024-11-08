@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static Enums;
 
 public class UI_StageInfo : RootUI
 {
@@ -31,22 +32,26 @@ public class UI_StageInfo : RootUI
     protected override void Awake()
     {
         base.Awake();
-        SetCurrentStageLevel();
     }
 
     private void Start()
     {
+        SetCurrentStageLevel();
         if (coStartStage != null)
         {
             StopCoroutine(coStartStage);
             coStartStage = null;
         }
         coStartStage = StartCoroutine(StartWave());
-        SetCurrentStageLevel();
+    }
+
+    private void Update()
+    {
     }
 
     private IEnumerator StartWave()
     {
+        
         while (true)
         {
             Managers.Instance.Stage.StartStage();

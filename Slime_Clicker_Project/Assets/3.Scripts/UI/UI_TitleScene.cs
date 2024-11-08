@@ -24,6 +24,7 @@ public class UI_TitleScene : RootUI
     private DG.Tweening.Sequence _titleAnimation;
     protected override void Awake()
     {
+        Screen.SetResolution(540, 960, FullScreenMode.Windowed);
         base.Awake();
         LoadResource();
     }
@@ -36,6 +37,7 @@ public class UI_TitleScene : RootUI
         
     }
 
+    
     #region ObjectEvent
     private List<UI_EventHandler> _boundHandlers = new List<UI_EventHandler>();
     private void BindEvent(string objectName, Action action)
@@ -74,6 +76,8 @@ public class UI_TitleScene : RootUI
             if (count == totalCount)
             {
                 Managers.Instance.Data.Initialize();
+                Managers.Instance.Game.loadStageGold();
+                Managers.Instance.Sound.Init();
             }
         });
 

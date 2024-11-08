@@ -103,10 +103,10 @@ public class Skill_BakeBread : Skill
         int baseDefBonus = _bakeBread.DefBonus;
         float baseHealAmount = _bakeBread.HealAmount;
 
-        Cooldown = Mathf.Max(_bakeBread.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
-        Duration = Mathf.Min(_bakeBread.MaxDuration, Duration + (0.01f * CurrentLevel-1));
-        DefBonus += DefBonus * (CurrentLevel-1);
-        HealAmount += HealAmount * (CurrentLevel-1);
+        Cooldown = Mathf.Max(_bakeBread.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_bakeBread.MaxDuration, Duration + (0.01f * CurrentLevel));
+        DefBonus += DefBonus * (CurrentLevel);
+        HealAmount += HealAmount * (CurrentLevel);
         BuffStatUpdate();
     }
 

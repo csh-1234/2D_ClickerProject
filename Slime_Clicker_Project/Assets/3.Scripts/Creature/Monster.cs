@@ -175,8 +175,9 @@ public class Monster : Creature
         base.OnDead();
         Managers.Instance.Game.MonsterList.Remove(this);
         //Managers.Instance.Sound.Play("SlimeDie", SoundManager.Sound.Effect);
-        int goldAmount = (int)(Random.Range(100, 1000) * Managers.Instance.Stage.DifficultyByLevel);
-
+        int goldAmount = (int)(Random.Range(100, 10000) * Managers.Instance.Stage.DifficultyByLevel);
+        Managers.Instance.Currency.AddGold(goldAmount);
+        
         UI_GoldEffect.Instance.PlayGoldEffect(transform.position, goldAmount);
         Managers.Instance.Object.Despawn(this);
 

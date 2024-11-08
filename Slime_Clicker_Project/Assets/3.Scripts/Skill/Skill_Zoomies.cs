@@ -100,9 +100,9 @@ public class Skill_Zoomies : Skill
         int baseAtkBonus = _zoomies.AtkBonus;
         float baseAtkSpeedBonus = _zoomies.AtkSpeedBonus;
 
-        Cooldown = Mathf.Max(_zoomies.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
-        Duration = Mathf.Min(_zoomies.MaxDuration, Duration + (0.01f * CurrentLevel-1));
-        AtkBonus += AtkBonus * (CurrentLevel -1);
+        Cooldown = Mathf.Max(_zoomies.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
+        Duration = Mathf.Min(_zoomies.MaxDuration, Duration + (0.01f * CurrentLevel));
+        AtkBonus += AtkBonus * (CurrentLevel);
         AtkSpeedBonus += AtkSpeedBonus * CurrentLevel;
         BuffStatUpdate();
     }

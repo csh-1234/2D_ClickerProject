@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CurrencyManager
 {
-    private int CurrentGold = 100000000;  //±âº» °ñµå
+    private int CurrentGold;  //±âº» °ñµå
     public event Action<int> OnGoldChanged;
     public void SetGold(int addAmount)
     {

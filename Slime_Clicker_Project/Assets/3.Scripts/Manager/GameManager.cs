@@ -24,6 +24,9 @@ public class GameManager
     private Stats _equipmentStats = new Stats();    // 장비 스탯
 
     public event Action<Stats> OnStatsChanged;  // 스탯 변경 이벤트 추가
+    public int loadedStage { get; set; }
+    public int loadedGold { get; set; }
+
 
     //전체 스탯 합산
     public Stats UpdateTotalStat()
@@ -195,19 +198,33 @@ public class GameManager
         SaveGoldStageData();
     }
 
+    public void loadStageGold()
+    {
+        GoldStageData loadedGoldStageData = LoadGoldStageData();
+
+        loadedGold = loadedGoldStageData.CurrentStage;
+        loadedStage = loadedGoldStageData.CurrentGold;
+
+        if (loadedGoldStageData != null)
+        {
+            Managers.Instance.Stage.CurrentStageLevel = loadedGoldStageData.CurrentStage == 0 ? 1 : loadedGoldStageData.CurrentStage;
+            Managers.Instance.Currency.SetGold(loadedGoldStageData.CurrentGold);
+        }
+    }
+
     public void LoadGame()
     {
-        // 게임 데이터 로드
+        // 게임 데이터 로드        
         StatLevelData loadedStatData = LoadStatData();
         if (loadedStatData != null)
         {
             // 로드된 데이터 적용
-            Managers.Instance.StatUpgrade.AtkLevel = loadedStatData.AtkLevel;
-            Managers.Instance.StatUpgrade.HpLevel = loadedStatData.HpLevel;
-            Managers.Instance.StatUpgrade.DefLevel = loadedStatData.DefLevel;
-            Managers.Instance.StatUpgrade.CriRateLevel = loadedStatData.CriRateLevel;
-            Managers.Instance.StatUpgrade.criDamageLevel = loadedStatData.CriDamageLevel;
-            Managers.Instance.StatUpgrade.AtkSpeedLevel = loadedStatData.AtkSpeedLevel;
+            Managers.Instance.StatUpgrade.AtkLevel = loadedStatData.AtkLevel == 0 ? 1 : loadedStatData.AtkLevel;
+            Managers.Instance.StatUpgrade.HpLevel = loadedStatData.HpLevel == 0 ? 1 : loadedStatData.HpLevel;
+            Managers.Instance.StatUpgrade.DefLevel = loadedStatData.DefLevel == 0 ? 1 : loadedStatData.DefLevel;
+            Managers.Instance.StatUpgrade.CriRateLevel = loadedStatData.CriRateLevel == 0 ? 1 : loadedStatData.CriRateLevel;
+            Managers.Instance.StatUpgrade.criDamageLevel = loadedStatData.CriDamageLevel == 0 ? 1 : loadedStatData.CriDamageLevel;
+            Managers.Instance.StatUpgrade.AtkSpeedLevel = loadedStatData.AtkSpeedLevel == 0 ? 1 : loadedStatData.AtkSpeedLevel;
         }
         SkillLevelData loadedSkillData = LoadSkillData();
         if(loadedSkillData != null)
@@ -220,12 +237,7 @@ public class GameManager
         }
 
         LoadOwnedItems();
-        GoldStageData loadedGoldStageData = LoadGoldStageData();
-        if(loadedGoldStageData != null)
-        {
-            Managers.Instance.Stage.CurrentStageLevel = loadedGoldStageData.CurrentStage;
-            Managers.Instance.Currency.SetGold(loadedGoldStageData.CurrentGold);
-        }
+    
     }
 
     private string GetSavePath(string fileName)
