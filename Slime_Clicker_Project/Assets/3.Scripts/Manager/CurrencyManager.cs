@@ -5,20 +5,13 @@ using UnityEngine;
 
 public class CurrencyManager
 {
-    private int CurrentGold = 100000000;
+    private int CurrentGold = 100000000;  //기본 골드
     public event Action<int> OnGoldChanged;
-
-    public void Initialize()
-    {
-        //TODO : 저장된 재화 데이터 load
-        //CurrentGold = 100000;
-    }
     public void SetGold(int addAmount)
     {
         CurrentGold = addAmount;
         OnGoldChanged?.Invoke(CurrentGold);
     }
-
     public void AddGold(int addAmount)
     {
         CurrentGold += addAmount;

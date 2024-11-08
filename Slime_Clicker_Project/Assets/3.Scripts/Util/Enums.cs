@@ -43,7 +43,6 @@ public class Enums
         Armor,
     }
 
-
     public enum StatType
     {
         Hp,
@@ -55,6 +54,7 @@ public class Enums
         CriDamage,
         MoveSpeed,
     }
+
     public enum Sound
     {
         Bgm,

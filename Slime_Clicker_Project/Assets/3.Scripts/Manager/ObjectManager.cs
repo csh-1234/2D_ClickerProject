@@ -13,17 +13,12 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class ObjectManager
 {
     public Dictionary<int, CreatureData> CreatureDataDic;
-    
     public Player _player { get; private set; }
     public HashSet<Monster> Monsters { get; } = new HashSet<Monster>();
     public HashSet<Projectile> Projectiles { get; } = new HashSet<Projectile>();
-    public HashSet<GameObject> ClickEffect { get; } = new HashSet<GameObject>();
-    public HashSet<DropGold> Gold { get; } = new HashSet<DropGold>();
-
-
 
     // 규칙 : 모든 오브젝트의 생성은 spawn에서 시작해야 한다.
-    //todo 모든 요소 dataid 추가
+    // TODO : 모든 요소 dataid 추가ㅣ
     public T Spawn<T>(Vector3 position, int DataId = 0, string prefabName = "") where T : BaseObject
     {
         Type type = typeof(T);
@@ -115,7 +110,6 @@ public class ObjectManager
             Managers.Instance.Resource.Destroy(obj.gameObject);
         }
     }
-
 
     public void ShowDamageFont(Vector2 pos, float damage, float healAmount, UnityEngine.Transform parent, bool isCritical = false)
     {

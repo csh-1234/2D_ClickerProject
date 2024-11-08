@@ -14,12 +14,10 @@ public class Creature : BaseObject
     public Animator Anim { get; set; }
     public Vector2 CenterPosition { get { return transform.position; } }
 
-
     [SerializeField] public Stats _baseStats = new Stats();    // 기본 스탯
     [SerializeField] public Stats _currentStats = new Stats(); // 최종 함산 스탯
 
     public CreatureData CreatureData { get; set; }
-
     public event Action<int> OnHpChanged;   //체력변화 감지 이벤트
 
     public int Hp
@@ -40,6 +38,22 @@ public class Creature : BaseObject
     public float MoveSpeed => _currentStats.MoveSpeed;
     public float AttackSpeed => _currentStats.AttackSpeed;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        Initialize();
+    }
+    public override bool Initialize()
+    {
+        base.Initialize();
+
+        RigidBody = GetComponent<Rigidbody2D>();
+        Collider = GetComponent<Collider2D>();
+        SpriteRender = GetComponent<SpriteRenderer>();
+        Anim = GetComponent<Animator>();
+        _currentStats.CopyStats(_baseStats);
+        return true;
+    }
 
     public virtual void SetInfo(int dataId)
     {
@@ -69,12 +83,6 @@ public class Creature : BaseObject
         Initialize();
     }
 
-    private BuffManagement _buffManagement = new BuffManagement();
-    public virtual void ResetStats(Stats baseStats)
-    {
-        _currentStats.CopyStats(baseStats);
-    }
-
     public virtual void ApplyStatModifier(Stats modifier, bool isOn)
     {
         if (modifier == null) return;
@@ -90,47 +98,6 @@ public class Creature : BaseObject
         {
             _currentStats.SubStats(modifier);
         }
-    }
-
-    // 장비 변경시 사용할 메서드 추가
-    public virtual void UpdateBaseStats(Stats newStats)
-    {
-        _currentStats.CopyStats(newStats);  // 기본 스탯 설정시에만 CopyStats 사용
-    }
-
-    public void ApplyBuff(string buffId, Stats buffStats, float duration)
-    {
-        _buffManagement.ApplyBuff(this, buffId, buffStats, duration);
-    }
-
-    public void RemoveBuff(string buffId)
-    {
-        _buffManagement.RemoveBuff(this, buffId);
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        Initialize();
-    }
-    public override bool Initialize()
-    {
-        base.Initialize();
-
-        RigidBody = GetComponent<Rigidbody2D>();
-        Collider = GetComponent<Collider2D>();
-        SpriteRender = GetComponent<SpriteRenderer>();
-        Anim = GetComponent<Animator>();
-        _currentStats.CopyStats(_baseStats);
-        return true;
-    }
-
-    public virtual void Applybuff(Stats modifier, bool isOn = true)
-    {
-        if (isOn)
-            _currentStats.AddStats(modifier);
-        else
-            _currentStats.SubStats(modifier);
     }
 
     public virtual void OnDamaged(BaseObject attacker, int damage)
@@ -155,6 +122,7 @@ public class Creature : BaseObject
             OnDead();
         }
     }
+
     public virtual void OnDead()
     {
 

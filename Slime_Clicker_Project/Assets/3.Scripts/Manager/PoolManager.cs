@@ -92,6 +92,7 @@ class Pool
 public class PoolManager
 {
     // 프리팹 이름을 키로 사용하는 풀 딕셔너리
+    // objectmnaager로 Instantiate 된 풀을 사용하는 객체들은 여기서 관리된다.
     private Dictionary<string, Pool> _pools = new Dictionary<string, Pool>();
 
     public GameObject Pop(GameObject prefab)

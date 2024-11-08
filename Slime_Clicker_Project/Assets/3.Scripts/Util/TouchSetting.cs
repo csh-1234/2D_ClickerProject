@@ -12,7 +12,6 @@ public class TouchSetting : MonoBehaviour
     private float releaseTime = 0f;
     public float cooldownTime = 0.5f; // 쿨다운 시간 (초)
 
-
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && !isPressed && Time.time - releaseTime >= cooldownTime)

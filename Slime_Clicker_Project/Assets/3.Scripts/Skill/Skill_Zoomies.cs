@@ -19,14 +19,7 @@ public class Skill_Zoomies : Skill
     protected override void Awake()
     {
         base.Awake();
-         
-        //SkillDic.TryGetValue(200000, out _zoomies);
         SetInfo();
-        //CurrentSkillUpdate();
-    }
-    private void Start()
-    {
-        //UpdateSkillByLoadedLevel();
     }
     public override string GetCurrentSkillInfo()
     {
@@ -185,5 +178,4 @@ public class Skill_Zoomies : Skill
 
         yield return null;
     }
-
 }

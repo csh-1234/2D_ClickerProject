@@ -16,7 +16,6 @@ public class UI_Fade : MonoBehaviour
         if (instance == null)
             instance = this;
 
-        // 처음에는 투명하게 시작
         if (fadeImage != null)
             fadeImage.color = new Color(0, 0, 0, 0);
     }

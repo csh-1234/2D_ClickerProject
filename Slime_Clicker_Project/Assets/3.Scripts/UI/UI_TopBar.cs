@@ -15,7 +15,7 @@ public class UI_TopBar : RootUI
     [SerializeField] protected Image FastIcon;
     private Image speedBoard;
     private bool isFast = false;
-
+    private Coroutine rainbowEffect;
 
     protected override void Awake()
     {
@@ -55,8 +55,6 @@ public class UI_TopBar : RootUI
         Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         Managers.Instance.UI.ShowPopupUI<UI_PausePopup>();
     }
-
-    private Coroutine rainbowEffect;
 
     public void StartRainbowEffect()
     {

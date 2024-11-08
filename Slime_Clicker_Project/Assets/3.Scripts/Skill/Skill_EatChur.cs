@@ -18,15 +18,9 @@ public class Skill_EatChur : Skill
     {
         base.Awake();
 
-        //SkillDic.TryGetValue(200000, out _zoomies);
         SetInfo();
-        //CurrentSkillUpdate();
     }
 
-    private void Start()
-    {
-        //UpdateSkillByLoadedLevel();
-    }
     public override string GetCurrentSkillInfo()
     {
         if (_eatChur == null) return string.Empty;
@@ -193,22 +187,4 @@ public class Skill_EatChur : Skill
         }
     }
 
-    //private void BuffDeActivate()
-    //{
-    //    if (Managers.Instance.Game.player != null)
-    //    {
-    //        var _player = Managers.Instance.Game.player;
-    //        _player.Hp -= HpBonus;
-    //        _player.Atk -= AtkBonus;
-    //        _player.Def -= DefBonus;
-    //        _player.AttackSpeed -= AtkSpeedBonus;
-    //        _player.CriRate -= CriRateBonus;
-    //        _player.CriDamage -= CriDamageBonus;
-    //        _player.MoveSpeed -= MoveSpeedBonus;
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("SkillActivate - Cant find GameManager Player");
-    //    }
-    //}
 }

@@ -12,24 +12,69 @@ using static Enums;
 [SerializeField]
 public class Player : Creature
 {
+    [SerializeField] private Transform shootPos;
+
     public Animator anim;
-    [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
-    private Vector2 _input;
+
     public Projectile projectile;
     private Monster target;
     private Coroutine shootingCoroutine;
     public List<Skill> SkillList = new List<Skill>();
+
     private Dictionary<Skill, Coroutine> autoSkillCoroutines = new Dictionary<Skill, Coroutine>();
     private Dictionary<string, BuffInfo> _activeBuffs = new Dictionary<string, BuffInfo>();
-    public event Action OnStatsChanged;
-    [SerializeField] private Transform shootPos;
 
-
-    public IEnumerable<BuffInfo> GetActiveBuffs()
+    private Vector2 fireDir;
+    private float EnemyDist;
+    public bool IsAuto
     {
-        return _activeBuffs.Values;
+        get => _isAuto;
+        set
+        {
+            _isAuto = value;
+            if (_isAuto)
+            {
+                StartAutoSkill();
+            }
+            else
+            {
+                StopAutoSkill();
+            }
+        }
+    }
+    public bool _isAuto = false;     // 오토 스킬 여부
+    public bool _isCritical = false; // [스킬]일격필살 트리거 => 다음공격 확정치명
+
+    protected override void Awake()
+    {
+        base.Awake();
+        Managers.Instance.Game.player = this;
+        if (Managers.Instance.Data.SkillDic == null || Managers.Instance.Data.SkillDic.Count == 0)
+        {
+            Debug.LogError("Skill data not loaded. Initializing Data Manager...");
+            Managers.Instance.Data.Initialize();
+        }
+        Addskills();
+        _currentStats.CopyStats(_baseStats);
+        SetInfo(100000);
+        anim = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        AutoSkill();
+        SetTarget();
+        CheckMonsterListAndControlShooting();
+    }
+
+    public override void SetInfo(int dataId)
+    {
+        base.SetInfo(dataId);
+        ObjectType = ObjectType.Player;
+        _currentStats.CopyStats(_baseStats);
+    }
+
+    #region Skill&Buff
     public override void ApplyStatModifier(Stats modifier, bool isOn)
     {
         if (modifier == null) return;
@@ -78,50 +123,6 @@ public class Player : Creature
             // 전체 스탯 업데이트
             Managers.Instance.Game.UpdatePlayerStats();
         }
-    }
-
-
-    public bool IsAuto
-    {
-        get => _isAuto;
-        set
-        {
-            _isAuto = value;
-            if (_isAuto)
-            {
-                StartAutoSkill();
-            }
-            else
-            {
-                StopAutoSkill();
-            }
-        }
-    }
-    public bool _isAuto = false;
-    public bool _isCritical = false; // [스킬]일격필살 트리거 => 다음공격 확정치명
-    private float _nextFireTime;  // 다음 발사 가능 시간
-    public int count = 0;
-    protected override void Awake()
-    {
-        base.Awake();
-        Managers.Instance.Game.player = this;
-        if (Managers.Instance.Data.SkillDic == null || Managers.Instance.Data.SkillDic.Count == 0)
-        {
-            Debug.LogError("Skill data not loaded. Initializing Data Manager...");
-            Managers.Instance.Data.Initialize();
-        }
-        Addskills();
-        _currentStats.CopyStats(_baseStats);
-
-        SetInfo(100000);
-        anim = GetComponent<Animator>();
-    }
-
-    public override void SetInfo(int dataId)
-    {
-        base.SetInfo(dataId);
-        ObjectType = ObjectType.Player;
-        _currentStats.CopyStats(_baseStats);
     }
 
     private void Addskills()
@@ -201,24 +202,13 @@ public class Player : Creature
         }
     }
 
-
-    public void moveMiddlePos()
+    public IEnumerable<BuffInfo> GetActiveBuffs()
     {
-        
+        return _activeBuffs.Values;
     }
-    
-    private void Update()
-    {
-        AutoSkill();
-        SetTarget();
-    }
+    #endregion
 
-    private void FixedUpdate()
-    {
-        
-        CheckMonsterListAndControlShooting();
-    }
-
+    #region AutoSkill
     private void AutoSkill()
     {
         if (IsAuto)
@@ -266,11 +256,9 @@ public class Player : Creature
             yield return new WaitForSeconds(0.1f);
         }
     }
+    #endregion
 
-    private Vector2 fireDir;
-    private float EnemyDist;
-
-
+    #region Projectile
     void SetTarget()
     {
         float distance = float.MaxValue;
@@ -288,9 +276,24 @@ public class Player : Creature
             EnemyDist = (target.transform.position - transform.position).magnitude;
             fireDir = (target.transform.position - transform.position).normalized;
         }
-        
-    }
 
+    }
+    private void CheckMonsterListAndControlShooting()
+    {
+        bool hasMonsters = Managers.Instance.Game.MonsterList.Count > 0;
+        bool isAlive = Hp > 0;
+        if (hasMonsters && isAlive && shootingCoroutine == null)
+        {
+            // 몬스터가 있고, 플레이어가 살아있고, 발사 중이 아니면 시작
+            shootingCoroutine = StartCoroutine(ShootProjectile());
+        }
+        else if ((!hasMonsters || !isAlive) && shootingCoroutine != null)
+        {
+            // 몬스터가 없거나 플레이어가 죽었고, 발사 중이면 중지
+            StopCoroutine(shootingCoroutine);
+            shootingCoroutine = null;
+        }
+    }
     IEnumerator ShootProjectile()
     {
         while (true)    
@@ -312,34 +315,7 @@ public class Player : Creature
             }
         }
     }
-
-    public void shootProjectileOnce()
-    {
-        if (Managers.Instance.Game.MonsterList.Count > 0 && target != null)
-        {
-            Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity);
-            proj.SetInfo(this, fireDir);
-        }
-    }
-
-    private void CheckMonsterListAndControlShooting()
-    {
-        bool hasMonsters = Managers.Instance.Game.MonsterList.Count > 0;
-        bool isAlive = Hp > 0;
-        if (hasMonsters && isAlive && shootingCoroutine == null)
-        {
-            // 몬스터가 있고, 플레이어가 살아있고, 발사 중이 아니면 시작
-            shootingCoroutine = StartCoroutine(ShootProjectile());
-        }
-        else if ((!hasMonsters || !isAlive) && shootingCoroutine != null)
-        {
-            // 몬스터가 없거나 플레이어가 죽었고, 발사 중이면 중지
-            StopCoroutine(shootingCoroutine);
-            shootingCoroutine = null;
-        }
-    }
-
-
+    #endregion
 
     public IEnumerator OnDotHeal(float duration, int healAmount,int tickRate)   
     {
@@ -364,41 +340,8 @@ public class Player : Creature
         }
     }
 
-
     public override void OnDead()
     {
         base.OnDead();
     }
-    public enum EPlayerLook
-    {
-        Right,
-        Left,
-        Down,
-        Up
-    }
-    public EPlayerLook look { get; set; } = EPlayerLook.Right;
-    void UpdateLookDirection()
-    {
-        if (Mathf.Abs(_input.x) > Mathf.Abs(_input.y))
-        {
-            look = _input.x > 0 ? EPlayerLook.Right : EPlayerLook.Left;
-            SpriteRender.flipX = _input.x > 0;
-        }
-        else
-        {
-            look = _input.y > 0 ? EPlayerLook.Up : EPlayerLook.Down;
-        }
-    }
-
-    void UpdateAni()
-    {
-        bool isMoving = _input.magnitude > 0.01f;
-        anim.SetBool("IsWalk", isMoving);
-
-        if (isMoving)
-        {
-            UpdateLookDirection();
-        }
-    }
-
 }

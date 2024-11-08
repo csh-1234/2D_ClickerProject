@@ -6,7 +6,7 @@
       "CreatureType": 0,
       "Hp": 500,
       "MaxHp": 500,
-      "Atk": 10,
+      "Atk": 100,
       "Def": 2,
       "CriRate": 10.0,
       "CriDamage": 100.0,

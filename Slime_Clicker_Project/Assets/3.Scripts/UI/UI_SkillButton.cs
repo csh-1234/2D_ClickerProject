@@ -27,8 +27,6 @@ public class UI_SkillButton : RootUI, IPointerClickHandler
             skill.OnBuffStart += StartRainbowEffect;
             skill.OnBuffEnd += StopRainbowEffect;
         }
-        
-        //BindEventToObjects();
     }
 
     private void OnDisable()
@@ -123,40 +121,4 @@ public class UI_SkillButton : RootUI, IPointerClickHandler
         }
     }
     #endregion
-
-    //private void BindEventToObjects()
-    //{
-    //    // 이벤트를 추가할 (오브젝트 이름, 메서드)
-    //    BindEvent("CooldownFill", OnSkillButtonClick);
-    //}
-    //private void OnSkillButtonClick()
-    //{
-    //    print("스킬버튼클릭");
-    //    skill.StartSkill();
-    //}
-
-
-    //이벤트 정리, 일단 가지고 있도록함
-    //private void OnDisable()
-    //{
-    //    foreach (var handler in _boundHandlers)
-    //    {
-    //        if (handler != null)
-    //        {
-    //            handler.OnClickHandler = null;
-    //            handler.OnPressedHandler = null;
-    //            handler.OnPointerDownHandler = null;
-    //            handler.OnPointerUpHandler = null;
-    //            handler.OnDragHandler = null;
-    //            handler.OnBeginDragHandler = null;
-    //            handler.OnEndDragHandler = null;
-    //        }
-    //    }
-    //    //if (Managers.Instance != null && Managers.Instance.StatUpgrade != null)
-    //    //{
-    //    Managers.Instance.StatUpgrade.OnStatChanged -= OnStatChanged;
-    //    //}
-    //    _boundHandlers.Clear();
-    //}
-
-}
+    }

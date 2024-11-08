@@ -20,7 +20,6 @@ public class Projectile : BaseObject
     {
         base.Awake();
     }
-
     private void Update()
     {
         ProjectileMove();
@@ -33,15 +32,11 @@ public class Projectile : BaseObject
         hasHit = false;
         _isForcedCritical = isForcedCritical;  // 크리티컬 정보 저장
     }
-
-    
     public void Initialize(Vector2 direction)
     {
         fireDirection = direction.normalized;
         startPos = transform.position;
     }
-    
-
     void ProjectileMove()
     {
         // 기본 이동
@@ -50,14 +45,12 @@ public class Projectile : BaseObject
         transform.Translate(movement);
         StartCoroutine(DelayDestroy());
     } 
-
     private IEnumerator DelayDestroy()
     {
         yield return new WaitForSeconds(5f);
         Managers.Instance.Object.Despawn(this);
     }
     
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (hasHit) return;

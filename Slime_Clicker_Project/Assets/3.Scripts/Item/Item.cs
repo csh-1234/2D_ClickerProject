@@ -56,16 +56,21 @@ public class Item
         }
     }
 
-    
-
-    public string GetMainStatText() => Type switch
+    public string GetMainStatText()
     {
-        ItemType.Weapon => $"ATK +{CurrentAtk}",
-        ItemType.Armor => $"DEF +{CurrentDef}",
-        _ => string.Empty
-    };
-
-
+        if (Type == ItemType.Weapon)
+        {
+            return $"ATK +{CurrentAtk}";
+        }
+        else if (Type == ItemType.Armor)
+        {
+            return $"DEF +{CurrentDef}";
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
     public bool CanUpgrade() => CurrentLevel < _data.MaxLevel;
 
     public void Upgrade()

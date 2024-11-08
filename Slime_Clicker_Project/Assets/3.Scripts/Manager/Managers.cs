@@ -10,6 +10,7 @@ public class Managers : MonoBehaviour
     {
         get
         {
+            //매니저 오브젝트가 인스펙터에 없으면 생성하고 Managers 컴포넌트 붙임
             InitializeManager();
             return instance;
         }
@@ -51,7 +52,6 @@ public class Managers : MonoBehaviour
     public StageManager Stage { get { return Instance != null ? instance.stage : null; } }
     public SoundManager Sound { get {  return Instance != null ? instance.sound : null; } }
 
-
     private void Awake()
     {
         Init();
@@ -63,7 +63,6 @@ public class Managers : MonoBehaviour
         sound.Init();
         IsInit = true;
     }
-
 
     private void OnDestroy()
     {

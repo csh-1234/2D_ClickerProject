@@ -15,7 +15,7 @@
       "UpgradeCost": 10,
       "CostRatio": 0.1,
       "ItemInfo": "길거리에서 흔히 볼 수 있는 나뭇가지",
-      "SpriteName": "Sword.sprite"
+      "SpriteName": "woodstick.sprite"
     },
     {
       "DataId": 300001,
@@ -32,7 +32,7 @@
       "UpgradeCost": 100,
       "CostRatio": 0.1,
       "ItemInfo": "복순이네 텃밭에서 서리해온 대파",
-      "SpriteName": "Sword.sprite"
+      "SpriteName": "pa.sprite"
     },
     {
       "DataId": 300002,
@@ -66,7 +66,7 @@
       "UpgradeCost": 10000,
       "CostRatio": 0.1,
       "ItemInfo": "뭐든 때릴 수 있는 다목적 막대기",
-      "SpriteName": "Sword.sprite"
+      "SpriteName": "Iron8.sprite"
     },
     {
       "DataId": 300004,
@@ -82,8 +82,8 @@
       "ItemPrice": 1000000,
       "UpgradeCost": 100000,
       "CostRatio": 0.1,
-      "ItemInfo": "영감 미안해요… 다시는 안뽑기로 했는데..",
-      "SpriteName": "Sword.sprite"
+      "ItemInfo": "영감 미안해요... 다시는 안뽑기로 했는데..",
+      "SpriteName": "hellsworld.sprite"
     },
     {
       "DataId": 300005,
@@ -100,7 +100,7 @@
       "UpgradeCost": 10,
       "CostRatio": 0.1,
       "ItemInfo": "고오급 사우나에 가고 싶게 만드는 파란색 목욕가운",
-      "SpriteName": "Shield.sprite"
+      "SpriteName": "bluerobe.sprite"
     },
     {
       "DataId": 300006,
@@ -117,7 +117,7 @@
       "UpgradeCost": 100,
       "CostRatio": 0.1,
       "ItemInfo": "이 도자기가 아니야!",
-      "SpriteName": "Shield.sprite"
+      "SpriteName": "SacredArmor.sprite"
     },
     {
       "DataId": 300007,
@@ -134,7 +134,7 @@
       "UpgradeCost": 1000,
       "CostRatio": 0.1,
       "ItemInfo": "착용시 든든해지는 기분이 드는 갑옷",
-      "SpriteName": "Shield.sprite"
+      "SpriteName": "warmog.sprite"
     },
     {
       "DataId": 300008,
@@ -151,7 +151,7 @@
       "UpgradeCost": 10000,
       "CostRatio": 0.1,
       "ItemInfo": "특정 조건을 만족하면 변신할 수 있을지도?",
-      "SpriteName": "Shield.sprite"
+      "SpriteName": "riderbelt.sprite"
     },
     {
       "DataId": 300009,
@@ -168,7 +168,7 @@
       "UpgradeCost": 100000,
       "CostRatio": 0.1,
       "ItemInfo": "거위 솜털 90% 깃털 10%로 이루어진 따뜻한 패딩",
-      "SpriteName": "Shield.sprite"
+      "SpriteName": "xface.sprite"
     },
     {
       "DataId": 300010,

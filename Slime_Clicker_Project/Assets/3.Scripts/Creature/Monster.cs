@@ -9,32 +9,28 @@ using Random = UnityEngine.Random;
 public class Monster : Creature
 {
     private Player Target;
-    private Vector2 originalScale;
     public Projectile projectile;
+    private Vector2 originalScale;
+    private Vector2 fireDir;
+    private Coroutine _coStartDamage;
+    private bool hasStartedShooting = false;  // 발사 시작 여부 체크
+    [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
 
-    //private void OnEnable()
-    //{
-    //    float ratio = Managers.Instance.Stage.DifficultyByLevel;
-    //    _currentStats.Hp *= (int)ratio;
-    //    _currentStats.MaxHp *= (int)ratio;
-    //    _currentStats.Attack *= (int)ratio;
-    //    _currentStats.Defense *= (int)ratio;
-
-    //}
     protected override void Awake()
     {
         base.Awake();
-        // 기본 스탯 설정
-
         originalScale = transform.localScale;
     }
 
     private void Start()
     {
         Target = Managers.Instance.Game.player;
-        // 현재 스탯에 기본 스탯 복사
+        StartPulseEffect(); // 몬스터 기본 애니메이션
+    }
 
-        StartPulseEffect();
+    private void Update()
+    {
+        MoveMonster();
     }
 
     public override void SetInfo(int dataId)
@@ -65,13 +61,8 @@ public class Monster : Creature
         Debug.Log($"Base ATK: {baseAtk} -> Current ATK: {_currentStats.Attack}");
         Debug.Log($"Base DEF: {baseDef} -> Current DEF: {_currentStats.Defense}");
     }
-
-    private void Update()
-    {
-        MoveMonster();
-    }
-    private bool hasStartedShooting = false;  // 발사 시작 여부 체크
-    void MoveMonster()
+    
+    private void MoveMonster()
     {
         if (Target == null || Target.Hp <= 0)
         {
@@ -83,7 +74,7 @@ public class Monster : Creature
         float distance = Vector2.Distance(transform.position, Target.transform.position);
         Vector3 movment = direction * Time.deltaTime * MoveSpeed;
 
-        if (DataId == (int)EDataId.Slime_Ranger)
+        if (DataId == (int)EDataId.Slime_Ranger)    // 레인저 몬스터 행동
         {
             if (distance > 4.3f)
             {
@@ -105,30 +96,21 @@ public class Monster : Creature
         }
     }
 
+    /// <summary>
+    /// 플레이어 패배시 뒤로 물러나게 하는 효과를 주기 위한 메서드
+    /// </summary>
+    /// <param name="duration"></param>
     public void RetreatFromPlayer(float duration)
     {
-        // 현재 플레이어와의 방향을 구함
         Vector2 directionFromPlayer = (transform.position - Target.transform.position).normalized;
-
-        // 현재 위치에서 해당 방향으로 일정 거리만큼 이동
-        Vector3 targetPosition = transform.position + (Vector3)(directionFromPlayer * 4f); // 3f는 후퇴 거리
-
-        // DOTween을 사용하여 부드럽게 이동
+        Vector3 targetPosition = transform.position + (Vector3)(directionFromPlayer * 8f); // 반대방향으로 설정
         transform.DOMove(targetPosition, duration)
             .SetEase(Ease.OutQuad);
     }
-    public void StopRetreat()
-    {
-        transform.DOKill(); // 현재 진행 중인 DOTween 애니메이션 중지
-    }
-
-
-    [SerializeField] private float _fireRate = 1f;  // 발사 간격 (초)
-    Vector2 fireDir;
 
     IEnumerator ShootProjectile()
     {
-        while (hasStartedShooting && Target != null && Target.Hp > 0)  // 플레이어 체력 체크 추가
+        while (hasStartedShooting && Target != null && Target.Hp > 0) 
         {
             yield return new WaitForSeconds(1f / _currentStats.AttackSpeed);
             fireDir = (Target.transform.position - transform.position).normalized;
@@ -137,45 +119,18 @@ public class Monster : Creature
                 Projectile proj = Managers.Instance.Object.Spawn<Projectile>(CenterPosition, 0, "MonsterProjectile");
                 proj.SetInfo(this, fireDir);
             }
-
-            
         }
-
-        hasStartedShooting = false;  // 루프 종료 시 발사 상태 해제
+        hasStartedShooting = false;  
     }
-    //IEnumerator ShootProjectile()
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitForSeconds(_fireRate);  // 1초 대기
 
-    //        fireDir = (Target.transform.position - transform.position).normalized;
-    //        if (Managers.Instance.Game.player != null)
-    //        {
-    //            Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity);
-    //            proj.SetInfo(this, fireDir);
-    //        }
-    //    }
-    //}
-
-    public event Action OnDeadEvent;
-    public override void OnDead()
+    void StartPulseEffect()
     {
-        //print("몬스터 사망");
-        base.OnDead();
-        //OnDeadEvent?.Invoke();
-        Managers.Instance.Game.MonsterList.Remove(this);
-        //Managers.Instance.Sound.Play("SlimeDie", SoundManager.Sound.Effect);
-        int goldAmount = (int)(Random.Range(100, 1000) * Managers.Instance.Stage.DifficultyByLevel);
-        Managers.Instance.Currency.AddGold(goldAmount);
-        
-
-        UI_GoldEffect.Instance.PlayGoldEffect(transform.position, goldAmount);
-        Managers.Instance.Object.Despawn(this);
-
+        // 크기를 원래 크기와 확대된 크기 사이에서 반복적으로 변경
+        transform.DOScale(originalScale * 1.05f, 1f / 2)
+            .SetEase(Ease.InOutSine) // 부드러운 효과를 위해 Ease 함수 사용
+            .SetLoops(-1, LoopType.Yoyo) // 무한 반복, Yoyo 타입으로 설정
+            .SetUpdate(true); // 시간 스케일에 영향을 받지 않도록 설정 (선택사항)
     }
-
-    Coroutine _coStartDamage;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -214,14 +169,17 @@ public class Monster : Creature
             yield return new WaitForSeconds(1f);
         }
     }
-    void StartPulseEffect()
-    {
-        // 크기를 원래 크기와 확대된 크기 사이에서 반복적으로 변경
-        transform.DOScale(originalScale * 1.05f, 1f / 2)
-            .SetEase(Ease.InOutSine) // 부드러운 효과를 위해 Ease 함수 사용
-            .SetLoops(-1, LoopType.Yoyo) // 무한 반복, Yoyo 타입으로 설정
-            .SetUpdate(true); // 시간 스케일에 영향을 받지 않도록 설정 (선택사항)
-    }
 
+    public override void OnDead()
+    {
+        base.OnDead();
+        Managers.Instance.Game.MonsterList.Remove(this);
+        //Managers.Instance.Sound.Play("SlimeDie", SoundManager.Sound.Effect);
+        int goldAmount = (int)(Random.Range(100, 1000) * Managers.Instance.Stage.DifficultyByLevel);
+
+        UI_GoldEffect.Instance.PlayGoldEffect(transform.position, goldAmount);
+        Managers.Instance.Object.Despawn(this);
+
+    }
 
 }

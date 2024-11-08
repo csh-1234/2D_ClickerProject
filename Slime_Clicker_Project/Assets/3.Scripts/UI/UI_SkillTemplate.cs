@@ -13,10 +13,6 @@ public class UI_SkillTemplate : RootUI
     {
         base.Awake();
     }
-    private void Start()
-    {
-        //SetLoadedLevel();
-    }
 
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI levelText;
@@ -43,18 +39,6 @@ public class UI_SkillTemplate : RootUI
         infoText.text = _skill.GetCurrentSkillInfo();
         costText.text = _skill.UpgradeCost.ToString();
     }
-
-    //public void OnUpgradeClick2()
-    //{
-    //    Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
-    //    print("¾÷±Û");
-    //    if (_skill.TryUpgrade(Managers.Instance.Currency.GetCurrentGold()))
-    //    {
-    //        Managers.Instance.Currency.RemoveGold(_skill.UpgradeCost);
-            
-    //        UpdateUI();
-    //    }
-    //}
 
 
     public void SetLoadedLevel()

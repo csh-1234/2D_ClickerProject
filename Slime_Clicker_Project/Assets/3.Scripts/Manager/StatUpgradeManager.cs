@@ -25,17 +25,15 @@ public class StatData
         Bonus = Level * BonusPerLevel;
         Cost = Level * CostPerLevel;
     }
-
 }
-
 
 public class StatUpgradeManager
 {
-    private int HpBonus = 1;             //레벨당 1
-    private int AtkBonus = 1;            //레벨당 1
-    private int DefBonus = 1;            //레벨당 1
-    private float CriRateBonus = 0.01f;   //레벨당 0.1
-    private float criDamageBonus = 1;    //레벨당 1
+    private int HpBonus = 1;                //레벨당 1
+    private int AtkBonus = 1;               //레벨당 1
+    private int DefBonus = 1;               //레벨당 1
+    private float CriRateBonus = 0.01f;     //레벨당 0.1
+    private float criDamageBonus = 1;       //레벨당 1
     private float AtkSpeedBonus = 0.01f;    //레벨당 0.1
 
     //레벨당 코스트
@@ -44,7 +42,7 @@ public class StatUpgradeManager
     private int DefCost = 1;            //레벨당 1
     private int CriRateCost = 2;        //레벨당 2
     private int criDamageCost = 2;      //레벨당 2
-    private int AtkSpeedCost = 1;    //레벨당 1
+    private int AtkSpeedCost = 1;       //레벨당 1
 
     public int AtkLevel = 1;
     public int HpLevel = 1;
@@ -53,9 +51,7 @@ public class StatUpgradeManager
     public int criDamageLevel = 1;
     public int AtkSpeedLevel = 1;
 
-
     public event Action<string, int, float, int> OnStatChanged;
-
 
     public (int level, float bonus, int cost) GetStatInfo(string statType)
     {

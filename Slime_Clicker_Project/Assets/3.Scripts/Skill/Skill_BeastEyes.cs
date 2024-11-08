@@ -17,16 +17,9 @@ public class Skill_BeastEyes : Skill
     protected override void Awake()
     {
         base.Awake();
-
-        //SkillDic.TryGetValue(200000, out _zoomies);
         SetInfo();
-        //CurrentSkillUpdate();
     }
 
-    private void Start()
-    {
-        //UpdateSkillByLoadedLevel();
-    }
     public override string GetCurrentSkillInfo()
     {
         if (_beastEyes == null) return string.Empty;
@@ -112,7 +105,6 @@ public class Skill_BeastEyes : Skill
         BuffStatUpdate();
     }
 
-
     private void BuffStatUpdate()
     {
         _buffStat.CriticalRate = CriRateBonus;
@@ -178,5 +170,4 @@ public class Skill_BeastEyes : Skill
 
         yield return null;
     }
-
 }

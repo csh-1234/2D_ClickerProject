@@ -11,25 +11,6 @@ public class Skill : MonoBehaviour
 {
     public void InitializeWithData(SkillData data)
     {
-        //_data = data;
-        //CurrentLevel = data.BaseLevel;
-
-        //// 필요한 데이터 초기화
-        //DataId = data.DataId;
-        //SkillName = data.SkillName;
-        //SkillType = data.SkillType;
-        //BaseLevel = data.BaseLevel;
-        //MaxLevel = data.MaxLevel;
-        //Cooldown = data.Cooldown;
-        //Duration = data.Duration;
-        //MaxDuration= data.MaxDuration;
-        //HpBonus= data.HpBonus;
-        //AtkBonus= data.AtkBonus;
-        //DefBonus= data.DefBonus;
-        
-        //AtkSpeedBonus= data.AtkSpeedBonus;
-        //HealAmount= data.HealAmount;
-        
         if (data == null) return;
 
         _data = data;
@@ -73,22 +54,6 @@ public class Skill : MonoBehaviour
     public int UpgradeCost;
 
     public int CurrentLevel { get;  set; }
-
-    //public string SkillName;
-    //public string SkillInfo;
-    //public int    SkillLevel;
-    //public int    MaxSkillLevel;
-    //public float  Cooldonwn;
-    //public float  Duration;
-    //public int    HpBonus;
-    //public int    HealAmount;
-    //public int    AtkBonus;
-    //public int    DefBonus;
-    //public float  AtkSpeedBonus;
-    //public float  CriRateBonus;
-    //public float  CriDamageBonus;
-    //public float  MoveSpeedBonus;
-
     public int CurrentSkillLevel;
     public int CurrentMaxSkillLevel;
     public float CurrentCoolDonwn;
@@ -165,10 +130,6 @@ public class Skill : MonoBehaviour
     public virtual IEnumerator StartSkill()
     {
         yield return null;
-    }
-    protected void StartPassiveSkill()
-    {
-
     }
 
     public bool CanUpgrade() => CurrentLevel < _data.MaxLevel;

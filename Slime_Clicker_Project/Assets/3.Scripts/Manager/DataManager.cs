@@ -14,8 +14,7 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 public class DataManager
 {
-
-
+    //파일 저장 경로 설정
     private string GetDataPath(string fileName, bool isLoad = true)
     {
         if (isLoad)

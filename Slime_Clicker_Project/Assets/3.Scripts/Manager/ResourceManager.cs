@@ -6,6 +6,8 @@ using UnityEngine.AddressableAssets;
 
 public class ResourceManager
 {
+    // 어드레서블로 메모리어 올려놓은 데이터를 꺼내쓸 수 있도록 함. objectmanger와 연계사용
+
     // 로드된 리소스를 캐싱하는 딕셔너리
     // Key: 리소스의 고유 식별자(주소/경로)
     // Value: 실제 로드된 리소스 객체

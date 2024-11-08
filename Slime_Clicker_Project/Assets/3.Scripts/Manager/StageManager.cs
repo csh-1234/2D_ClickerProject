@@ -64,8 +64,6 @@ public class StageManager
             Debug.Log($"πË¿≤ : {DifficultyByLevel}");
             Managers.Instance.Game.MonsterList.Add(mo);
             StageMonster.Add(mo);
-
-
         }
     }
 }

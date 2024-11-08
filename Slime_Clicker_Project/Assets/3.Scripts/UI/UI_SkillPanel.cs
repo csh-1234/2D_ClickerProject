@@ -14,6 +14,9 @@ public class UI_SkillPanel : RootUI
     public Image rotationIcon;
     public Image IconBoard;
 
+    private Tweener rotationTween;  // Sequence 대신 Tweener 사용
+    private Tweener rainbowTween;  // Sequence 대신 Tweener 사용
+
     protected override void Awake()
     {
         base.Awake();
@@ -31,9 +34,6 @@ public class UI_SkillPanel : RootUI
         foreach (Skill pSkill in player.SkillList)
         {
             GameObject SkillButton = Instantiate(template, transform);
-            //TODO : resource에서 가져오도록(비동기 처리)
-            //SkillButton.transform.Find("Icon").GetComponent<Image>().sprite = Managers.Instance.Resource.Load<Sprite>("EatChur");
-            //SkillButton.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"Resources/{pSkill.name}.icon");
             SkillButton.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"{pSkill.name}_Icon");
 
             UI_SkillButton ui_SkillButton = SkillButton.GetComponent<UI_SkillButton>();
@@ -90,33 +90,8 @@ public class UI_SkillPanel : RootUI
             StopRainbowEffect();
         }
     }
-
-
-    //이벤트 정리, 일단 가지고 있도록함
-    //private void OnDisable()
-    //{
-    //    foreach (var handler in _boundHandlers)
-    //    {
-    //        if (handler != null)
-    //        {
-    //            handler.OnClickHandler = null;
-    //            handler.OnPressedHandler = null;
-    //            handler.OnPointerDownHandler = null;
-    //            handler.OnPointerUpHandler = null;
-    //            handler.OnDragHandler = null;
-    //            handler.OnBeginDragHandler = null;
-    //            handler.OnEndDragHandler = null;
-    //        }
-    //    }
-    //    //if (Managers.Instance != null && Managers.Instance.StatUpgrade != null)
-    //    //{
-    //    Managers.Instance.StatUpgrade.OnStatChanged -= OnStatChanged;
-    //    //}
-    //    _boundHandlers.Clear();
-    //}
     #endregion
-    private Tweener rotationTween;  // Sequence 대신 Tweener 사용
-    private Tweener rainbowTween;  // Sequence 대신 Tweener 사용
+
     void StartLoadingRotation()
     {
         // 새로운 회전 트윈 생성

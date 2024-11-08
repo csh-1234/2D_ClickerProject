@@ -30,8 +30,6 @@ public class UI_StatUpgrade : RootUI
         BindEventToObjects();
     }
 
-
-
     private void OnStatChanged(string type, int level, float bonus, int cost)
     {
         // 자신의 스탯 타입에 대한 변경사항만 처리
@@ -49,7 +47,6 @@ public class UI_StatUpgrade : RootUI
             }
         }
     }
-
 
     private void UpdateStat(int level, float bonus, int cost)
     {
@@ -86,29 +83,5 @@ public class UI_StatUpgrade : RootUI
         Managers.Instance.Sound.Play("Click", SoundManager.Sound.Effect);
         Managers.Instance.StatUpgrade.statUpgrade(statType);
     }
-
-    //이벤트 정리
-    //private void OnDisable()
-    //{
-    //    foreach (var handler in _boundHandlers)
-    //    {
-    //        if (handler != null)
-    //        {
-    //            handler.OnClickHandler = null;
-    //            handler.OnPressedHandler = null;
-    //            handler.OnPointerDownHandler = null;
-    //            handler.OnPointerUpHandler = null;
-    //            handler.OnDragHandler = null;
-    //            handler.OnBeginDragHandler = null;
-    //            handler.OnEndDragHandler = null;
-    //        }
-    //    }
-    //    //if (Managers.Instance != null && Managers.Instance.StatUpgrade != null)
-    //    //{
-    //    Managers.Instance.StatUpgrade.OnStatChanged -= OnStatChanged;
-    //    //}
-    //    _boundHandlers.Clear();
-    //}
     #endregion
-
 }

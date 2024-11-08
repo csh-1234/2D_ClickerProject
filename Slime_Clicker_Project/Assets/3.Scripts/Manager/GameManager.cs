@@ -16,9 +16,7 @@ public class GameManager
     public List<Monster> MonsterList = new();
 
     #region 스탯 계산
-    //소유한 아이템
     private Dictionary<int, Item> OwnedItems = new Dictionary<int, Item>();
-    //장착한 아이템, 장비타입별 하나씩만 장착 가능
     private Dictionary<ItemType, Item> EquippedItems = new Dictionary<ItemType, Item>();
 
     private Stats _baseStats = new Stats();         // 플레이어 기본 스탯
@@ -73,8 +71,6 @@ public class GameManager
         }
         player._currentStats.Hp = Mathf.RoundToInt(player._currentStats.MaxHp * currentHpRatio);
         Debug.Log($"최종 스탯 - ATK: {player._currentStats.Attack}, DEF: {player._currentStats.Defense}");
-        //SaveGame();
-        //OnStatsChanged?.Invoke(player._currentStats);
     }
 
     public void CalcEquipItem()
@@ -133,7 +129,6 @@ public class GameManager
             OwnedItems.Add(item.DataId, item);
             return true;
         }
-        //SaveOwnedItems();
         return false;
     }
     public bool TryUnequipItem(ItemType itemType)
@@ -151,19 +146,6 @@ public class GameManager
     {
         if (!HasItem(item.DataId)) return false;
 
-        //// 같은 타입의 장비가 이미 있다면 먼저 해제
-        //if (EquippedItems.ContainsKey(item.Type))
-        //{
-        //    EquippedItems.Remove(item.Type);
-        //}
-
-        //// 새 장비 장착
-        //EquippedItems[item.Type] = item;
-
-        //// 장비 스탯 재계산
-        //CalcEquipItem();
-        //SaveOwnedItems();
-        //Debug.Log($"장비 장착 완료 후 플레이어 스탯 - ATK: {player.Atk}, DEF: {player.Def}");
         Item ownedItem = OwnedItems[item.DataId];
 
         // 같은 타입의 장비 이미 있다면 장착 해제
@@ -179,7 +161,6 @@ public class GameManager
         CalcEquipItem();
 
         // 아이템 데이터 저장
-        //SaveOwnedItems();
         OnEquipmentChanged?.Invoke();
 
         Debug.Log($"장비 장착 완료 후 플레이어 스탯 - ATK: {player.Atk}, DEF: {player.Def}");
@@ -207,6 +188,7 @@ public class GameManager
     #region Save&Load
     public void SaveGame()
     {
+        //저장 시점 : 게임 종료시
         SaveStatData();
         SaveOwnedItems();
         SaveSkillData();

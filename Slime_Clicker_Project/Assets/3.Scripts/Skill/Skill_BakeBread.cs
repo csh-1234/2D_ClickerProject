@@ -4,44 +4,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using static DataManager;
 
-public class Skill_FatalStrike : Skill
+public class Skill_BakeBread : Skill
 {
     //전체 스킬정보 관리
-    private SkillData _fatalStrike;
+    private SkillData _bakeBread;
 
     //증가하는 스텟만 관리
     private Stats _buffStat = new Stats();
 
-    private string BuffId { get { return $"FatalStrike_{CurrentLevel}"; } }
+    private string BuffId { get { return $"BakeBread_{CurrentLevel}"; } }
 
     protected override void Awake()
     {
         base.Awake();
-
-        //SkillDic.TryGetValue(200000, out _zoomies);
         SetInfo();
-        //CurrentSkillUpdate();
     }
-    private void Start()
-    {
-        //UpdateSkillByLoadedLevel();
-    }
+
     public override string GetCurrentSkillInfo()
     {
-        if (_fatalStrike == null) return string.Empty;
-
+        if (_bakeBread == null) return string.Empty;
         try
         {
             return _data.GetFormattedInfo(
             Duration,          // {0}
-            CriDamageBonus,     // {1}
-            Cooldown           // {2}
+            DefBonus,     // {1}
+            HealAmount,          // {2}
+            Cooldown           // {3}
         );
         }
         catch (Exception e)
         {
             Debug.LogError($"Error formatting skill info: {e.Message}");
-            return _fatalStrike.SkillInfo;  // 포맷팅 실패시 기본 텍스트 반환
+            return _bakeBread.SkillInfo;  // 포맷팅 실패시 기본 텍스트 반환
         }
     }
 
@@ -53,24 +47,25 @@ public class Skill_FatalStrike : Skill
             return;
         }
         //TODO : 저장된 데이터를 불러올때 어떻게 처리할지 정해야함 일단은 보류
-        if (SkillDic.TryGetValue(200004, out SkillData FatalStrike))
+        if (SkillDic.TryGetValue(200001, out SkillData BakeBread))
         {
-            _fatalStrike = FatalStrike;
-            SkillName = FatalStrike.SkillName;
-            skillType = FatalStrike.SkillType;
-            MaxLevel = FatalStrike.MaxLevel;
-
+            _bakeBread = BakeBread;
+            SkillName = BakeBread.SkillName;
+            skillType = BakeBread.SkillType;
+            MaxLevel = BakeBread.MaxLevel;
+            DataId = BakeBread.DataId;
             if (CurrentLevel == 0)
             {
-                CurrentLevel = FatalStrike.BaseLevel;
-                Cooldown = FatalStrike.Cooldown;
-                Duration = FatalStrike.Duration;
-                CriDamageBonus = FatalStrike.CriDamageBonus;
+                CurrentLevel = BakeBread.BaseLevel;
+                Cooldown = BakeBread.Cooldown;
+                Duration = BakeBread.Duration;
+                HealAmount = BakeBread.HealAmount;
+                DefBonus = BakeBread.DefBonus;
             }
-            SkillInfo = FatalStrike.SkillInfo;
+            //SkillInfo = GetCurrentSkillInfo();
+            SkillInfo = BakeBread.SkillInfo;
         }
     }
-
     private bool _isBuffActive = false;  // 버프 활성화 상태 추적
     private Player _currentTarget = null; // 현재 버프가 적용된 대상
     public void SkillLevelUp()
@@ -88,9 +83,10 @@ public class Skill_FatalStrike : Skill
         }
 
         CurrentLevel++;
-        Cooldown = Mathf.Max(_fatalStrike.MaxCooldown, Cooldown - 0.01f);
-        Duration = Mathf.Min(_fatalStrike.MaxDuration, Duration + 0.01f);
-        CriDamageBonus++;
+        Cooldown = Mathf.Max(_bakeBread.MaxCooldown, Cooldown - 0.01f);
+        Duration = Mathf.Min(_bakeBread.MaxDuration, Duration + 0.01f);
+        DefBonus++;
+        HealAmount++;
         BuffStatUpdate();
 
         // 버프가 활성화 상태였다면 새로운 스탯으로 다시 적용
@@ -102,22 +98,27 @@ public class Skill_FatalStrike : Skill
 
     public override void UpdateSkillByLoadedLevel()
     {
-        Cooldown = Mathf.Max(_fatalStrike.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
-        Duration = Mathf.Min(_fatalStrike.MaxDuration, Duration + (0.01f * CurrentLevel-1));
-        CriDamageBonus += CriDamageBonus * (CurrentLevel -1);
+        float baseCooldown = _bakeBread.Cooldown;
+        float baseDuration = _bakeBread.Duration;
+        int baseDefBonus = _bakeBread.DefBonus;
+        float baseHealAmount = _bakeBread.HealAmount;
+
+        Cooldown = Mathf.Max(_bakeBread.MaxCooldown, Cooldown - (0.01f * CurrentLevel-1));
+        Duration = Mathf.Min(_bakeBread.MaxDuration, Duration + (0.01f * CurrentLevel-1));
+        DefBonus += DefBonus * (CurrentLevel-1);
+        HealAmount += HealAmount * (CurrentLevel-1);
         BuffStatUpdate();
     }
 
-
     private void BuffStatUpdate()
     {
-        _buffStat.CriticalDamage = CriDamageBonus;
+        _buffStat.Defense = DefBonus;
     }
 
     private Coroutine startSkill;
     public override IEnumerator StartSkill()
     {
-        print($"{SkillName}호출");
+        print("식빵굽기");
         //중첩 방지 및 재사용 금지
         if (startSkill != null)
         {
@@ -125,6 +126,7 @@ public class Skill_FatalStrike : Skill
             yield break;
         }
 
+        //CurrentSkillUpdate();
         startSkill = StartCoroutine(StartBuffSkill());
         yield return null;
     }
@@ -132,7 +134,6 @@ public class Skill_FatalStrike : Skill
     protected override IEnumerator StartBuffSkill()
     {
         Player player = Managers.Instance.Game.player;
-        player._isCritical = true;
         _currentTarget = player;
         if (player != null)
         {
@@ -140,6 +141,7 @@ public class Skill_FatalStrike : Skill
             _cooldownEndTime = Time.time + Cooldown;
             _isBuffActive = true;
             // 버프 적용 및 시작 이벤트 발생
+            player.OnHeal(HealAmount);
             player.ApplyBuff(BuffId, _buffStat, Duration);
             InvokeBuffStart();
             // 버프 지속 시간 동안 대기
@@ -172,8 +174,6 @@ public class Skill_FatalStrike : Skill
             startSkill = null;
             print("스킬종료");
         }
-
-        yield return null;
     }
-
+    
 }

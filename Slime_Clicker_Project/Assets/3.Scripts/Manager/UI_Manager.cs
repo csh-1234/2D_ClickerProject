@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class UI_Manager
 {
-    int _order = 10;
+    private int _order = 10;  // 시작 canvas layorder, 필요에 따라 수정필요
 
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     UI_Scene _sceneUI = null;
@@ -24,7 +24,7 @@ public class UI_Manager
         }
     }
 
-   public void CanvasInitialize(GameObject go, bool sort = true, int sortOrder = 0)
+    public void CanvasInitialize(GameObject go, bool sort = true, int sortOrder = 0)
     {
         // UI를 쓰기 위해선 바탕이 되는 canvas, canvasScaler, graphicRaycast 컴포넌트가 필요하다.
         // 따라서 UI오브젝트에 해당 컴포넌트들이 없으면 추가해주는 초기화 작업이 필요하다.
@@ -106,17 +106,4 @@ public class UI_Manager
         popup = null;
         _order--;
     }
-
-    public void CloseALLPopupUI()
-    {
-        if (_popupStack.Count == 0)
-            return;
-
-
-        UI_Popup popup = _popupStack.Pop();
-        Managers.Instance.Resource.Destroy(popup.gameObject);
-        popup = null;
-        _order--;
-    }
-
 }
