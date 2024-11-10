@@ -87,7 +87,7 @@ public class Skill_BeastEyes : Skill
         CurrentLevel++;
         Cooldown = Mathf.Max(_beastEyes.MaxCooldown, Cooldown - 0.01f);
         Duration = Mathf.Min(_beastEyes.MaxDuration, Duration + 0.01f);
-        CriRateBonus = Mathf.Max(50, CriRateBonus + 0.01f);
+        CriRateBonus = Mathf.Min(50, CriRateBonus + 0.01f);
         BuffStatUpdate();
 
         // 버프가 활성화 상태였다면 새로운 스탯으로 다시 적용
@@ -101,7 +101,7 @@ public class Skill_BeastEyes : Skill
     {
         Cooldown = Mathf.Max(_beastEyes.MaxCooldown, Cooldown - (0.01f * CurrentLevel));
         Duration = Mathf.Min(_beastEyes.MaxDuration, Duration + (0.01f * CurrentLevel));
-        CriRateBonus += CriRateBonus * (CurrentLevel);
+        CriRateBonus += 0.01f * (CurrentLevel);
         BuffStatUpdate();
     }
 
